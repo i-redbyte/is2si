@@ -1,0 +1,29 @@
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:repeatCount="infinite"
+    android:toDegrees="360"
+    >
+    <vector
+        android:width="26dp"
+        android:height="26dp"
+        android:viewportWidth="26"
+        android:viewportHeight="26"
+        >
+        <path
+            android:fillColor="#00000000"
+            android:fillType="evenOdd"
+            android:pathData="M13,13m-11,0a11,11 0,1 1,22 0a11,11 0,1 1,-22 0"
+            android:strokeWidth="2.53846154"
+            android:strokeColor="#FFFFFF"
+            />
+        <path
+            android:fillColor="#00000000"
+            android:fillType="evenOdd"
+            android:pathData="M24,13C24,19.0751 19.0751,24 13,24"
+            android:strokeWidth="2.53846154"
+            android:strokeColor="#FFCC00"
+            />
+    </vector>
+</rotate>

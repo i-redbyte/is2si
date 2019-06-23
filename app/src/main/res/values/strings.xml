@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Туси...</string>
+    <string name="network_request_error">При загрузке данных произошла ошибка. Проверьте Ваше подключение к сети.</string>
+    <string name="bad_request_error">При загрузке данных произошла ошибка. Проверьте введенные вами данные</string>
+    <string name="state.unknown_error">Неизвестная ошибка</string>
+    <string name="state.error_button">Повторить</string>
+
+    <string name="auth.pin_code">Введите пин-код</string>
+    <string name="auth.come_in">Войти</string>
+</resources>
