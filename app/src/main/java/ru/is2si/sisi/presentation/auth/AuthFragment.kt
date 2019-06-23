@@ -10,19 +10,20 @@ import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.extension.setActionBar
-import ru.is2si.sisi.base.navigation.FragmentNavigator
+import ru.is2si.sisi.base.navigation.Navigator
+import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
-import ru.is2si.sisi.presentation.team.TeamFragment
+import ru.is2si.sisi.presentation.main.MainFragment
+import ru.is2si.sisi.presentation.main.NavigationActivity
 import javax.inject.Inject
 
 class AuthFragment :
         ActionBarFragment<AuthContract.Presenter>(),
+        NavigatorProvider,
         AuthContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
-    @Inject
-    lateinit var navigator: FragmentNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,7 @@ class AuthFragment :
     }
 
     override fun gotoTeamScreen() {
-        navigator.fragmentAdd(TeamFragment.newInstance())
+        getNavigator().fragmentReplace(MainFragment.newInstance())
     }
 
     override fun showLoading() = stateSwitcher.switchToLoading()
@@ -63,6 +64,8 @@ class AuthFragment :
         setTitle(R.string.app_name)
         setDisplayHomeAsUpEnabled(false)
     }
+
+    override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
         fun newInstance(): AuthFragment = AuthFragment()

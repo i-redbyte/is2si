@@ -4,10 +4,15 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ru.is2si.sisi.di.common.PerScreen
 import ru.is2si.sisi.presentation.auth.AuthFragment
+import ru.is2si.sisi.presentation.main.MainFragment
 import ru.is2si.sisi.presentation.team.TeamFragment
 
 @Module
 interface ScreenBindingModule {
+
+    @PerScreen
+    @ContributesAndroidInjector(modules = [MainModule::class])
+    fun bindMain(): MainFragment
 
     @PerScreen
     @ContributesAndroidInjector(modules = [AuthModule::class])

@@ -5,6 +5,12 @@
     <string name="state.unknown_error">Неизвестная ошибка</string>
     <string name="state.error_button">Повторить</string>
 
+    <string name="main.menu_table_results">Таблица результатов</string>
+    <string name="main.menu_files">Файлы</string>
+    <string name="main.menu_finish">Финиш</string>
+    <string name="main.menu_points">Точки</string>
+    <string name="main.menu_team">Команда</string>
+
     <string name="auth.pin_code">Введите пин-код</string>
     <string name="auth.come_in">Войти</string>
 </resources>
