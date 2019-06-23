@@ -13,7 +13,7 @@ class MainNavigationMenu(
 ) {
 
     private val inactiveColor: Int = context.compatColor(R.color.silver_chalice)
-    private val activeColor: Int = context.compatColor(R.color.black)
+    private val activeColor: Int = context.compatColor(R.color.green)
 
     private var onItemSelectedCallback: OnItemSelectedCallback? = null
     private var onItemReselectedCallback: OnItemReselectedCallback? = null

@@ -23,7 +23,6 @@ abstract class AuthModule {
 
     @Module
     companion object {
-
         @JvmStatic
         @Provides
         @PerScreen
