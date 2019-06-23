@@ -16,14 +16,17 @@
     <color name="blue_alpha">#C040C4FF</color>
 
     <color name="red">#EC4343</color>
-
+    <!--Green-->
     <color name="green">#27AE60</color>
-<!--Gray-->
+    <color name="lima">#4CBD1B</color>
+    <!--Gray-->
     <color name="gray">#888888</color>
     <color name="gray_dusty">#999999</color>
     <color name="silver_chalice">#A9A9A9</color>
     <color name="silver">#BDBDBD</color>
     <color name="silver_divider">#C3C3C3</color>
+    <color name="gallery">#EAEAEA</color>
+
     <color name="selago">#F8F9FE</color>
     <color name="selago_item">#F3F5FE</color>
 </resources>

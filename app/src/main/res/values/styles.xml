@@ -6,19 +6,18 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:buttonStyle">@style/DefaultButton</item>
+        <item name="android:buttonStyle">@style/AppTheme.DefaultButton</item>
     </style>
 
-    <style name="DefaultButton" parent="@android:style/Widget.Button">
+    <style name="AppTheme.Light.Header">
+        <item name="android:layout_height">52dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:foreground">?selectableItemBackground</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">61dp</item>
-        <item name="android:minWidth">268dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:background">@drawable/btn_default_background</item>
-        <item name="android:textColor">@drawable/btn_text</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
     <style name="AppTheme.MenuItem">
@@ -33,4 +32,25 @@
         <item name="android:textColor">@color/silver_chalice</item>
     </style>
 
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+
+    <style name="AppTheme.DefaultButton" parent="@android:style/Widget.Button">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">61dp</item>
+        <item name="android:minWidth">268dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/btn_default_background</item>
+        <item name="android:textColor">@drawable/btn_text</item>
+    </style>
 </resources>

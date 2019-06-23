@@ -5,7 +5,16 @@
     <string name="state.unknown_error">Неизвестная ошибка</string>
     <string name="state.error_button">Повторить</string>
 
-    <string name="main.menu_table_results">Таблица результатов</string>
+    <string name="dialog.settings">Настройки</string>
+    <string name="dialog.cancel">Отмена</string>
+    <string name="dialog.yes">Да</string>
+    <string name="dialog.no">Нет</string>
+    <string name="dialog.ok">Ок</string>
+    <string name="dialog.warning">Внимание</string>
+    <string name="dialog.ready">Готово</string>
+    <string name="dialog.delete">Удалить</string>
+
+    <string name="main.menu_table_results">Результаты</string>
     <string name="main.menu_files">Файлы</string>
     <string name="main.menu_finish">Финиш</string>
     <string name="main.menu_points">Точки</string>
@@ -13,4 +22,17 @@
 
     <string name="auth.pin_code">Введите пин-код</string>
     <string name="auth.come_in">Войти</string>
+
+    <string name="team.title">Команда</string>
+    <string name="team.start_name">Название старта:</string>
+    <string name="team.extremal_phone">Телефон для связи в экстренном случае:</string>
+    <string name="team.phone_number">8-800-888-88-88</string>
+    <string name="team.team_name">Название команды:</string>
+    <string name="team.max_normal_finish_time">Максимально нормальное время финиша:</string>
+    <string name="team.finish_time_limit">Предельное время финиша:</string>
+    <string name="team.penalty_points">Штрафные баллы за каждые 10 минут в т.ч. не полных сверх нормального времени</string>
+    <string name="team.technical_details">Технические данные:</string>
+    <string name="team_phone_requested">Для звонка по экстренному номеру необходимо предоставить доступ к выполнению вызовов</string>
+
+
 </resources>
