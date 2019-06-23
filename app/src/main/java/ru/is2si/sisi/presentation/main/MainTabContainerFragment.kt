@@ -3,13 +3,14 @@ package ru.is2si.sisi.presentation.main
 import androidx.fragment.app.Fragment
 import ru.is2si.sisi.base.navigation.TabContainerFragment
 import ru.is2si.sisi.presentation.main.Tab.*
+import ru.is2si.sisi.presentation.points.PointsFragment
 import ru.is2si.sisi.presentation.team.TeamFragment
 
 class MainTabContainerFragment : TabContainerFragment() {
 
     override fun createTabFragment(tabName: String): Fragment = when (valueOf(tabName)) {
         TEAM -> TeamFragment.newInstance()
-        POINTS -> Fragment()
+        POINTS -> PointsFragment.newInstance()
         FINISH -> Fragment()
         FILES -> Fragment()
         RESULT_TABLES -> Fragment()

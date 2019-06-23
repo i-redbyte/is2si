@@ -34,5 +34,12 @@
     <string name="team.technical_details">Технические данные:</string>
     <string name="team_phone_requested">Для звонка по экстренному номеру необходимо предоставить доступ к выполнению вызовов</string>
 
+    <string name="points.title">Точки</string>
+    <string name="points.add">Добавить</string>
+    <string name="points.input_point">Введите точку:</string>
+    <string name="points.points">Предварительный перечень взятых точек:</string>
+    <string name="points.point_summary">Предварительно баллов за точки:</string>
+    <string name="points.balls">Баллы:</string>
+    <string name="points.point_number">Баллы:</string>
 
 </resources>

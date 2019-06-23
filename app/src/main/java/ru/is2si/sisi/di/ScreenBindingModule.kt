@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector
 import ru.is2si.sisi.di.common.PerScreen
 import ru.is2si.sisi.presentation.auth.AuthFragment
 import ru.is2si.sisi.presentation.main.MainFragment
+import ru.is2si.sisi.presentation.points.PointsFragment
 import ru.is2si.sisi.presentation.team.TeamFragment
 
 @Module
@@ -22,4 +23,7 @@ interface ScreenBindingModule {
     @ContributesAndroidInjector(modules = [TeamModule::class])
     fun bindTeam(): TeamFragment
 
+    @PerScreen
+    @ContributesAndroidInjector(modules = [PointsModule::class])
+    fun bindPoints(): PointsFragment
 }
