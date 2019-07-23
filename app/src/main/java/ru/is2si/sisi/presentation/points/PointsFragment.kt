@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import kotlinx.android.synthetic.main.fragment_points.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
@@ -60,11 +64,22 @@ class PointsFragment :
     private fun setupRecyclerView() {
         adapter = DelegationAdapter()
         rvPoints.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        val policyDelegate = PointDelegate(requireContext()) {
-            presenter.removePoint(it)
+
+        val policyDelegate = adapterDelegate<PointView, Any>(R.layout.item_point) {
+            val tvPointName: TextView = ViewCompat.requireViewById(itemView, R.id.tvPointName)
+            val tvPointValue: TextView = ViewCompat.requireViewById(itemView, R.id.tvPointValue)
+
+            val ivClose: ImageView = ViewCompat.requireViewById(itemView, R.id.ivClose)
+            ivClose.onClick { presenter.removePoint(adapterPosition) }
+
+            bind {
+                tvPointName.text = item.name.toString()
+                tvPointValue.text = item.value.toString()
+            }
         }
+
         adapter.delegatesManager
-                .addDelegate(policyDelegate)
+            .addDelegate(policyDelegate)
         rvPoints.adapter = adapter
     }
 

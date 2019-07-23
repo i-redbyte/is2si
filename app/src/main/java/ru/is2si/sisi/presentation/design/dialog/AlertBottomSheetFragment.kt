@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.os.SystemClock
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.ViewCompat.requireViewById
 import androidx.core.widget.NestedScrollView
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegate
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_base_bottom_dialog.*
 import ru.is2si.sisi.BuildConfig.APPLICATION_ID

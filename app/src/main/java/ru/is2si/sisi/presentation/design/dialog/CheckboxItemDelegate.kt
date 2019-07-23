@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.ViewCompat.requireViewById
 import androidx.recyclerview.widget.RecyclerView
-import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate
+import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.AdapterMultiSelectManager
 import ru.is2si.sisi.base.DelegationAdapter
