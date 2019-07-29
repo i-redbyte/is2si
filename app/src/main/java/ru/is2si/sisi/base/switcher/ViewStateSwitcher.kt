@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import kotlinx.android.synthetic.main.error_screen.view.*
 import ru.is2si.sisi.R
-import ru.is2si.sisi.base.switcher.LoadingType.*
+import ru.is2si.sisi.base.switcher.LoadingType.MAIN_YELLOW
 import ru.is2si.sisi.base.switcher.StateView.*
 
 class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
@@ -33,11 +33,11 @@ class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
         switchToError()
     }
 
-    fun switchToLoading() = switchToLoading(BLUE)
+    fun switchToLoading() = switchToLoading(MAIN_YELLOW)
 
     fun switchToLoading(type: LoadingType) {
         val loadingView = when (type) {
-            BLUE -> layoutInflater.inflate(R.layout.loading_screen, container, false)
+            MAIN_YELLOW -> layoutInflater.inflate(R.layout.loading_screen, container, false)
         }
         addViewState(STATE_LOADING, loadingView)
         switchToState(STATE_LOADING)
@@ -77,15 +77,13 @@ class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
 private enum class StateView {
     STATE_MAIN,
     STATE_LOADING,
-    STATE_OSAGO_LOADING,
     STATE_ERROR,
     STATE_EMPTY,
-    STATE_NOT_FOUND,
-    STATE_SUCCESS
+    STATE_NOT_FOUND
 }
 
 enum class LoadingType {
-    BLUE
+    MAIN_YELLOW
 }
 
 typealias OnErrorListener = () -> Unit

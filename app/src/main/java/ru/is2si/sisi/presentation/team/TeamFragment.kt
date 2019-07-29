@@ -13,6 +13,9 @@ import kotlinx.android.synthetic.main.fragment_team.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.extension.*
+import ru.is2si.sisi.base.extension.AfterRequestPermissionsResult.Granted
+import ru.is2si.sisi.base.extension.AfterRequestPermissionsResult.NeverAskAgain
+import ru.is2si.sisi.base.extension.BeforeRequestPermissionResult.*
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelText
@@ -25,8 +28,8 @@ import ru.is2si.sisi.presentation.model.TeamView
 import javax.inject.Inject
 
 class TeamFragment :
-        ActionBarFragment<TeamContract.Presenter>(),
-        TeamContract.View {
+    ActionBarFragment<TeamContract.Presenter>(),
+    TeamContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
@@ -37,9 +40,9 @@ class TeamFragment :
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_team, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,34 +82,35 @@ class TeamFragment :
 
     private fun checkPhonePermissions() {
         when (beforeRequestPermissions(REQUEST_PHONE, CALL_PHONE)) {
-            BeforeRequestPermissionResult.AlreadyGranted -> presenter.onPhoneClick()
-
-            BeforeRequestPermissionResult.ShowRationale -> beforeRequestPermissions(
+            AlreadyGranted -> presenter.onPhoneClick()
+            ShowRationale -> {
+                beforeRequestPermissions(
                     REQUEST_PHONE,
                     true,
                     CALL_PHONE
-            )
-            BeforeRequestPermissionResult.Requested -> Unit
+                )
+            }
+            Requested -> Unit
         }
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         when (afterRequestPermissions(permissions, grantResults)) {
-            AfterRequestPermissionsResult.Granted -> {
+            Granted -> {
                 presenter.onPhoneClick()
             }
-            AfterRequestPermissionsResult.NeverAskAgain -> {
+            NeverAskAgain -> {
                 AlertBottomSheetFragment()
-                        .withMessage(getString(R.string.team_phone_requested))
-                        .withOkText(getString(R.string.dialog_settings))
-                        .withCancelText(getString(R.string.dialog_cancel))
-                        .withCancelable(false)
-                        .withTarget(this, REQUEST_PHONE_PERMISSION)
-                        .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
+                    .withMessage(getString(R.string.team_phone_requested))
+                    .withOkText(getString(R.string.dialog_settings))
+                    .withCancelText(getString(R.string.dialog_cancel))
+                    .withCancelable(false)
+                    .withTarget(this, REQUEST_PHONE_PERMISSION)
+                    .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
             }
         }
     }

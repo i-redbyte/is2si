@@ -8,7 +8,7 @@ abstract class BaseFragment<P : BaseContract.Presenter> : DaggerFragment() {
     @Inject
     lateinit var presenter: P
     private var isCommitsAllowed: Boolean = false
-    private val resumeFragmentActions: MutableList<Runnable> by lazy { mutableListOf<Runnable>() }
+    private val resumeFragmentActions: MutableList<Runnable> by lazy { mutableListOf() }
 
     private var resultAction: Runnable? = null
 
