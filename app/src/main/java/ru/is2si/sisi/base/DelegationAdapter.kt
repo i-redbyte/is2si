@@ -1,7 +1,7 @@
 package ru.is2si.sisi.base
 
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager
-import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter
+import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 typealias ItemClickListener = (position: Int) -> Unit
 
