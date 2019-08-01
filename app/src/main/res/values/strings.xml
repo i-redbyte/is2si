@@ -42,4 +42,5 @@
     <string name="points.balls">Баллы:</string>
     <string name="points.point_number">Баллы:</string>
 
+    <string name="result.title">Результат</string>
 </resources>
