@@ -14,7 +14,7 @@ class CompetitionResultResponse(
         @SerializedName("Group")
         val group: String?,
         @SerializedName("IdCompetitionResponse")
-        val idCompetition: IdCompetitionResponse,
+        val idCompetition: IdCompetitionResponse?,
         @SerializedName("IdTeamResponse")
         val idTeam: IdTeamResponse?,
         @SerializedName("isRemovalEntry")
@@ -38,7 +38,7 @@ fun CompetitionResultResponse.toCompetitionResult() = CompetitionResult(
         bally = bally,
         disciplina = disciplina?.toDisciplina(),
         group = group ?: "",
-        idCompetition = idCompetition.toIdCompetition(),
+        idCompetition = idCompetition?.toIdCompetition(),
         idTeam = idTeam?.toIdTeam(),
         isRemovalEntry = isRemovalEntry,
         klassDistancii = klassDistancii ?: "",

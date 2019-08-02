@@ -114,7 +114,6 @@ class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
     }
 }
 
-
 private enum class StateView {
     STATE_MAIN,
     STATE_LOADING,
