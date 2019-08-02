@@ -7,7 +7,7 @@ interface ResultContract {
     interface View : BaseContract.View {
         fun showResult(competitions: List<CompetitionResult>) // TODO: Red_byte 2019-08-02 change to View model
 
-        fun showError(message: String?)
+        fun showError(message: String?, throwable: Throwable)
         fun showLoading()
     }
 

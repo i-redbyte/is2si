@@ -55,24 +55,12 @@ class ResultFragment :
                         Toast.LENGTH_LONG
                 )
                 .show()
-        if (competitions.isNotEmpty()) {
-            val first = competitions.first()
-            Toast
-                    .makeText(
-                            requireContext(),
-                            "Первый эл-т: id = ${first.id}, name= ${first.idCompetition.nameCompetition}",
-                            Toast.LENGTH_LONG
-                    )
-                    .show()
-
-        }
     }
 
     override fun showLoading() = stateSwitcher.switchToLoading()
 
-    override fun showError(message: String?) = stateSwitcher.switchToError(message) {
-        stateSwitcher.switchToMain()
-    }
+    override fun showError(message: String?, throwable: Throwable) =
+            stateSwitcher.switchToError(message, throwable) { stateSwitcher.switchToMain() }
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 

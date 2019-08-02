@@ -17,7 +17,7 @@ class ResultPresenter @Inject constructor(
         disposables += getResult.execute(None())
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe({ view.showResult(it) }) { view.showError(it.message) }
+                .subscribe({ view.showResult(it) }) { view.showError(it.message, it) }
     }
 
 }

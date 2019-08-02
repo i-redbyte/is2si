@@ -1,11 +1,18 @@
 package ru.is2si.sisi.base.switcher
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.IdRes
 import kotlinx.android.synthetic.main.error_screen.view.*
 import ru.is2si.sisi.R
+import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.switcher.LoadingType.MAIN_YELLOW
 import ru.is2si.sisi.base.switcher.StateView.*
 
@@ -22,15 +29,16 @@ class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
         states[STATE_MAIN] = ViewInfo(0, mainView)
     }
 
-    fun switchToError(errorMessage: String?, listener: OnErrorListener) {
+    fun switchToError(errorMessage: String?, throwable: Throwable? = null, listener: OnErrorListener) {
         val errorView = layoutInflater.inflate(R.layout.error_screen, container, false)
         errorView.tvError.text = errorMessage
-            ?: mainView.context.getString(R.string.state_unknown_error)
+                ?: mainView.context.getString(R.string.state_unknown_error)
         errorView.btnRetry.setOnClickListener {
             listener.invoke()
         }
         addViewState(STATE_ERROR, errorView)
         switchToError()
+        if (throwable != null) buildStackTrace(errorView, throwable)
     }
 
     fun switchToLoading() = switchToLoading(MAIN_YELLOW)
@@ -72,7 +80,40 @@ class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
 
     private class ViewInfo(var layoutId: Int, var view: View?)
 
+    private fun buildStackTrace(error: View, throwable: Throwable) {
+        error.findViewById<View>(R.id.tvError)?.onClick {
+            error.findViewById<TextView>(R.id.tvError)?.apply {
+                text = if (throwable.cause == null) {
+                    throwable.message
+                } else {
+                    throwable.message + "\n" + throwable.cause?.message
+                }
+                onClick {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+                    val text = StringBuilder()
+                            .appendln("Error message:")
+                            .appendln(throwable.message)
+                            .appendln("Error stack:")
+                            .appendln(Log.getStackTraceString(throwable))
+                            .apply {
+                                if (throwable.cause != null) {
+                                    appendln("\nCause Error:")
+                                    appendln("Error message:")
+                                    appendln(throwable.cause?.message)
+                                    appendln("Error stack:")
+                                    appendln(Log.getStackTraceString(throwable.cause))
+                                }
+                            }
+                    val clip = ClipData.newPlainText("Error Stack", text)
+                    clipboard?.primaryClip = clip
+                    Toast.makeText(context, "Error info copied!", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        }
+    }
 }
+
 
 private enum class StateView {
     STATE_MAIN,

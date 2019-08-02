@@ -20,6 +20,6 @@ fun IdTeamResponse.toIdTeam() = IdTeam(
         id = id,
         teamIsActive = teamIsActive,
         teamName = teamName,
-        teamOwner = teamOwner,
-        teamTerritory = teamTerritory
+        teamOwner = teamOwner ?: "",
+        teamTerritory = teamTerritory ?: ""
 )

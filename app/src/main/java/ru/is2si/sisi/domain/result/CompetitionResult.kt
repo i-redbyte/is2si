@@ -6,7 +6,7 @@ class CompetitionResult(
         val disciplina: Disciplina?,
         val group: String,
         val idCompetition: IdCompetition,
-        val idTeam: IdTeam,
+        val idTeam: IdTeam?,
         val isRemovalEntry: Boolean,
         val klassDistancii: String,
         val penaltyBally: String,
