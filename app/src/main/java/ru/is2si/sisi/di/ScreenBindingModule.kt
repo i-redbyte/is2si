@@ -7,6 +7,7 @@ import ru.is2si.sisi.presentation.auth.AuthFragment
 import ru.is2si.sisi.presentation.main.MainFragment
 import ru.is2si.sisi.presentation.points.PointsFragment
 import ru.is2si.sisi.presentation.result.ResultFragment
+import ru.is2si.sisi.presentation.settings.SettingsFragment
 import ru.is2si.sisi.presentation.team.TeamFragment
 
 @Module
@@ -31,4 +32,8 @@ interface ScreenBindingModule {
     @PerScreen
     @ContributesAndroidInjector(modules = [ResultModule::class])
     fun bindResult(): ResultFragment
+
+    @PerScreen
+    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    fun bindSettings(): SettingsFragment
 }
