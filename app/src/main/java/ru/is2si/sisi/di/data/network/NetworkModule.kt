@@ -1,41 +1,43 @@
 package ru.is2si.sisi.di.data.network
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.is2si.sisi.BuildConfig
+import ru.is2si.sisi.base.network.BaseUrlInterceptor
+import ru.is2si.sisi.base.network.NetworkSettings
+import ru.is2si.sisi.data.auth.AuthApi
+import ru.is2si.sisi.data.auth.ServerUrlHolder
 import ru.is2si.sisi.data.network.Network
-import ru.is2si.sisi.di.data.auth.AuthApi
+import ru.is2si.sisi.data.result.ResultApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
-    private val BASE_URL = "http://192.168.1.10:4000/"
-
-    @Singleton
-    @Provides
-    fun provideInterceptor(): Interceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: Interceptor): OkHttpClient {
+    fun provideOkHttpClient(
+            networkSettings: NetworkSettings,
+            serverUrlHolder: ServerUrlHolder
+    ): OkHttpClient {
+        val logInterceptor = if (networkSettings.logRequests)
+            HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+        else
+            null
         return OkHttpClient.Builder()
-                .addInterceptor(HeadersInterceptor())
-                .apply {
-                    if (BuildConfig.DEBUG) addInterceptor(interceptor)
-                }
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(BaseUrlInterceptor(serverUrlHolder))
+                .apply { logInterceptor?.let { addNetworkInterceptor(it) } }
+                .connectTimeout(networkSettings.connectionTimeout, TimeUnit.SECONDS)
+                .readTimeout(networkSettings.readTimeout, TimeUnit.SECONDS)
                 .build()
     }
 
@@ -45,9 +47,13 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    fun provideRetrofit(
+            networkSettings: NetworkSettings,
+            okHttpClient: OkHttpClient,
+            gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(networkSettings.baseUrl)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -56,10 +62,26 @@ class NetworkModule {
 
     @Singleton
     @Provides
+    fun provideServerUrlHolder(
+            sharedPreferences: SharedPreferences,
+            networkSettings: NetworkSettings
+    ): ServerUrlHolder = ServerUrlHolder(sharedPreferences, networkSettings.baseUrl)
+
+    @Singleton
+    @Provides
+    fun provideNetworkettings(): NetworkSettings = NetworkSettingsFactory.create()
+
+    @Singleton
+    @Provides
     fun provideNetwork(context: Context, gson: Gson): Network = Network(context, gson)
 
+    // TODO: Red_byte 2019-08-02 extract to ApiModule
     @Provides
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideResultApi(retrofit: Retrofit): ResultApi = retrofit.create(ResultApi::class.java)
 
 }

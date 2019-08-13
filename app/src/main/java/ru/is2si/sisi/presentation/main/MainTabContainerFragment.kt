@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import ru.is2si.sisi.base.navigation.TabContainerFragment
 import ru.is2si.sisi.presentation.main.Tab.*
 import ru.is2si.sisi.presentation.points.PointsFragment
+import ru.is2si.sisi.presentation.result.ResultFragment
 import ru.is2si.sisi.presentation.team.TeamFragment
 
 class MainTabContainerFragment : TabContainerFragment() {
@@ -13,7 +14,7 @@ class MainTabContainerFragment : TabContainerFragment() {
         POINTS -> PointsFragment.newInstance()
         FINISH -> Fragment()
         FILES -> Fragment()
-        RESULT_TABLES -> Fragment()
+        RESULT_TABLES -> ResultFragment.newInstance()
     }
 
     companion object {
