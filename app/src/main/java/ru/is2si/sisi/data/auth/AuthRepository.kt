@@ -9,8 +9,8 @@ import ru.is2si.sisi.base.extension.commit
 import ru.is2si.sisi.data.network.Network
 import ru.is2si.sisi.data.result.toCompetitionResult
 import ru.is2si.sisi.domain.auth.AuthDataSource
-import ru.is2si.sisi.domain.result.CompetitionResultExpr
 import ru.is2si.sisi.domain.result.CompetitionResult
+import ru.is2si.sisi.domain.result.CompetitionResultExpr
 import ru.is2si.sisi.domain.result.EmptyCompetitionResult
 import javax.inject.Inject
 
@@ -24,8 +24,8 @@ class AuthRepository @Inject constructor(
 
     override fun authTeam(pin: String): Single<CompetitionResult> =
             network.prepareRequest(authApi.authTeam(pin))
-            .map { it.toCompetitionResult() }
-            .doOnSuccess(::saveTeam)
+                    .map { it.toCompetitionResult() }
+                    .doOnSuccess(::saveTeam)
 
     override fun setServerUrl(url: String): Completable =
             Completable.fromAction { serverUrlHolder.serverUrl = url }
@@ -42,6 +42,10 @@ class AuthRepository @Inject constructor(
 
     override fun saveTeam(team: CompetitionResultExpr) {
         sharedPreferences.commit { putString(CURRENT_TEAM, gson.toJson(team)) }
+    }
+
+    override fun logout(): Completable = Completable.fromAction {
+        sharedPreferences.commit { clear() }
     }
 
     companion object {

@@ -33,6 +33,7 @@
     <string name="team.penalty_points">Штрафные баллы за каждые 10 минут в т.ч. не полных сверх нормального времени</string>
     <string name="team.technical_details">Технические данные:</string>
     <string name="team_phone_requested">Для звонка по экстренному номеру необходимо предоставить доступ к выполнению вызовов</string>
+    <string name="team.logout">Выход</string>
 
     <string name="points.title">Точки</string>
     <string name="points.add">Добавить</string>
