@@ -45,7 +45,7 @@ class AuthRepository @Inject constructor(
     }
 
     override fun logout(): Completable = Completable.fromAction {
-        sharedPreferences.commit { clear() }
+        sharedPreferences.commit { remove(CURRENT_TEAM) }
     }
 
     companion object {

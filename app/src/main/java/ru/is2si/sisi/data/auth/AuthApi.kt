@@ -6,6 +6,6 @@ import retrofit2.http.Query
 import ru.is2si.sisi.data.result.CompetitionResultResponse
 
 interface AuthApi {
-    @GET("Api/TeamEntryAuthPin")
+    @GET("Api/TeamEntryAuthPin/")
     fun authTeam(@Query("Pin") pin: String): Single<CompetitionResultResponse>
 }
