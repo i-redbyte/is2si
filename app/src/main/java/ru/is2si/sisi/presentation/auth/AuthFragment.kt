@@ -73,9 +73,10 @@ class AuthFragment :
 
     override fun showLoading() = stateSwitcher.switchToLoading()
 
-    override fun showError(message: String?) = stateSwitcher.switchToError(message) {
-        stateSwitcher.switchToMain()
-    }
+    override fun showError(message: String?, throwable: Throwable) =
+            stateSwitcher.switchToError(message, throwable) {
+                stateSwitcher.switchToMain()
+            }
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 

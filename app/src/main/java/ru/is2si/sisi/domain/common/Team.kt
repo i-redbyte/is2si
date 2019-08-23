@@ -1,6 +1,6 @@
-package ru.is2si.sisi.domain.result
+package ru.is2si.sisi.domain.common
 
-class IdTeam(
+class Team(
         val id: Int,
         val teamIsActive: Boolean,
         val teamName: String,

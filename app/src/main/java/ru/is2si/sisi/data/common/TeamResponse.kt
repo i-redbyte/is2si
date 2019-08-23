@@ -1,9 +1,9 @@
-package ru.is2si.sisi.data.result
+package ru.is2si.sisi.data.common
 
 import com.google.gson.annotations.SerializedName
-import ru.is2si.sisi.domain.result.IdTeam
+import ru.is2si.sisi.domain.common.Team
 
-class IdTeamResponse(
+class TeamResponse(
         @SerializedName("id")
         val id: Int,
         @SerializedName("TeamIs_Active")
@@ -16,7 +16,7 @@ class IdTeamResponse(
         val teamTerritory: String?
 )
 
-fun IdTeamResponse.toIdTeam() = IdTeam(
+fun TeamResponse.toTeam() = Team(
         id = id,
         teamIsActive = teamIsActive,
         teamName = teamName,

@@ -5,18 +5,21 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.fragment_team.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
+import ru.is2si.sisi.base.DebounceMenuSelectListener
+import ru.is2si.sisi.base.MenuSelectCallback
 import ru.is2si.sisi.base.extension.*
 import ru.is2si.sisi.base.extension.AfterRequestPermissionsResult.Granted
 import ru.is2si.sisi.base.extension.AfterRequestPermissionsResult.NeverAskAgain
 import ru.is2si.sisi.base.extension.BeforeRequestPermissionResult.*
+import ru.is2si.sisi.base.navigation.Navigator
+import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
+import ru.is2si.sisi.presentation.auth.AuthFragment
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelText
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelable
@@ -24,15 +27,19 @@ import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Compani
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withOkText
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.ControlResult.OK
+import ru.is2si.sisi.presentation.main.NavigationActivity
 import ru.is2si.sisi.presentation.model.TeamView
 import javax.inject.Inject
 
 class TeamFragment :
-    ActionBarFragment<TeamContract.Presenter>(),
-    TeamContract.View {
+        ActionBarFragment<TeamContract.Presenter>(),
+        NavigatorProvider,
+        MenuSelectCallback,
+        TeamContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
+    private val menuSelectListener = DebounceMenuSelectListener(callBack = this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +47,9 @@ class TeamFragment :
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_team, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,9 +92,9 @@ class TeamFragment :
             AlreadyGranted -> presenter.onPhoneClick()
             ShowRationale -> {
                 beforeRequestPermissions(
-                    REQUEST_PHONE,
-                    true,
-                    CALL_PHONE
+                        REQUEST_PHONE,
+                        true,
+                        CALL_PHONE
                 )
             }
             Requested -> Unit
@@ -95,9 +102,9 @@ class TeamFragment :
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
     ) {
         when (afterRequestPermissions(permissions, grantResults)) {
             Granted -> {
@@ -105,14 +112,34 @@ class TeamFragment :
             }
             NeverAskAgain -> {
                 AlertBottomSheetFragment()
-                    .withMessage(getString(R.string.team_phone_requested))
-                    .withOkText(getString(R.string.dialog_settings))
-                    .withCancelText(getString(R.string.dialog_cancel))
-                    .withCancelable(false)
-                    .withTarget(this, REQUEST_PHONE_PERMISSION)
-                    .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
+                        .withMessage(getString(R.string.team_phone_requested))
+                        .withOkText(getString(R.string.dialog_settings))
+                        .withCancelText(getString(R.string.dialog_cancel))
+                        .withCancelable(false)
+                        .withTarget(this, REQUEST_PHONE_PERMISSION)
+                        .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
             }
         }
+    }
+
+    override fun goToMain() {
+        getNavigator().fragmentReplace(AuthFragment.newInstance())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_logout, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+            menuSelectListener.onSelected(item) or super.onOptionsItemSelected(item)
+
+    override fun onMenuSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_logout -> {
+            presenter.logout()
+            true
+        }
+        else -> false
     }
 
     override fun showLoading() = stateSwitcher.switchToLoading()
@@ -120,6 +147,8 @@ class TeamFragment :
     override fun showError(message: String?) = stateSwitcher.switchToError(message) {
         stateSwitcher.switchToMain()
     }
+
+    override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 

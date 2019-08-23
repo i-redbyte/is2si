@@ -1,9 +1,9 @@
-package ru.is2si.sisi.data.result
+package ru.is2si.sisi.data.common
 
 import com.google.gson.annotations.SerializedName
-import ru.is2si.sisi.domain.result.IdCompetition
+import ru.is2si.sisi.domain.common.Competition
 
-class IdCompetitionResponse(
+class CompetitionResponse(
         @SerializedName("DataBegin")
         val dataBegin: String,
         @SerializedName("DataEnd")
@@ -30,7 +30,7 @@ class IdCompetitionResponse(
         val venue: String
 )
 
-fun IdCompetitionResponse.toIdCompetition() = IdCompetition(
+fun CompetitionResponse.toCompetition() = Competition(
         dataBegin = dataBegin,
         dataEnd = dataEnd,
         defaultCompetition = defaultCompetition,

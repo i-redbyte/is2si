@@ -1,28 +1,33 @@
 package ru.is2si.sisi.presentation.auth
 
-import io.reactivex.Single
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.rx.RxSchedulers
-import java.lang.RuntimeException
+import ru.is2si.sisi.domain.UseCase.None
+import ru.is2si.sisi.domain.auth.AuthTeam
+import ru.is2si.sisi.domain.auth.AuthTeam.Param
+import ru.is2si.sisi.domain.auth.GetSaveTeam
+import ru.is2si.sisi.domain.result.EmptyCompetitionResult
 import javax.inject.Inject
 
 class AuthPresenter @Inject constructor(
-        private val rxSchedulers: RxSchedulers
+        private val rxSchedulers: RxSchedulers,
+        private val authTeam: AuthTeam,
+        private val getSaveTeam: GetSaveTeam
 ) : BasePresenter<AuthContract.View>(), AuthContract.Presenter {
-    override fun start() {
 
+    override fun start() {
+        disposables += getSaveTeam.execute(None())
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    if (it !is EmptyCompetitionResult) view.gotoTeamScreen()
+                }) { view.showError(it.message, it) }
     }
 
     override fun authForPinCode(pinCode: String) {
-        disposables += Single.just(pinCode)
-                .map {
-                    if (it == "123")
-                        it
-                    else
-                        throw RuntimeException("Неверный пароль")
-                }
+        disposables += authTeam.execute(Param(pinCode))
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe({view.gotoTeamScreen()}){view.showError(it.message)}
+                .subscribe({ view.gotoTeamScreen() }) { view.showError(it.message, it) }
     }
 }

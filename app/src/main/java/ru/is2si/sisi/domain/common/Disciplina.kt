@@ -1,4 +1,4 @@
-package ru.is2si.sisi.domain.result
+package ru.is2si.sisi.domain.common
 
 class Disciplina(
         val codeDiscipline: String,
