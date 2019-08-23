@@ -28,6 +28,7 @@ import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Compani
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.ControlResult.OK
 import ru.is2si.sisi.presentation.main.NavigationActivity
+import ru.is2si.sisi.presentation.model.CompetitionResultView
 import ru.is2si.sisi.presentation.model.TeamView
 import javax.inject.Inject
 
@@ -70,14 +71,13 @@ class TeamFragment :
         vPhone.onClick { checkPhonePermissions() }
     }
 
-    override fun setTeam(team: TeamView) {
-        // TODO: RB 2019-06-23 change for actual data
-        tvTeamName.text = team.teamName
-        tvStartName.text = "1500 км за 10 часов"
-        tvFinishTimeLimit.text = "16:46:01"
-        tvMaxNormalFinishTime.text = "10:00:00"
-        tvPenaltyPoints.text = "0.35"
-        tvTechnicalDetails.text = "Тут будет техническая информация"
+    override fun setTeam(team: CompetitionResultView) {
+        tvTeamName.text = team.team?.teamName?:""
+        tvStartName.text = team.competition?.nameCompetition
+        tvFinishTimeLimit.text = team.competition?.dataBegin
+        tvMaxNormalFinishTime.text = team.competition?.dataEnd
+        tvPenaltyPoints.text = team.penaltyBally
+        tvTechnicalDetails.text = team.competition?.organizingAuthority
     }
 
     override fun phoneCall() {
