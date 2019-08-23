@@ -1,5 +1,7 @@
 package ru.is2si.sisi.di.data
 
+import android.content.SharedPreferences
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import ru.is2si.sisi.data.auth.AuthApi
@@ -20,8 +22,11 @@ class DataSourceModule {
     fun provideAuthDataSource(
             authApi: AuthApi,
             urlHolder: ServerUrlHolder,
-            network: Network
-    ): AuthDataSource = AuthRepository(authApi, urlHolder, network)
+            network: Network,
+            sharedPreferences: SharedPreferences,
+            gson: Gson
+
+    ): AuthDataSource = AuthRepository(authApi, urlHolder, network, sharedPreferences, gson)
 
     @Provides
     @Singleton

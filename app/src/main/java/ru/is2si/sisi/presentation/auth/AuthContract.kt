@@ -6,7 +6,7 @@ interface AuthContract {
     interface View : BaseContract.View {
         fun gotoTeamScreen()
         fun showLoading()
-        fun showError(message: String?)
+        fun showError(message: String?, throwable: Throwable)
     }
 
     interface Presenter : BaseContract.Presenter {

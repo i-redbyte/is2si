@@ -1,6 +1,6 @@
-package ru.is2si.sisi.domain.result
+package ru.is2si.sisi.domain.common
 
-class IdCompetition(
+class Competition(
         val dataBegin: String,
         val dataEnd: String,
         val defaultCompetition: Boolean,
