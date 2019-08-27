@@ -19,7 +19,8 @@ class CompetitionView(
         val nameLittel: String,
         val organizingAuthority: String,
         val resultAsFileTo: Boolean,
-        val venue: String
+        val venue: String,
+        val emergencyPhone: String
 ) : Parcelable
 
 fun Competition.asView() = CompetitionView(
@@ -35,6 +36,7 @@ fun Competition.asView() = CompetitionView(
         nameLittel = nameLittel,
         organizingAuthority = organizingAuthority,
         resultAsFileTo = resultAsFileTo,
-        venue = venue
+        venue = venue,
+        emergencyPhone = emergencyPhone
 )
 

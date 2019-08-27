@@ -15,5 +15,6 @@ class Competition(
         val nameLittel: String,
         val organizingAuthority: String,
         val resultAsFileTo: Boolean,
-        val venue: String
+        val venue: String,
+        val emergencyPhone:String
 )

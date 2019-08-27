@@ -16,6 +16,7 @@ import ru.is2si.sisi.base.network.NetworkSettings
 import ru.is2si.sisi.data.auth.AuthApi
 import ru.is2si.sisi.data.auth.ServerUrlHolder
 import ru.is2si.sisi.data.network.Network
+import ru.is2si.sisi.data.points.PointApi
 import ru.is2si.sisi.data.result.ResultApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -83,5 +84,9 @@ internal class NetworkModule {
     @Provides
     @Singleton
     fun provideResultApi(retrofit: Retrofit): ResultApi = retrofit.create(ResultApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providePointApi(retrofit: Retrofit): PointApi = retrofit.create(PointApi::class.java)
 
 }

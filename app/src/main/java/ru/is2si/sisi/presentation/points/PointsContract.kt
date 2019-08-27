@@ -7,17 +7,17 @@ interface PointsContract {
     interface View : BaseContract.View {
         fun showPoints(points: List<PointView>)
         fun showSummaryBalls(points: List<PointView>)
-        fun showPointsByRemove(position:Int)
+        fun showPointsByRemove(position: Int)
 
         fun showLoading()
         fun showError(message: String?)
+        fun showSnack(message: String?)
+        fun showMain()
     }
 
     interface Presenter : BaseContract.Presenter {
-        val points:MutableList<PointView>
-
         fun getPoints()
-        fun addPoint(pointName: Int)
-        fun removePoint(position: Int)
+        fun addPoint(pointName: String)
+        fun removePoint(point: PointView, position: Int)
     }
 }

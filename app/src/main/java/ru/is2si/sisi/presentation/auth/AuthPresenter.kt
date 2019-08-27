@@ -16,18 +16,26 @@ class AuthPresenter @Inject constructor(
 ) : BasePresenter<AuthContract.View>(), AuthContract.Presenter {
 
     override fun start() {
+        view.showLoading()
         disposables += getSaveTeam.execute(None())
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({
                     if (it !is EmptyCompetitionResult) view.gotoTeamScreen()
+                    view.showMain()
                 }) { view.showError(it.message, it) }
     }
 
     override fun authForPinCode(pinCode: String) {
+        view.showLoading()
         disposables += authTeam.execute(Param(pinCode))
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe({ view.gotoTeamScreen() }) { view.showError(it.message, it) }
+                .subscribe({
+                    view.showMain()
+                    view.gotoTeamScreen()
+                }) {
+                    view.showError(it.message, it)
+                }
     }
 }

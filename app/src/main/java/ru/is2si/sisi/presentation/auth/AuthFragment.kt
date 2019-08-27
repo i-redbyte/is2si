@@ -41,8 +41,8 @@ class AuthFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews()
         presenter.start()
+        setupViews()
     }
 
     private fun setupViews() {
@@ -77,6 +77,9 @@ class AuthFragment :
             stateSwitcher.switchToError(message, throwable) {
                 stateSwitcher.switchToMain()
             }
+
+    override fun showMain() =
+        stateSwitcher.switchToMain()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 

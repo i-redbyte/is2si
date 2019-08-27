@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_points.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.DelegationAdapter
+import ru.is2si.sisi.base.extension.hideKeyboard
 import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.extension.setActionBar
 import ru.is2si.sisi.base.navigation.Navigator
@@ -51,8 +53,9 @@ class PointsFragment :
         btnAdd.onClick {
             val name = tietPoint.text.toString()
             if (name.isNotEmpty()) {
-                presenter.addPoint(name.toInt())
+                presenter.addPoint(name)
                 tietPoint.text?.clear()
+                requireActivity().hideKeyboard(tietPoint)
             }
         }
     }
@@ -61,7 +64,8 @@ class PointsFragment :
         adapter = DelegationAdapter()
         rvPoints.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         val policyDelegate = PointDelegate(requireContext()) {
-            presenter.removePoint(it)
+            val point = adapter.items[it] as PointView
+            presenter.removePoint(point, it)
         }
         adapter.delegatesManager
                 .addDelegate(policyDelegate)
@@ -79,7 +83,7 @@ class PointsFragment :
     }
 
     override fun showSummaryBalls(points: List<PointView>) {
-        val sum = points.sumBy { it.value }
+        val sum = points.sumBy { it.pointBall }
         tvSummary.text = sum.toString()
     }
 
@@ -89,6 +93,9 @@ class PointsFragment :
         stateSwitcher.switchToMain()
     }
 
+    override fun showMain() =
+            stateSwitcher.switchToMain()
+
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
     override fun setupActionBar() = setActionBar(findToolbar()) {
@@ -96,9 +103,21 @@ class PointsFragment :
         setDisplayHomeAsUpEnabled(false)
     }
 
-    override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden)
+            requireActivity().hideKeyboard(tietPoint)
+    }
+
+    override fun getNavigator(): Navigator =
+            (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
         fun newInstance(): PointsFragment = PointsFragment()
     }
+
+    override fun showSnack(message: String?) {
+        Snackbar.make(requireView(), message as CharSequence, Snackbar.LENGTH_LONG).show()
+    }
+
 }

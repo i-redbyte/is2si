@@ -44,8 +44,8 @@ class PointDelegate(
         val ivClose: ImageView = requireViewById(itemView, R.id.ivClose)
 
         fun bind(item: PointView) {
-            tvPointName.text = item.name.toString()
-            tvPointValue.text = item.value.toString()
+            tvPointName.text = item.pointNameStr
+            tvPointValue.text = item.pointBall.toString()
         }
     }
 
