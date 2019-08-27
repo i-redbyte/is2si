@@ -1,5 +1,6 @@
 package ru.is2si.sisi.presentation.auth
 
+import android.util.Log
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.rx.RxSchedulers
 import ru.is2si.sisi.domain.UseCase.None
@@ -28,6 +29,8 @@ class AuthPresenter @Inject constructor(
         disposables += authTeam.execute(Param(pinCode))
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe({ view.gotoTeamScreen() }) { view.showError(it.message, it) }
+                .subscribe({ view.gotoTeamScreen() }) {
+                    Log.e("_debug","Error:",it)
+                    view.showError(it.message, it) }
     }
 }

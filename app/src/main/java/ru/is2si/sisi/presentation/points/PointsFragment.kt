@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +52,7 @@ class PointsFragment :
         btnAdd.onClick {
             val name = tietPoint.text.toString()
             if (name.isNotEmpty()) {
-                presenter.addPoint(name.toInt())
+                presenter.addPoint(name)
                 tietPoint.text?.clear()
             }
         }
@@ -61,7 +62,8 @@ class PointsFragment :
         adapter = DelegationAdapter()
         rvPoints.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         val policyDelegate = PointDelegate(requireContext()) {
-            presenter.removePoint(it)
+            val point = adapter.items[it] as PointView
+            presenter.removePoint(point, it)
         }
         adapter.delegatesManager
                 .addDelegate(policyDelegate)
@@ -79,7 +81,7 @@ class PointsFragment :
     }
 
     override fun showSummaryBalls(points: List<PointView>) {
-        val sum = points.sumBy { it.value }
+        val sum = points.sumBy { it.pointBall }
         tvSummary.text = sum.toString()
     }
 
@@ -101,4 +103,9 @@ class PointsFragment :
     companion object {
         fun newInstance(): PointsFragment = PointsFragment()
     }
+
+    override fun showToast(message: String?) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
 }

@@ -1,7 +1,6 @@
 package ru.is2si.sisi.data.result
 
 import com.google.gson.annotations.SerializedName
-import org.threeten.bp.OffsetDateTime
 import ru.is2si.sisi.base.extension.toLocalDateTimeOrNull
 import ru.is2si.sisi.data.common.*
 import ru.is2si.sisi.domain.result.CompetitionResult

@@ -30,7 +30,9 @@ class CompetitionResponse(
         @SerializedName("ResultAsFileTo")
         val resultAsFileTo: Boolean,
         @SerializedName("Venue")
-        val venue: String
+        val venue: String,
+        @SerializedName("TelOrga")
+        val emergencyPhone: String?
 )
 
 fun CompetitionResponse.toCompetition() = Competition(
@@ -46,5 +48,6 @@ fun CompetitionResponse.toCompetition() = Competition(
         nameLittel = nameLittel,
         organizingAuthority = organizingAuthority,
         resultAsFileTo = resultAsFileTo,
-        venue = venue
+        venue = venue,
+        emergencyPhone = emergencyPhone ?: ""
 )

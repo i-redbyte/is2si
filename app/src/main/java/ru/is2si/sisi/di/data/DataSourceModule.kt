@@ -8,9 +8,12 @@ import ru.is2si.sisi.data.auth.AuthApi
 import ru.is2si.sisi.data.auth.AuthRepository
 import ru.is2si.sisi.data.auth.ServerUrlHolder
 import ru.is2si.sisi.data.network.Network
+import ru.is2si.sisi.data.points.PointApi
+import ru.is2si.sisi.data.points.PointRepository
 import ru.is2si.sisi.data.result.ResultApi
 import ru.is2si.sisi.data.result.ResultRepository
 import ru.is2si.sisi.domain.auth.AuthDataSource
+import ru.is2si.sisi.domain.points.PointDataSource
 import ru.is2si.sisi.domain.result.ResultDataSource
 import javax.inject.Singleton
 
@@ -34,6 +37,20 @@ class DataSourceModule {
             resultApi: ResultApi,
             network: Network
     ): ResultDataSource = ResultRepository(resultApi, network)
+
+    @Provides
+    @Singleton
+    fun providePointDataSource(
+            pointApi: PointApi,
+            sharedPreferences: SharedPreferences,
+            gson: Gson,
+            network: Network
+    ): PointDataSource = PointRepository(
+            network = network,
+            pointApi = pointApi,
+            sharedPreferences = sharedPreferences,
+            gson = gson
+    )
 
 
 }
