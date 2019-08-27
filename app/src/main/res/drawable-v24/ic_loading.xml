@@ -23,7 +23,7 @@
             android:fillType="evenOdd"
             android:pathData="M24,13C24,19.0751 19.0751,24 13,24"
             android:strokeWidth="2.53846154"
-            android:strokeColor="#FFCC00"
+            android:strokeColor="#4CBD1A"
             />
     </vector>
 </rotate>

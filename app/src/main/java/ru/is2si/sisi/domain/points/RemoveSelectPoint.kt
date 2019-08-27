@@ -1,14 +1,15 @@
 package ru.is2si.sisi.domain.points
 
-import io.reactivex.Completable
-import ru.is2si.sisi.domain.CompletableUseCase
+import io.reactivex.Single
+import ru.is2si.sisi.domain.SingleUseCase
 import javax.inject.Inject
 
 class RemoveSelectPoint @Inject constructor(
-        private val pointDataSource: PointDataSource
-) : CompletableUseCase<RemoveSelectPoint.Param>() {
+    private val pointDataSource: PointDataSource
+) : SingleUseCase<List<Point>, RemoveSelectPoint.Param>() {
 
-    override fun execute(params: Param): Completable = pointDataSource.removeSelectPoint(params.point)
+    override fun execute(params: Param): Single<List<Point>> =
+        pointDataSource.removeSelectPoint(params.point)
 
     class Param(val point: Point)
 }

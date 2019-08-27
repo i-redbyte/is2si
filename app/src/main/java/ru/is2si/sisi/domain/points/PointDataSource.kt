@@ -10,11 +10,11 @@ interface PointDataSource {
 
     fun getAllSavePoints(): Single<List<Point>>
 
-    fun saveSelectPoint(point: Point): Completable
+    fun saveSelectPoint(point: Point): Single<List<Point>>
 
     fun getSelectPoints(): Single<List<Point>>
 
-    fun removeSelectPoint(point: Point): Completable
+    fun removeSelectPoint(point: Point): Single<List<Point>>
 
     fun clearAllPoints(): Completable
 }

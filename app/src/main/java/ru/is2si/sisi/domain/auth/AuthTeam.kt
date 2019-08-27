@@ -7,16 +7,17 @@ import ru.is2si.sisi.domain.result.CompetitionResult
 import javax.inject.Inject
 
 class AuthTeam @Inject constructor(
-        private val authDataSource: AuthDataSource,
-        private val pointDataSource: PointDataSource
+    private val authDataSource: AuthDataSource,
+    private val pointDataSource: PointDataSource
 ) : SingleUseCase<CompetitionResult, AuthTeam.Param>() {
     private val NO_ID = -1
     override fun execute(params: Param): Single<CompetitionResult> =
-            authDataSource.authTeam(params.pin)
-                    .flatMap {
-                        pointDataSource.getPoints(it.competition?.id ?: NO_ID)
-                        Single.just(it)
-                    }
+        authDataSource.authTeam(params.pin)
+            .flatMap {
+                val result = it
+                pointDataSource.getPoints(it.competition?.id ?: NO_ID)
+                    .flatMap { Single.just(result) }
+            }
 
 
     class Param(val pin: String)

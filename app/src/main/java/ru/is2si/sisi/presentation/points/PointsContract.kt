@@ -11,12 +11,11 @@ interface PointsContract {
 
         fun showLoading()
         fun showError(message: String?)
-        fun showToast(message: String?)
+        fun showSnack(message: String?)
+        fun showMain()
     }
 
     interface Presenter : BaseContract.Presenter {
-        val points: MutableList<PointView>
-
         fun getPoints()
         fun addPoint(pointName: String)
         fun removePoint(point: PointView, position: Int)

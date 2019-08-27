@@ -45,7 +45,7 @@ class PointDelegate(
 
         fun bind(item: PointView) {
             tvPointName.text = item.pointNameStr
-            tvPointValue.text = item.pointBall1
+            tvPointValue.text = item.pointBall.toString()
         }
     }
 

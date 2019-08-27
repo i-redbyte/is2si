@@ -10,22 +10,23 @@ import ru.is2si.sisi.base.extension.typeTokenOf
 import ru.is2si.sisi.data.network.Network
 import ru.is2si.sisi.domain.points.Point
 import ru.is2si.sisi.domain.points.PointDataSource
+import java.lang.RuntimeException
 import java.lang.reflect.Type
 import javax.inject.Inject
 
 class PointRepository @Inject constructor(
-        private val pointApi: PointApi,
-        private val network: Network,
-        private val sharedPreferences: SharedPreferences,
-        private val gson: Gson
+    private val pointApi: PointApi,
+    private val network: Network,
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson
 ) : PointDataSource {
 
     private val pointsTypeToken: Type by lazy { typeTokenOf<List<Point>>() }
 
     override fun getPoints(competitionId: Int): Single<List<Point>> =
-            network.prepareRequest(pointApi.getPoints(competitionId))
-                    .map { it.map { pointResponse -> pointResponse.toPoint() } }
-                    .doOnSuccess(::saveAllPoints)
+        network.prepareRequest(pointApi.getPoints(competitionId))
+            .map { it.map { pointResponse -> pointResponse.toPoint() } }
+            .doOnSuccess(::saveAllPoints)
 
     override fun saveAllPoints(points: List<Point>) {
         sharedPreferences.commit { putString(ALL_POINTS, gson.toJson(points)) }
@@ -36,21 +37,31 @@ class PointRepository @Inject constructor(
         return@fromCallable gson.fromJson(allPoints, pointsTypeToken) ?: listOf<Point>()
     }
 
-    override fun saveSelectPoint(point: Point): Completable = Completable.fromAction {
+    override fun saveSelectPoint(point: Point): Single<List<Point>> = Single.fromCallable {
         val points: MutableSet<Point> = getSelectPoint().toMutableSet()
-        points.add(point)
-        sharedPreferences.commit { putString(SELECT_POINTS, gson.toJson(points)) }
+        if (points.find { it.id == point.id } == null ) {
+            points.add(point)
+            sharedPreferences.commit { putString(SELECT_POINTS, gson.toJson(points)) }
+        }else{
+            throw RuntimeException("Точка уже добавлена!") // TODO: Red_byte 2019-08-28 change custom Exception
+        }
+        return@fromCallable points.toList()
     }
+
 
     override fun getSelectPoints(): Single<List<Point>> = Single.fromCallable {
         val points = sharedPreferences.getString(SELECT_POINTS, "")
         return@fromCallable gson.fromJson(points, pointsTypeToken) ?: listOf<Point>()
     }
 
-    override fun removeSelectPoint(point: Point): Completable = Completable.fromAction {
-        val points: MutableSet<Point> = getSelectPoint().toMutableSet()
-        points.remove(point)
-        saveSelectPoint(point)
+    override fun removeSelectPoint(point: Point): Single<List<Point>> = Single.fromCallable {
+        val points = mutableListOf<Point>()
+        getSelectPoint().forEach {
+            if (it.id != point.id)
+                points.add(it)
+        }
+        sharedPreferences.commit { putString(SELECT_POINTS, gson.toJson(points)) }
+        return@fromCallable points.toList()
     }
 
     override fun clearAllPoints(): Completable = Completable.fromAction {

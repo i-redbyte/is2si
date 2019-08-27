@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_points.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.DelegationAdapter
+import ru.is2si.sisi.base.extension.hideKeyboard
 import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.extension.setActionBar
 import ru.is2si.sisi.base.navigation.Navigator
@@ -22,9 +23,9 @@ import ru.is2si.sisi.presentation.model.PointView
 import javax.inject.Inject
 
 class PointsFragment :
-        ActionBarFragment<PointsContract.Presenter>(),
-        NavigatorProvider,
-        PointsContract.View {
+    ActionBarFragment<PointsContract.Presenter>(),
+    NavigatorProvider,
+    PointsContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
@@ -36,9 +37,9 @@ class PointsFragment :
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_points, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +55,7 @@ class PointsFragment :
             if (name.isNotEmpty()) {
                 presenter.addPoint(name)
                 tietPoint.text?.clear()
+                requireActivity().hideKeyboard(tietPoint)
             }
         }
     }
@@ -66,7 +68,7 @@ class PointsFragment :
             presenter.removePoint(point, it)
         }
         adapter.delegatesManager
-                .addDelegate(policyDelegate)
+            .addDelegate(policyDelegate)
         rvPoints.adapter = adapter
     }
 
@@ -91,6 +93,9 @@ class PointsFragment :
         stateSwitcher.switchToMain()
     }
 
+    override fun showMain() =
+        stateSwitcher.switchToMain()
+
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
     override fun setupActionBar() = setActionBar(findToolbar()) {
@@ -98,14 +103,21 @@ class PointsFragment :
         setDisplayHomeAsUpEnabled(false)
     }
 
-    override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden)
+            requireActivity().hideKeyboard(tietPoint)
+    }
+
+    override fun getNavigator(): Navigator =
+        (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
         fun newInstance(): PointsFragment = PointsFragment()
     }
 
-    override fun showToast(message: String?) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    override fun showSnack(message: String?) {
+        Snackbar.make(requireView(), message as CharSequence, Snackbar.LENGTH_LONG).show()
     }
 
 }
