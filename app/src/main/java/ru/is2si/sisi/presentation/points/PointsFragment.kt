@@ -23,9 +23,9 @@ import ru.is2si.sisi.presentation.model.PointView
 import javax.inject.Inject
 
 class PointsFragment :
-    ActionBarFragment<PointsContract.Presenter>(),
-    NavigatorProvider,
-    PointsContract.View {
+        ActionBarFragment<PointsContract.Presenter>(),
+        NavigatorProvider,
+        PointsContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
@@ -37,9 +37,9 @@ class PointsFragment :
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_points, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class PointsFragment :
             presenter.removePoint(point, it)
         }
         adapter.delegatesManager
-            .addDelegate(policyDelegate)
+                .addDelegate(policyDelegate)
         rvPoints.adapter = adapter
     }
 
@@ -94,7 +94,7 @@ class PointsFragment :
     }
 
     override fun showMain() =
-        stateSwitcher.switchToMain()
+            stateSwitcher.switchToMain()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
@@ -110,7 +110,7 @@ class PointsFragment :
     }
 
     override fun getNavigator(): Navigator =
-        (requireActivity() as NavigationActivity).getMainNavigator()
+            (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
         fun newInstance(): PointsFragment = PointsFragment()

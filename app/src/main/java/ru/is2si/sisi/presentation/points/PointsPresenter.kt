@@ -12,10 +12,10 @@ import ru.is2si.sisi.presentation.model.asView
 import javax.inject.Inject
 
 class PointsPresenter @Inject constructor(
-    private val rxSchedulers: RxSchedulers,
-    private val getSelectPoints: GetSelectPoints,
-    private val saveSelectPoint: SaveSelectPoint,
-    private val removeSelectPoint: RemoveSelectPoint
+        private val rxSchedulers: RxSchedulers,
+        private val getSelectPoints: GetSelectPoints,
+        private val saveSelectPoint: SaveSelectPoint,
+        private val removeSelectPoint: RemoveSelectPoint
 ) : BasePresenter<PointsContract.View>(), PointsContract.Presenter {
 
     override fun start() {
@@ -25,40 +25,40 @@ class PointsPresenter @Inject constructor(
     override fun getPoints() {
         view.showLoading()
         disposables += getSelectPoints.execute(None())
-            .map { it.map { selectPoint -> selectPoint.asView() } }
-            .subscribeOn(rxSchedulers.io)
-            .observeOn(rxSchedulers.ui)
-            .subscribe({
-                view.showMain()
-                view.showPoints(it)
-            }) { view.showError(it.message) }
+                .map { it.map { selectPoint -> selectPoint.asView() } }
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    view.showMain()
+                    view.showPoints(it)
+                }) { view.showError(it.message) }
     }
 
     override fun addPoint(pointName: String) {
         view.showLoading()
         disposables += saveSelectPoint.execute(SaveSelectPoint.Params(pointName.toInt()))
-            .map { it.map { point -> point.asView() } }
-            .subscribeOn(rxSchedulers.io)
-            .observeOn(rxSchedulers.ui)
-            .subscribe({
-                view.showMain()
-                view.showPoints(it)
-            }) {
-                view.showMain()
-                view.showSnack(it.message)
-            }
+                .map { it.map { point -> point.asView() } }
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    view.showMain()
+                    view.showPoints(it)
+                }) {
+                    view.showMain()
+                    view.showSnack(it.message)
+                }
     }
 
     override fun removePoint(point: PointView, position: Int) {
         view.showLoading()
         disposables += removeSelectPoint.execute(RemoveSelectPoint.Param(point.asDomain()))
-            .map { it.map { point -> point.asView() } }
-            .subscribeOn(rxSchedulers.io)
-            .observeOn(rxSchedulers.ui)
-            .subscribe({
-                view.showMain()
-                view.showPoints(it)
-            }) { view.showError(it.message) }
+                .map { it.map { point -> point.asView() } }
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    view.showMain()
+                    view.showPoints(it)
+                }) { view.showError(it.message) }
     }
 
 }

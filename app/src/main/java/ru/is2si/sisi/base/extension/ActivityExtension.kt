@@ -20,16 +20,16 @@ fun Activity?.hideKeyboard(view: View? = this?.currentFocus) {
 }
 
 inline fun AppCompatActivity.setActionBar(
-    toolbar: Toolbar?,
-    crossinline block: ActionBar.() -> Unit
+        toolbar: Toolbar?,
+        crossinline block: ActionBar.() -> Unit
 ) {
     setSupportActionBar(toolbar)
     supportActionBar?.block()
 }
 
 inline fun Fragment.setActionBar(
-    toolbar: Toolbar?,
-    crossinline block: ActionBar.() -> Unit
+        toolbar: Toolbar?,
+        crossinline block: ActionBar.() -> Unit
 ) = requireCompatActivity.setActionBar(toolbar, block)
 
 val Fragment.requireCompatActivity: AppCompatActivity
