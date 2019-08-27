@@ -1,13 +1,16 @@
 package ru.is2si.sisi.data.common
 
 import com.google.gson.annotations.SerializedName
+import ru.is2si.sisi.base.extension.toLocalDateTime
 import ru.is2si.sisi.domain.common.Competition
 
 class CompetitionResponse(
         @SerializedName("DataBegin")
         val dataBegin: String,
-        @SerializedName("DataEnd")
-        val dataEnd: String,
+        @SerializedName("DataEndNorm")
+        val dataEndNorm: String,
+        @SerializedName("DataEndMax")
+        val dataEndMax: String,
         @SerializedName("DefaultCompetition")
         val defaultCompetition: Boolean,
         @SerializedName("id")
@@ -31,8 +34,9 @@ class CompetitionResponse(
 )
 
 fun CompetitionResponse.toCompetition() = Competition(
-        dataBegin = dataBegin,
-        dataEnd = dataEnd,
+        dataBegin = dataBegin.toLocalDateTime(),
+        dataEndNorm = dataEndNorm.toLocalDateTime(),
+        dataEndMax = dataEndMax.toLocalDateTime(),
         defaultCompetition = defaultCompetition,
         id = id,
         isActive = isActive,

@@ -2,6 +2,7 @@ package ru.is2si.sisi.presentation.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.domain.result.CompetitionResult
 
 @Parcelize
@@ -18,21 +19,23 @@ class CompetitionResultView(
         val pinkod: String,
         val placeEntry: Int,
         val removalEntry: Int,
-        val resultBally: String
+        val resultBally: String,
+        val dataTimeFinish: LocalDateTime?
 ) : Parcelable
 
 fun CompetitionResult.asView() = CompetitionResultView(
         id = id,
         bally = bally,
         disciplina = disciplina?.asView(),
-        group = group ?: "",
+        group = group,
         competition = competition?.asView(),
         team = team?.asView(),
         isRemovalEntry = isRemovalEntry,
-        klassDistancii = klassDistancii ?: "",
+        klassDistancii = klassDistancii,
         penaltyBally = penaltyBally,
         pinkod = pinkod,
         placeEntry = placeEntry,
         removalEntry = removalEntry,
-        resultBally = resultBally
+        resultBally = resultBally,
+        dataTimeFinish = dataTimeFinish
 )

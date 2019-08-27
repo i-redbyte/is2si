@@ -1,8 +1,11 @@
 package ru.is2si.sisi.domain.common
 
+import org.threeten.bp.LocalDateTime
+
 class Competition(
-        val dataBegin: String,
-        val dataEnd: String,
+        val dataBegin: LocalDateTime,
+        val dataEndNorm: LocalDateTime,
+        val dataEndMax: LocalDateTime,
         val defaultCompetition: Boolean,
         val id: Int,
         val isActive: Boolean,

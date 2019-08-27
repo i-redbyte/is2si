@@ -1,37 +1,41 @@
 package ru.is2si.sisi.data.result
 
 import com.google.gson.annotations.SerializedName
+import org.threeten.bp.OffsetDateTime
+import ru.is2si.sisi.base.extension.toLocalDateTimeOrNull
 import ru.is2si.sisi.data.common.*
 import ru.is2si.sisi.domain.result.CompetitionResult
 
 // TODO: Red_byte 2019-08-02 Make internal class
 class CompetitionResultResponse(
-    @SerializedName("id")
+        @SerializedName("id")
         val id: Int,
-    @SerializedName("Bally")
+        @SerializedName("Bally")
         val bally: String,
-    @SerializedName("Disciplina")
+        @SerializedName("Disciplina")
         val disciplina: DisciplinaResponse?,
-    @SerializedName("Group")
+        @SerializedName("Group")
         val group: String?,
-    @SerializedName("Competition")
+        @SerializedName("Competition")
         val competition: CompetitionResponse?,
-    @SerializedName("IdTeam")
+        @SerializedName("Team")
         val team: TeamResponse?,
-    @SerializedName("isRemovalEntry")
+        @SerializedName("isRemovalEntry")
         val isRemovalEntry: Boolean,
-    @SerializedName("KlassDistancii")
+        @SerializedName("KlassDistancii")
         val klassDistancii: String?,
-    @SerializedName("PenaltyBally")
+        @SerializedName("PenaltyBally")
         val penaltyBally: String,
-    @SerializedName("Pinkod")
+        @SerializedName("Pinkod")
         val pinkod: String,
-    @SerializedName("PlaceEntry")
+        @SerializedName("PlaceEntry")
         val placeEntry: Int,
-    @SerializedName("RemovalEntry")
+        @SerializedName("RemovalEntry")
         val removalEntry: Int,
-    @SerializedName("ResultBally")
-        val resultBally: String
+        @SerializedName("ResultBally")
+        val resultBally: String,
+        @SerializedName("DataTimeFinish")
+        val dataTimeFinish: String?
 )
 
 fun CompetitionResultResponse.toCompetitionResult() = CompetitionResult(
@@ -47,5 +51,6 @@ fun CompetitionResultResponse.toCompetitionResult() = CompetitionResult(
         pinkod = pinkod,
         placeEntry = placeEntry,
         removalEntry = removalEntry,
-        resultBally = resultBally
+        resultBally = resultBally,
+        dataTimeFinish = dataTimeFinish.toLocalDateTimeOrNull()
 )

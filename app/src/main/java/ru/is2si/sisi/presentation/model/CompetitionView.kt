@@ -2,12 +2,14 @@ package ru.is2si.sisi.presentation.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.domain.common.Competition
 
 @Parcelize
 class CompetitionView(
-        val dataBegin: String,
-        val dataEnd: String,
+        val dataBegin: LocalDateTime,
+        val dataEndNorm: LocalDateTime,
+        val dataEndMax: LocalDateTime,
         val defaultCompetition: Boolean,
         val id: Int,
         val isActive: Boolean,
@@ -22,7 +24,8 @@ class CompetitionView(
 
 fun Competition.asView() = CompetitionView(
         dataBegin = dataBegin,
-        dataEnd = dataEnd,
+        dataEndNorm = dataEndNorm,
+        dataEndMax = dataEndMax,
         defaultCompetition = defaultCompetition,
         id = id,
         isActive = isActive,
@@ -34,3 +37,4 @@ fun Competition.asView() = CompetitionView(
         resultAsFileTo = resultAsFileTo,
         venue = venue
 )
+

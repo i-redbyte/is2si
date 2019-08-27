@@ -74,8 +74,8 @@ class TeamFragment :
     override fun setTeam(team: CompetitionResultView) {
         tvTeamName.text = team.team?.teamName?:""
         tvStartName.text = team.competition?.nameCompetition
-        tvFinishTimeLimit.text = team.competition?.dataBegin
-        tvMaxNormalFinishTime.text = team.competition?.dataEnd
+        tvFinishTimeLimit.text = team.competition?.dataEndNorm?.getDateTimeOfPattern()
+        tvMaxNormalFinishTime.text = team.competition?.dataEndMax?.getDateTimeOfPattern()
         tvPenaltyPoints.text = team.penaltyBally
         tvTechnicalDetails.text = team.competition?.organizingAuthority
     }
