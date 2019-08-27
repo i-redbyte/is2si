@@ -16,5 +16,6 @@ class Competition(
         val organizingAuthority: String,
         val resultAsFileTo: Boolean,
         val venue: String,
-        val emergencyPhone:String
+        val emergencyPhone: String,
+        val shtrafBallyNorma: Double
 )

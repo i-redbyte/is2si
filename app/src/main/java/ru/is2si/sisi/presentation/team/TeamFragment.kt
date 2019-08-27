@@ -76,12 +76,12 @@ class TeamFragment :
         tvStartName.text = team.competition?.nameCompetition
         tvFinishTimeLimit.text = team.competition?.dataEndNorm?.getDateTimeOfPattern()
         tvMaxNormalFinishTime.text = team.competition?.dataEndMax?.getDateTimeOfPattern()
-        tvPenaltyPoints.text = team.penaltyBally
+        tvPenaltyPoints.text = team.competition?.shtrafBallyNorma.toString()
         tvTechnicalDetails.text = team.competition?.organizingAuthority
     }
 
     override fun phoneCall() {
-        val phone = getString(R.string.team_phone_number)
+        val phone = tvPhoneNumber.text.toString()
         val intent = Intent(Intent.ACTION_CALL)
         intent.data = Uri.parse("tel:$phone")
         startActivity(intent)

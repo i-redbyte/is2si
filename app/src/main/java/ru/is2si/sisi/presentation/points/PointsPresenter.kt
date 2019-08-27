@@ -36,7 +36,7 @@ class PointsPresenter @Inject constructor(
 
     override fun addPoint(pointName: String) {
         view.showLoading()
-        disposables += saveSelectPoint.execute(SaveSelectPoint.Params(pointName.toInt()))
+        disposables += saveSelectPoint.execute(SaveSelectPoint.Params(pointName))
                 .map { it.map { point -> point.asView() } }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
