@@ -1,30 +1,39 @@
 package ru.is2si.sisi.presentation.result
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_result.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
-import ru.is2si.sisi.base.extension.onClick
+import ru.is2si.sisi.base.DelegationAdapter
 import ru.is2si.sisi.base.extension.setActionBar
 import ru.is2si.sisi.base.navigation.Navigator
 import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
-import ru.is2si.sisi.domain.result.CompetitionResult
 import ru.is2si.sisi.presentation.main.NavigationActivity
+import ru.is2si.sisi.presentation.model.CompetitionResultView
+import ru.is2si.sisi.presentation.result.ResultDelegateTitle.Item
 import javax.inject.Inject
 
 class ResultFragment :
         ActionBarFragment<ResultContract.Presenter>(),
         NavigatorProvider,
-        ResultContract.View {
+        ResultContract.View,
+        SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
+
+    private lateinit var adapter: DelegationAdapter
+    private lateinit var resultDelegate: ResultDelegate
+    private lateinit var tableTitle: ResultDelegateTitle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,23 +48,54 @@ class ResultFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews()
         presenter.start()
+        setupRecyclerView()
+        setupView()
     }
 
-    private fun setupViews() {
-        btnGood.onClick { presenter.getResult() }
+    private fun setupView() {
+        swipeRefreshContainer.setOnRefreshListener(this)
+        swipeRefreshContainer.setColorSchemeResources(
+                R.color.green,
+                R.color.colorAccent,
+                R.color.orange
+        )
     }
 
-    override fun showResult(competitions: List<CompetitionResult>) {
-        Toast
-                .makeText(
-                        requireContext(),
-                        "Получили список из ${competitions.size} элементов",
-                        Toast.LENGTH_LONG
-                )
-                .show()
+    private fun setupRecyclerView() {
+        adapter = DelegationAdapter()
+        resultDelegate = ResultDelegate(requireContext()) {
+            val result = adapter.items[it] as CompetitionResultView
+        }
+
+        tableTitle = ResultDelegateTitle(requireContext())
+        rvResult.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+
+        adapter.delegatesManager
+                .addDelegate(tableTitle)
+                .addDelegate(resultDelegate)
+        rvResult.adapter = adapter
     }
+
+    override fun showCompetitionData(data: CompetitionResultView) {
+        tvStartName.text = data.competition?.nameCompetition
+    }
+
+    override fun stopRefresh() {
+        swipeRefreshContainer.isRefreshing = false
+    }
+
+    override fun onRefresh() {
+        Log.d("_debug", "REFRESH")
+        presenter.getResults()
+    }
+
+    override fun showResults(competitions: List<CompetitionResultView>) {
+        val items = listOf(Item()) + competitions
+        adapter.items = items
+    }
+
+    override fun showMain() = stateSwitcher.switchToMain()
 
     override fun showLoading() = stateSwitcher.switchToLoading()
 

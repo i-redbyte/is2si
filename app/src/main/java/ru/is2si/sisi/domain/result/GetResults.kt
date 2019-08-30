@@ -1,6 +1,7 @@
 package ru.is2si.sisi.domain.result
 
 import io.reactivex.Single
+import ru.is2si.sisi.data.auth.AuthRepository
 import ru.is2si.sisi.domain.SingleUseCase
 import ru.is2si.sisi.domain.result.GetResults.Params
 import javax.inject.Inject

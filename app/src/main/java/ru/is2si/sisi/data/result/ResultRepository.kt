@@ -12,7 +12,7 @@ internal class ResultRepository @Inject constructor(
 ) : ResultDataSource {
 
     override fun getResults(competitionId: Int): Single<List<CompetitionResult>> =
-            network.prepareRequest(resultApi.getResults(competitionId))
+        /*    network.prepareRequest(*/resultApi.getResults(competitionId)//)
                     .map { it.map(CompetitionResultResponse::toCompetitionResult) }
 
     override fun getResult(): Single<List<CompetitionResult>> =
