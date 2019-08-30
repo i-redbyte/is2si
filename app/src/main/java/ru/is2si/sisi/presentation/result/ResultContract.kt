@@ -13,5 +13,7 @@ interface ResultContract {
 
     interface Presenter : BaseContract.Presenter {
         fun getResult()
+
+        fun getResults()
     }
 }

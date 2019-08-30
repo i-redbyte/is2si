@@ -42,6 +42,7 @@
     <string name="points.point_summary">Предварительно баллов за точки:</string>
     <string name="points.balls">Баллы:</string>
     <string name="points.point_number">Баллы:</string>
+    <string name="points.point_name">Имя точки:</string>
 
     <string name="settings.title">Настройки</string>
     <string name="settings.change_url">Изменить URL сервера</string>

@@ -7,40 +7,11 @@
     android:layout_height="match_parent"
     >
 
-    <include layout="@layout/layout_appbar" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPoint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:hint="@string/points.input_point"
-            app:layout_constraintEnd_toStartOf="@+id/btnAdd"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tietPoint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:digits="0123456789/"
-                android:inputType="datetime"
-                android:maxLength="5"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnAdd"
@@ -62,6 +33,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/points.points"
             android:textColor="@color/black"
@@ -70,31 +42,36 @@
             app:layout_constraintTop_toBottomOf="@+id/tilPoint"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPoints"
+<!--        <TextView
+            android:id="@+id/tvPointName"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/vDivider"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/points.point_name"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/tvBallsName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPoints"
             />
 
-        <View
-            android:id="@+id/vDivider"
+        <TextView
+            android:id="@+id/tvBallsName"
             android:layout_width="0dp"
-            android:layout_height="4dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/blue"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/points.balls"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvSummaryLabel"
-            />
+            app:layout_constraintStart_toEndOf="@+id/tvPointName"
+            app:layout_constraintTop_toBottomOf="@+id/tvPoints"
+            />-->
 
         <TextView
             android:id="@+id/tvSummaryLabel"
@@ -103,6 +80,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="50dp"
+            android:fontFamily="sans-serif"
             android:gravity="start"
             android:paddingTop="16dp"
             android:text="@string/points.point_summary"
@@ -120,6 +98,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="50dp"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:textColor="@color/red"
             android:textSize="32sp"
@@ -128,5 +107,60 @@
             app:layout_constraintStart_toEndOf="@+id/tvSummaryLabel"
             tools:text="0.0"
             />
+
+        <View
+            android:id="@+id/vDivider"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvSummaryLabel"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPoints"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/vDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPoints"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPoint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/points.input_point"
+            app:layout_constraintEnd_toStartOf="@+id/btnAdd"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tietPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789/"
+                android:fontFamily="sans-serif"
+                android:inputType="datetime"
+                android:maxLength="5"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/layout_appbar" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
