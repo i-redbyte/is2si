@@ -66,6 +66,8 @@ class ResultFragment :
         adapter = DelegationAdapter()
         resultDelegate = ResultDelegate(requireContext()) {
             val result = adapter.items[it] as CompetitionResultView
+            ResultDetailFragment.forProperties(result)
+                    .showNow(childFragmentManager, null)
         }
 
         tableTitle = ResultDelegateTitle(requireContext())
