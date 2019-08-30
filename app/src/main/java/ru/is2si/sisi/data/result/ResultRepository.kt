@@ -10,6 +10,11 @@ internal class ResultRepository @Inject constructor(
         private val resultApi: ResultApi,
         private val network: Network
 ) : ResultDataSource {
+
+    override fun getResults(competitionId: Int): Single<List<CompetitionResult>> =
+        /*    network.prepareRequest(*/resultApi.getResults(competitionId)//)
+                    .map { it.map(CompetitionResultResponse::toCompetitionResult) }
+
     override fun getResult(): Single<List<CompetitionResult>> =
             network.prepareRequest(resultApi.getResult())
                     .map { it.map(CompetitionResultResponse::toCompetitionResult) }

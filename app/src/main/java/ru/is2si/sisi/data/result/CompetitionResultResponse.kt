@@ -26,11 +26,11 @@ class CompetitionResultResponse(
         @SerializedName("PenaltyBally")
         val penaltyBally: String,
         @SerializedName("Pinkod")
-        val pinkod: String,
+        val pinkod: String?,
         @SerializedName("PlaceEntry")
         val placeEntry: Int,
         @SerializedName("RemovalEntry")
-        val removalEntry: Int,
+        val removalEntry: Int?,
         @SerializedName("ResultBally")
         val resultBally: String,
         @SerializedName("DataTimeFinish")
@@ -47,9 +47,9 @@ fun CompetitionResultResponse.toCompetitionResult() = CompetitionResult(
         isRemovalEntry = isRemovalEntry,
         klassDistancii = klassDistancii ?: "",
         penaltyBally = penaltyBally,
-        pinkod = pinkod,
+        pinkod = pinkod ?: "",
         placeEntry = placeEntry,
-        removalEntry = removalEntry,
+        removalEntry = removalEntry ?: 0,
         resultBally = resultBally,
         dataTimeFinish = dataTimeFinish.toLocalDateTimeOrNull()
 )

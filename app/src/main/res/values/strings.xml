@@ -42,10 +42,17 @@
     <string name="points.point_summary">Предварительно баллов за точки:</string>
     <string name="points.balls">Баллы:</string>
     <string name="points.point_number">Баллы:</string>
+    <string name="points.point_name">Имя точки:</string>
 
     <string name="settings.title">Настройки</string>
     <string name="settings.change_url">Изменить URL сервера</string>
     <string name="settings.save">Сохранить</string>
 
-    <string name="result.title">Результат</string>
+    <string name="result.title">Таблица результатов</string>
+    <string name="result.start">Старт (мероприятие)</string>
+    <string name="result.preliminary_results">Предварительные результаты</string>
+    <string name="result.preliminary_text">Внимание!\nРезультаты предварительны</string>
+    <string name="result.team_name">Команда</string>
+    <string name="result.group">Группа</string>
+    <string name="result.place">Место</string>
 </resources>

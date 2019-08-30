@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Single
-import ru.is2si.sisi.BuildConfig.APPLICATION_ID
 import ru.is2si.sisi.base.extension.commit
 import ru.is2si.sisi.data.network.Network
 import ru.is2si.sisi.data.result.toCompetitionResult
@@ -12,6 +11,7 @@ import ru.is2si.sisi.domain.auth.AuthDataSource
 import ru.is2si.sisi.domain.result.CompetitionResult
 import ru.is2si.sisi.domain.result.CompetitionResultExpr
 import ru.is2si.sisi.domain.result.EmptyCompetitionResult
+import ru.tinkoff.decoro.BuildConfig.APPLICATION_ID
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
