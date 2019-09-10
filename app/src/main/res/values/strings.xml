@@ -62,4 +62,7 @@
     <string name="finish.max_normal_finish_time">Максимально нормальное время финиша:</string>
     <string name="finish.amount_penalty_points">Сумма штрафных баллов:</string>
     <string name="finish.preliminary_points">Предварительная сумма баллов:</string>
+
+    <string name="files.title">Загрузка файлов</string>
+    <string name="files.upload">Загрузить на сервер</string>
 </resources>
