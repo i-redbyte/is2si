@@ -13,7 +13,7 @@ class CompetitionResponse(
         val dataEndMax: String,
         @SerializedName("DefaultCompetition")
         val defaultCompetition: Boolean,
-        @SerializedName("id")
+        @SerializedName("teamId")
         val id: Int,
         @SerializedName("is_Active")
         val isActive: Boolean,

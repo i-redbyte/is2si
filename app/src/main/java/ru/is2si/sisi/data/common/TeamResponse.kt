@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import ru.is2si.sisi.domain.common.Team
 
 class TeamResponse(
-        @SerializedName("id")
+        @SerializedName("teamId")
         val id: Int,
         @SerializedName("TeamIs_Active")
         val teamIsActive: Boolean,

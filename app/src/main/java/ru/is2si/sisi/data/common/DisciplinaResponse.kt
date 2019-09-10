@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import ru.is2si.sisi.domain.common.Disciplina
 
 class DisciplinaResponse(
-        @SerializedName("id")
+        @SerializedName("teamId")
         val id: Int,
         @SerializedName("CodeDiscipline")
         val codeDiscipline: String?,

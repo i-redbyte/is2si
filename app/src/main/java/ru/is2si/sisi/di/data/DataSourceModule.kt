@@ -7,12 +7,15 @@ import dagger.Provides
 import ru.is2si.sisi.data.auth.AuthApi
 import ru.is2si.sisi.data.auth.AuthRepository
 import ru.is2si.sisi.data.auth.ServerUrlHolder
+import ru.is2si.sisi.data.finish.FinishApi
+import ru.is2si.sisi.data.finish.FinishRepository
 import ru.is2si.sisi.data.network.Network
 import ru.is2si.sisi.data.points.PointApi
 import ru.is2si.sisi.data.points.PointRepository
 import ru.is2si.sisi.data.result.ResultApi
 import ru.is2si.sisi.data.result.ResultRepository
 import ru.is2si.sisi.domain.auth.AuthDataSource
+import ru.is2si.sisi.domain.finish.FinishDataSource
 import ru.is2si.sisi.domain.points.PointDataSource
 import ru.is2si.sisi.domain.result.ResultDataSource
 import javax.inject.Singleton
@@ -29,14 +32,23 @@ class DataSourceModule {
             sharedPreferences: SharedPreferences,
             gson: Gson
 
-    ): AuthDataSource = AuthRepository(authApi, urlHolder, network, sharedPreferences, gson)
+    ): AuthDataSource = AuthRepository(
+            authApi = authApi,
+            serverUrlHolder = urlHolder,
+            network = network,
+            sharedPreferences = sharedPreferences,
+            gson = gson
+    )
 
     @Provides
     @Singleton
     fun provideResultDataSource(
             resultApi: ResultApi,
             network: Network
-    ): ResultDataSource = ResultRepository(resultApi, network)
+    ): ResultDataSource = ResultRepository(
+            resultApi = resultApi,
+            network = network
+    )
 
     @Provides
     @Singleton
@@ -52,5 +64,14 @@ class DataSourceModule {
             gson = gson
     )
 
+    @Provides
+    @Singleton
+    fun provideFinishDataSource(
+            finishApi: FinishApi,
+            network: Network
+    ): FinishDataSource = FinishRepository(
+            finishApi = finishApi,
+            network = network
+    )
 
 }

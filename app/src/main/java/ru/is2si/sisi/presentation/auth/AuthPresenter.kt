@@ -21,8 +21,8 @@ class AuthPresenter @Inject constructor(
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({
-                    if (it !is EmptyCompetitionResult) view.gotoTeamScreen()
                     view.showMain()
+                    if (it !is EmptyCompetitionResult) view.gotoTeamScreen()
                 }) { view.showError(it.message, it) }
     }
 
