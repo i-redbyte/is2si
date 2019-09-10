@@ -1,7 +1,6 @@
 package ru.is2si.sisi.presentation.result
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,7 +82,6 @@ class ResultFragment :
     }
 
     override fun onRefresh() {
-        Log.d("_debug", "REFRESH")
         presenter.getResults()
     }
 

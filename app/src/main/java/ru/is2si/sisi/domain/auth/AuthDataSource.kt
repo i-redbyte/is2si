@@ -17,7 +17,7 @@ interface AuthDataSource {
 
     fun setServerUrl(url: String): Completable
 
-    fun setTeamPin(pin: String): Completable
+    fun setTeamPin(pin: String)
 
     fun getTeamPin(): Single<String>
 

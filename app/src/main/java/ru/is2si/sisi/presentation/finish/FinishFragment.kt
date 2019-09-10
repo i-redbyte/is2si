@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import kotlinx.android.synthetic.main.fragment_finish.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
+import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.extension.setActionBar
 import ru.is2si.sisi.base.navigation.Navigator
 import ru.is2si.sisi.base.navigation.NavigatorProvider
@@ -29,7 +31,27 @@ class FinishFragment : ActionBarFragment<FinishContract.Presenter>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.start()
+        setupView()
     }
+
+    private fun setupView() {
+        btnFinish.onClick { presenter.finishTeam() }
+    }
+
+    override fun showFixFinishTime(fixFinishTime: String) {
+        tvFixedTime.text = fixFinishTime
+    }
+
+    override fun showFinishData(
+            maxNormalTime: String,
+            amountPenaltyPoints: String,
+            preliminaryPoints: String
+    ) {
+        tvMaxTime.text = maxNormalTime
+        tvAmountPenaltyPoints.text = amountPenaltyPoints
+        tvPreliminaryPoints.text = preliminaryPoints
+    }
+
 
     override fun showMain() = stateSwitcher.switchToMain()
 

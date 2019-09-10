@@ -10,15 +10,13 @@ class AuthTeam @Inject constructor(
         private val authDataSource: AuthDataSource,
         private val pointDataSource: PointDataSource
 ) : SingleUseCase<CompetitionResult, AuthTeam.Param>() {
-    private val NO_ID = -1
     override fun execute(params: Param): Single<CompetitionResult> =
             authDataSource.authTeam(params.pin)
                     .flatMap {
                         val result = it
-                        pointDataSource.getPoints(it.competition?.id ?: NO_ID)
+                        pointDataSource.getPoints(result.competition?.id
+                                ?: throw RuntimeException("Ошибка при получении точек")) // TODO: Red_byte 2019-09-10 вынести в кастомную ошибку
                                 .flatMap { Single.just(result) }
-                    }.doOnSuccess {
-                        authDataSource.setTeamPin(params.pin)
                     }
 
     class Param(val pin: String)

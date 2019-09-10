@@ -26,6 +26,7 @@ class AuthRepository @Inject constructor(
             network.prepareRequest(authApi.authTeam(pin))
                     .map { it.toCompetitionResult() }
                     .doOnSuccess(::saveTeam)
+                    .doOnSuccess { setTeamPin(pin) }
 
     override fun setServerUrl(url: String): Completable =
             Completable.fromAction { serverUrlHolder.serverUrl = url }
@@ -48,8 +49,9 @@ class AuthRepository @Inject constructor(
         sharedPreferences.commit { remove(CURRENT_TEAM) }
     }
 
-    override fun setTeamPin(pin: String): Completable =
-            Completable.fromAction { sharedPreferences.commit { putString(PIN_TEAM, pin) } }
+    override fun setTeamPin(pin: String) {
+        sharedPreferences.commit { putString(PIN_TEAM, pin) }
+    }
 
     override fun getTeamPin(): Single<String> = Single.fromCallable {
         sharedPreferences.getString(PIN_TEAM, "")

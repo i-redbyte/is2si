@@ -7,7 +7,7 @@ import ru.is2si.sisi.domain.result.CompetitionResult
 
 // TODO: Red_byte 2019-08-02 Make internal class
 class CompetitionResultResponse(
-        @SerializedName("id")
+        @SerializedName("teamId")
         val id: Int,
         @SerializedName("Bally")
         val bally: String,

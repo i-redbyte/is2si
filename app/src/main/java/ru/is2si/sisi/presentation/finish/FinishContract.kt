@@ -7,9 +7,15 @@ interface FinishContract {
         fun showError(message: String?, throwable: Throwable)
         fun showLoading()
         fun showMain()
+        fun showFixFinishTime(fixFinishTime: String)
+        fun showFinishData(
+                maxNormalTime: String,
+                amountPenaltyPoints: String,
+                preliminaryPoints: String
+        )
     }
 
     interface Presenter : BaseContract.Presenter {
-
+        fun finishTeam()
     }
 }
