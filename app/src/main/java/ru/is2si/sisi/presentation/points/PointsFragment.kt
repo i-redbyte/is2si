@@ -31,11 +31,6 @@ class PointsFragment :
     lateinit var stateSwitcher: ViewStateSwitcher
     private lateinit var adapter: DelegationAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,

@@ -35,11 +35,6 @@ class ResultFragment :
     private lateinit var resultDelegate: ResultDelegate
     private lateinit var tableTitle: ResultDelegateTitle
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,

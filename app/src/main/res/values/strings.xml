@@ -55,4 +55,11 @@
     <string name="result.team_name">Команда</string>
     <string name="result.group">Группа</string>
     <string name="result.place">Место</string>
+
+    <string name="finish.title">Финиш</string>
+    <string name="finish.finish">Финишировать</string>
+    <string name="finish.fixed_time">Зафиксированное время финиша:</string>
+    <string name="finish.max_normal_finish_time">Максимально нормальное время финиша:</string>
+    <string name="finish.amount_penalty_points">Сумма штрафных баллов:</string>
+    <string name="finish.preliminary_points">Предварительная сумма баллов:</string>
 </resources>
