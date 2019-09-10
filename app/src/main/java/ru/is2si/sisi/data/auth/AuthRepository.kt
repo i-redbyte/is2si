@@ -48,7 +48,15 @@ class AuthRepository @Inject constructor(
         sharedPreferences.commit { remove(CURRENT_TEAM) }
     }
 
+    override fun setTeamPin(pin: String): Completable =
+            Completable.fromAction { sharedPreferences.commit { putString(PIN_TEAM, pin) } }
+
+    override fun getTeamPin(): Single<String> = Single.fromCallable {
+        sharedPreferences.getString(PIN_TEAM, "")
+    }
+
     companion object {
         const val CURRENT_TEAM = "$APPLICATION_ID.CURRENT_TEAM"
+        const val PIN_TEAM = "$APPLICATION_ID.PIN_TEAM"
     }
 }
