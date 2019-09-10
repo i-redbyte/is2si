@@ -145,10 +145,8 @@
             tools:text="888"
             />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/layout_appbar" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
