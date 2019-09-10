@@ -1,6 +1,7 @@
 package ru.is2si.sisi.data.points
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -25,7 +26,9 @@ class PointRepository @Inject constructor(
 
     override fun getPoints(competitionId: Int): Single<List<Point>> =
         network.prepareRequest(pointApi.getPoints(competitionId))
-            .map { it.map { pointResponse -> pointResponse.toPoint() } }
+            .map {
+                Log.d("_debug","it === ${it.size}")
+                it.map { pointResponse -> pointResponse.toPoint() } }
             .doOnSuccess(::saveAllPoints)
 
     override fun saveAllPoints(points: List<Point>) {

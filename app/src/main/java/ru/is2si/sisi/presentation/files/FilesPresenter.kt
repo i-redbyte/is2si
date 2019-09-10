@@ -7,7 +7,13 @@ import javax.inject.Inject
 class FilesPresenter @Inject constructor(
         private val rxSchedulers: RxSchedulers
 ) : BasePresenter<FilesContract.View>(), FilesContract.Presenter {
+
     override fun start() {
 
     }
+
+    override fun uploadFiles() {
+
+    }
+
 }

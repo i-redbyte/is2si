@@ -22,15 +22,16 @@ class ResultDetailFragment : AlertBottomSheetFragment() {
         setupViews()
     }
 
+    // FIXME: 2019-09-10 Убрать строки в ресурсы
     private fun setupViews() {
-        tvTeam.text = result.team?.teamName
-        tvGroup.text = result.group
-        tvPlace.text = result.placeEntry.toString()
-        tvPoints.text = result.bally
-        tvPenaltyPoints.text = result.penaltyBally
-        tvFinalPoints.text = result.resultBally
-        tvFinishTime.text = result.dataTimeFinish?.getDateTimeOfPattern()
-        tvDistanceTime.text = "Время на дистанции: ${result.dataTimeFinish?.getDateTimeOfPattern()}"
+        tvTeam.text = "Команда: ${result.team?.teamName}"
+        tvGroup.text = "Группа: ${result.disciplina?.discipline?.groupName ?: ""}"
+        tvPlace.text = "Место команды в старте: ${result.placeEntry}"
+        tvPoints.text = "Баллы: ${result.bally}"
+        tvPenaltyPoints.text = "Штрафные баллы: ${result.penaltyBally}"
+        tvFinalPoints.text = "Финальные результаты: ${result.resultBally}"
+        tvFinishTime.text = "Время финиша: ${result.dataTimeFinish?.getDateTimeOfPattern()}"
+        tvDistanceTime.text = "Время на дистанции: ${result.dataTimeFinish?.getDateTimeOfPattern() ?: ""}"
     }
 
     companion object {

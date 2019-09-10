@@ -42,7 +42,7 @@ class ResultDelegate(
 
         fun bind(item: CompetitionResultView) {
             tvTeam.text = item.team?.teamName
-            tvGroup.text = item.group
+            tvGroup.text = item.disciplina?.discipline?.groupName ?: ""
             tvPlace.text = item.placeEntry.toString()
         }
     }

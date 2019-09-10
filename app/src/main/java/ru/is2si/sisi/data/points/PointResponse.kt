@@ -8,7 +8,7 @@ import ru.is2si.sisi.domain.points.Point
  * r5 - минимальный (самый близкий) радиус
  * */
 class PointResponse(
-        @SerializedName("teamId")
+        @SerializedName("id")
         val id: Int,
         @SerializedName("a")
         val latitude: Double,

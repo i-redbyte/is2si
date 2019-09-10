@@ -10,6 +10,6 @@ interface FilesContract {
     }
 
     interface Presenter : BaseContract.Presenter {
-
+        fun uploadFiles()
     }
 }

@@ -74,8 +74,8 @@ class TeamFragment :
         tvPhoneNumber.text = team.competition?.emergencyPhone
         tvTeamName.text = team.team?.teamName ?: ""
         tvStartName.text = team.competition?.nameCompetition
-        tvFinishTimeLimit.text = team.competition?.dataEndNorm?.getDateTimeOfPattern()
-        tvMaxNormalFinishTime.text = team.competition?.dataEndMax?.getDateTimeOfPattern()
+        tvMaxNormalFinishTime.text = team.competition?.dataEndNorm?.getDateTimeOfPattern()
+        tvFinishTimeLimit.text = team.competition?.dataEndMax?.getDateTimeOfPattern()
         tvPenaltyPoints.text = team.competition?.shtrafBallyNorma.toString()
         tvTechnicalDetails.text = team.competition?.organizingAuthority
     }

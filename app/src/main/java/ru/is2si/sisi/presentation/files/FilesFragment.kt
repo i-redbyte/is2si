@@ -1,12 +1,15 @@
 package ru.is2si.sisi.presentation.files
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import kotlinx.android.synthetic.main.fragment_files.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
+import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.extension.setActionBar
 import ru.is2si.sisi.base.navigation.Navigator
 import ru.is2si.sisi.base.navigation.NavigatorProvider
@@ -33,7 +36,21 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     }
 
     private fun setupView() {
+        btnUpload.onClick {
 
+        }
+
+        fabPhoto.onClick {
+            checkPhotoPermission()
+        }
+    }
+
+    private fun checkPhotoPermission() {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun showMain() = stateSwitcher.switchToMain()
@@ -53,6 +70,9 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
+        private const val REQUEST_CAMERA = 517
+        private const val REQUEST_CAMERA_PERMISSION = 1917
+
         fun newInstance(): FilesFragment = FilesFragment()
     }
 }
