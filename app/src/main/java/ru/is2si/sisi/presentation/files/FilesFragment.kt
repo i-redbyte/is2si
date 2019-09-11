@@ -53,13 +53,9 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     }
 
     private fun setupView() {
-        btnUpload.onClick {
-            presenter.uploadFiles()
-        }
-
-        fabPhoto.onClick {
-            checkPhotoPermission()
-        }
+        btnUploadTrack.onClick { selectTrack() }
+        btnUploadPhotos.onClick { presenter.uploadFiles() }
+        fabPhoto.onClick { checkPhotoPermission() }
     }
 
     override fun openCamera() {
@@ -88,6 +84,15 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
                 }
             }
         }
+    }
+
+    private fun selectTrack() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        val mimeTypes = arrayOf("text/plain", "image/*", "application/pdf", "application/doc", "text/html")
+        intent.type = "*/*"
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        startActivityForResult(intent, REQUEST_TRACK)
     }
 
     private fun checkPhotoPermission() {
@@ -136,12 +141,16 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             REQUEST_CAMERA -> {
                 presenter.addToPhotosQueue(photoPath)
             }
+            REQUEST_TRACK -> {
+                val uri = data?.data as Uri
+                presenter.uploadTracks(getPath(requireContext(), uri) ?: "")
+            }
         }
 
     }
 
     override fun showSuccessUpload() {
-        Snackbar.make(fabPhoto, getString(R.string.files_success_upload),Snackbar.LENGTH_LONG).show()
+        Snackbar.make(fabPhoto, getString(R.string.files_success_upload), Snackbar.LENGTH_LONG).show()
     }
 
     override fun showMain() = stateSwitcher.switchToMain()
@@ -166,6 +175,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     companion object {
         private const val REQUEST_CAMERA = 517
+        private const val REQUEST_TRACK = 715
         private const val REQUEST_CAMERA_PERMISSION = 1917
         private const val TAG_CAMERA_PERMISSION = "phone_permission"
         fun newInstance(): FilesFragment = FilesFragment()

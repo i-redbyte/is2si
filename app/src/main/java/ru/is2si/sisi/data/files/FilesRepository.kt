@@ -24,18 +24,28 @@ class FilesRepository @Inject constructor(
 ) : FilesDataSource {
     private val filesTypeToken: Type by lazy { typeTokenOf<List<String>>() }
 
-    override fun uploadFile(file: String, pin: String, teamName: String): Completable {
-        return network.prepareRequest(filesApi.uploadPhotos(
-                TYPE_PHOTOS,
+    override fun uploadFile(
+            file: String,
+            pin: String,
+            teamName: String,
+            type: String
+    ): Completable {
+        return network.prepareRequest(filesApi.uploadFile(
+                type,
                 pin,
                 teamName,
-                getMultipartPhoto(file)
+                getMultipart(file, type)
         ))
     }
 
-    private fun getMultipartPhoto(filePath: String): MultipartBody.Part {
+    private fun getMultipart(filePath: String, type: String): MultipartBody.Part {
         val file = File(filePath)
-        val fileReqBody = RequestBody.create(MediaType.parse("image/jpg"), file)
+        val fileReqBody =
+                if (type == TYPE_PHOTOS)
+                    RequestBody.create(MediaType.parse("image/jpg"), file)
+                else {
+                    RequestBody.create(MediaType.parse("file/*"), file)
+                }
         return MultipartBody.Part.createFormData("document", file.name, fileReqBody)
     }
 
@@ -58,5 +68,6 @@ class FilesRepository @Inject constructor(
     companion object {
         private const val ALL_FILES_PATH = "$APPLICATION_ID.ALL_FILES_PATH"
         const val TYPE_PHOTOS = "Fotos"
+        const val TYPE_TRACK = "Tracks"
     }
 }

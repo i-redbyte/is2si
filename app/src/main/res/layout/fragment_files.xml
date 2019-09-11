@@ -13,13 +13,26 @@
         >
 
         <Button
-            android:id="@+id/btnUpload"
+            android:id="@+id/btnUploadPhotos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/files.upload"
+            android:text="@string/files.upload_photos"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            />
+        <Button
+            android:id="@+id/btnUploadTrack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/files.upload_track"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/btnUploadPhotos"
+            app:layout_constraintStart_toStartOf="@+id/btnUploadPhotos"
+            app:layout_constraintTop_toBottomOf="@+id/btnUploadPhotos"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

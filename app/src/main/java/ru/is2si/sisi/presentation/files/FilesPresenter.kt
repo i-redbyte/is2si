@@ -1,10 +1,13 @@
 package ru.is2si.sisi.presentation.files
 
+import android.util.Log
 import io.reactivex.Observable
 import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.extension.getDateTimeOfPattern
 import ru.is2si.sisi.base.rx.RxSchedulers
+import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_PHOTOS
+import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_TRACK
 import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.auth.GetSaveTeam
 import ru.is2si.sisi.domain.auth.GetTeamPin
@@ -26,6 +29,7 @@ class FilesPresenter @Inject constructor(
         private val getSaveTeam: GetSaveTeam,
         private val uploadFile: UploadFile
 ) : BasePresenter<FilesContract.View>(), FilesContract.Presenter {
+
     private var pin = ""
     private var teamName = ""
 
@@ -56,7 +60,7 @@ class FilesPresenter @Inject constructor(
                     if (files.isEmpty()) throw RuntimeException("Нет файлов для отправки на сервер")
                     Observable.fromIterable(files)
                             .flatMapCompletable { filePath ->
-                                uploadFile.execute(UploadFile.Params(filePath, pin, teamName))
+                                uploadFile.execute(UploadFile.Params(filePath, pin, teamName, TYPE_PHOTOS))
                             }
 
                 }
@@ -66,6 +70,19 @@ class FilesPresenter @Inject constructor(
                     view.showMain()
                     view.showSuccessUpload()
                 }) { view.showError(it.message, it) }
+    }
+
+    override fun uploadTracks(filePath: String) {
+        view.showLoading()
+        Log.d("_debug","filePath ===$filePath")
+        disposables += uploadFile.execute(UploadFile.Params(filePath, pin, teamName, TYPE_TRACK))
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    view.showMain()
+                    view.showSuccessUpload()
+                }) { view.showError(it.message, it) }
+
     }
 
     override fun onCameraClick() {

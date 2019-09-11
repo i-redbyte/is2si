@@ -9,7 +9,7 @@ import retrofit2.http.Part
 interface FilesApi {
     @Multipart
     @POST("Api/upload/")
-    fun uploadPhotos(
+    fun uploadFile(
             @Part("filesDescript")
             type: String,
             @Part("pinkod")

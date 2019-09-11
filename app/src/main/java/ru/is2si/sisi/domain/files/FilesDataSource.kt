@@ -8,5 +8,10 @@ interface FilesDataSource {
 
     fun addFilePath(path: String): Completable
 
-    fun uploadFile(file: String, pin:String, teamName:String): Completable
+    fun uploadFile(
+            file: String,
+            pin:String,
+            teamName:String,
+            type:String
+    ): Completable
 }
