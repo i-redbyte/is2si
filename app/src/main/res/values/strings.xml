@@ -32,7 +32,7 @@
     <string name="team.finish_time_limit">Предельное время финиша:</string>
     <string name="team.penalty_points">Штрафные баллы за каждые 10 минут в т.ч. не полных сверх нормального времени</string>
     <string name="team.technical_details">Технические данные:</string>
-    <string name="team_phone_requested">Для звонка по экстренному номеру необходимо предоставить доступ к выполнению вызовов</string>
+    <string name="team.phone_requested">Для звонка по экстренному номеру необходимо предоставить доступ к выполнению вызовов</string>
     <string name="team.logout">Выход</string>
 
     <string name="points.title">Точки</string>
@@ -65,4 +65,5 @@
 
     <string name="files.title">Загрузка файлов</string>
     <string name="files.upload">Загрузить на сервер</string>
+    <string name="files.camera_requested">Для создания фотографии необходимо предоставить доступ к камере устройства и на запись файлов</string>
 </resources>

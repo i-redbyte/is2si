@@ -43,7 +43,7 @@ class FinishPresenter @Inject constructor(
                     val (preliminaryPoints, competition) = it
                     val maxNormalTime = competition
                             .competition
-                            ?.dataEndMax
+                            ?.dataEndNorm
                             ?.getDateTimeOfPattern()
                             ?: ""
                     val amountPenaltyPoints = competition.penaltyBally
