@@ -78,7 +78,7 @@ class PointRepository @Inject constructor(
     }
 
     companion object {
-        const val ALL_POINTS = "$APPLICATION_ID.ALL_POINTS"
-        const val SELECT_POINTS = "$APPLICATION_ID.SELECT_POINTS"
+        private const val ALL_POINTS = "$APPLICATION_ID.ALL_POINTS"
+        private const val SELECT_POINTS = "$APPLICATION_ID.SELECT_POINTS"
     }
 }

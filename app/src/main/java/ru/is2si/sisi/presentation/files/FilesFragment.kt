@@ -52,7 +52,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     private fun setupView() {
         btnUpload.onClick {
-
+            presenter.uploadFiles()
         }
 
         fabPhoto.onClick {
