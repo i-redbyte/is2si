@@ -10,6 +10,7 @@ interface FilesContract {
         fun showLoading()
         fun showMain()
         fun openCamera()
+        fun showSuccessUpload()
     }
 
     interface Presenter : BaseContract.Presenter {

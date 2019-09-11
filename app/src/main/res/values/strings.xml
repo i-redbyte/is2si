@@ -65,5 +65,6 @@
 
     <string name="files.title">Загрузка файлов</string>
     <string name="files.upload">Загрузить на сервер</string>
+    <string name="files.success_upload">Успех! Загрузка файлов завершена</string>
     <string name="files.camera_requested">Для создания фотографии необходимо предоставить доступ к камере устройства и на запись файлов</string>
 </resources>

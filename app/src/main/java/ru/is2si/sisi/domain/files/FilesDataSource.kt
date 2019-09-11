@@ -7,4 +7,6 @@ interface FilesDataSource {
     fun getFilesPath(): Single<List<String>>
 
     fun addFilePath(path: String): Completable
+
+    fun uploadFile(file: String, pin:String, teamName:String): Completable
 }

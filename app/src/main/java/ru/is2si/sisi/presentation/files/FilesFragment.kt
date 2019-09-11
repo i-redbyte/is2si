@@ -13,8 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_files.*
 import ru.is2si.sisi.BuildConfig
+import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.extension.*
 import ru.is2si.sisi.base.navigation.Navigator
@@ -42,7 +44,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? = inflater.inflate(ru.is2si.sisi.R.layout.fragment_files, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_files, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -113,9 +115,9 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             }
             AfterRequestPermissionsResult.NeverAskAgain -> {
                 AlertBottomSheetFragment()
-                        .withMessage(getString(ru.is2si.sisi.R.string.files_camera_requested))
-                        .withOkText(getString(ru.is2si.sisi.R.string.dialog_settings))
-                        .withCancelText(getString(ru.is2si.sisi.R.string.dialog_cancel))
+                        .withMessage(getString(R.string.files_camera_requested))
+                        .withOkText(getString(R.string.dialog_settings))
+                        .withCancelText(getString(R.string.dialog_cancel))
                         .withCancelable(false)
                         .withTarget(this, REQUEST_CAMERA_PERMISSION)
                         .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
@@ -138,6 +140,10 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     }
 
+    override fun showSuccessUpload() {
+        Snackbar.make(fabPhoto, getString(R.string.files_success_upload),Snackbar.LENGTH_LONG).show()
+    }
+
     override fun showMain() = stateSwitcher.switchToMain()
 
     override fun showLoading() = stateSwitcher.switchToLoading()
@@ -148,10 +154,10 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     override fun showError(message: String) =
             stateSwitcher.switchToError(message) { stateSwitcher.switchToMain() }
 
-    override fun findToolbar(): Toolbar? = view?.findViewById(ru.is2si.sisi.R.id.tActionBar)
+    override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
     override fun setupActionBar() = setActionBar(findToolbar()) {
-        setTitle(ru.is2si.sisi.R.string.finish_title)
+        setTitle(R.string.finish_title)
         setDisplayHomeAsUpEnabled(false)
     }
 

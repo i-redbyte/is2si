@@ -6,9 +6,13 @@ import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.extension.getDateTimeOfPattern
 import ru.is2si.sisi.base.rx.RxSchedulers
 import ru.is2si.sisi.domain.UseCase.None
+import ru.is2si.sisi.domain.auth.GetSaveTeam
+import ru.is2si.sisi.domain.auth.GetTeamPin
 import ru.is2si.sisi.domain.files.GetFileQueue
 import ru.is2si.sisi.domain.files.SaveFilePathToQueue
 import ru.is2si.sisi.domain.files.SaveFilePathToQueue.Params
+import ru.is2si.sisi.domain.files.UploadFile
+import ru.is2si.sisi.domain.result.CompetitionResult
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -17,19 +21,45 @@ import javax.inject.Inject
 class FilesPresenter @Inject constructor(
         private val rxSchedulers: RxSchedulers,
         private val saveFilePathToQueue: SaveFilePathToQueue,
-        private val getFileQueue: GetFileQueue
+        private val getFileQueue: GetFileQueue,
+        private val getTeamPin: GetTeamPin,
+        private val getSaveTeam: GetSaveTeam,
+        private val uploadFile: UploadFile
 ) : BasePresenter<FilesContract.View>(), FilesContract.Presenter {
-
+    private var pin = ""
+    private var teamName = ""
     override fun start() {
-
-    }
-
-    override fun uploadFiles() {
-        disposables += getFileQueue.execute(None())
+        disposables += getTeamPin.execute(None())
+                .flatMap { pin ->
+                    getSaveTeam.execute(None())
+                            .map { competition ->
+                                competition as CompetitionResult
+                                pin to competition
+                            }
+                }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({
-                    Log.d("_debug", "LIST ==== ${it.size}")
+                    val (p, team) = it
+                    pin = p
+                    teamName = team.team?.teamName ?: ""
+                }) { view.showError(it.message, it) }
+    }
+
+    override fun uploadFiles() {
+        view.showLoading()
+        disposables += getFileQueue.execute(None())
+                .flatMapCompletable {
+                    val filePath = it.first() // TODO: Red_byte 2019-09-11 add if
+                    Log.d("_debug", "pin ===$pin teamName = $teamName")
+                    uploadFile.execute(UploadFile.Params(filePath, pin, teamName))
+                }
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    view.showMain()
+                    view.showSuccessUpload()
+                    Log.d("_debug", "UPLOAD OK")
                     /* no-op */
                 }) { view.showError(it.message, it) }
     }
