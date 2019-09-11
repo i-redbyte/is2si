@@ -1,6 +1,6 @@
 package ru.is2si.sisi.presentation.files
 
-import android.util.Log
+import io.reactivex.Observable
 import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.extension.getDateTimeOfPattern
@@ -28,7 +28,9 @@ class FilesPresenter @Inject constructor(
 ) : BasePresenter<FilesContract.View>(), FilesContract.Presenter {
     private var pin = ""
     private var teamName = ""
+
     override fun start() {
+        // TODO: Red_byte 2019-09-11 refactoring this - fast decision
         disposables += getTeamPin.execute(None())
                 .flatMap { pin ->
                     getSaveTeam.execute(None())
@@ -50,17 +52,19 @@ class FilesPresenter @Inject constructor(
         view.showLoading()
         disposables += getFileQueue.execute(None())
                 .flatMapCompletable {
-                    val filePath = it.first() // TODO: Red_byte 2019-09-11 add if
-                    Log.d("_debug", "pin ===$pin teamName = $teamName")
-                    uploadFile.execute(UploadFile.Params(filePath, pin, teamName))
+                    val files = it
+                    if (files.isEmpty()) throw RuntimeException("Нет файлов для отправки на сервер")
+                    Observable.fromIterable(files)
+                            .flatMapCompletable { filePath ->
+                                uploadFile.execute(UploadFile.Params(filePath, pin, teamName))
+                            }
+
                 }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({
                     view.showMain()
                     view.showSuccessUpload()
-                    Log.d("_debug", "UPLOAD OK")
-                    /* no-op */
                 }) { view.showError(it.message, it) }
     }
 
