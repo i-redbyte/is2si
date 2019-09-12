@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <include layout="@layout/layout_appbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -146,7 +147,5 @@
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include layout="@layout/layout_appbar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

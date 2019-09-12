@@ -15,6 +15,7 @@ import ru.is2si.sisi.base.network.BaseUrlInterceptor
 import ru.is2si.sisi.base.network.NetworkSettings
 import ru.is2si.sisi.data.auth.AuthApi
 import ru.is2si.sisi.data.auth.ServerUrlHolder
+import ru.is2si.sisi.data.files.FilesApi
 import ru.is2si.sisi.data.finish.FinishApi
 import ru.is2si.sisi.data.network.Network
 import ru.is2si.sisi.data.points.PointApi
@@ -93,5 +94,9 @@ internal class NetworkModule {
     @Provides
     @Singleton
     fun provideFinishApi(retrofit: Retrofit): FinishApi = retrofit.create(FinishApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFilesApi(retrofit: Retrofit): FilesApi = retrofit.create(FilesApi::class.java)
 
 }

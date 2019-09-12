@@ -2,6 +2,7 @@ package ru.is2si.sisi.presentation.main
 
 import androidx.fragment.app.Fragment
 import ru.is2si.sisi.base.navigation.TabContainerFragment
+import ru.is2si.sisi.presentation.files.FilesFragment
 import ru.is2si.sisi.presentation.finish.FinishFragment
 import ru.is2si.sisi.presentation.main.Tab.*
 import ru.is2si.sisi.presentation.points.PointsFragment
@@ -14,7 +15,7 @@ class MainTabContainerFragment : TabContainerFragment() {
         TEAM -> TeamFragment.newInstance()
         POINTS -> PointsFragment.newInstance()
         FINISH -> FinishFragment.newInstance()
-        FILES -> Fragment()
+        FILES -> FilesFragment.newInstance()
         RESULT_TABLES -> ResultFragment.newInstance()
     }
 

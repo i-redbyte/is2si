@@ -42,7 +42,7 @@
         <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
-    <style name="AppTheme.DefaultButton" parent="@android:style/Widget.Button">
+    <style name="AppTheme.DefaultButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:gravity">center</item>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="is2si_photos"
+        path="Android/data/ru.is2si.sisi/files/Pictures"
+        />
+    <external-path
+        name="is2si_files"
+        path="Android/data/ru.is2si.sisi/files/Tracks"
+        />
+</paths>

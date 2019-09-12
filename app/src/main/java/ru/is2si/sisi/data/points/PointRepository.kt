@@ -10,23 +10,24 @@ import ru.is2si.sisi.base.extension.typeTokenOf
 import ru.is2si.sisi.data.network.Network
 import ru.is2si.sisi.domain.points.Point
 import ru.is2si.sisi.domain.points.PointDataSource
-import java.lang.RuntimeException
 import java.lang.reflect.Type
 import javax.inject.Inject
 
 class PointRepository @Inject constructor(
-    private val pointApi: PointApi,
-    private val network: Network,
-    private val sharedPreferences: SharedPreferences,
-    private val gson: Gson
+        private val pointApi: PointApi,
+        private val network: Network,
+        private val sharedPreferences: SharedPreferences,
+        private val gson: Gson
 ) : PointDataSource {
 
     private val pointsTypeToken: Type by lazy { typeTokenOf<List<Point>>() }
 
     override fun getPoints(competitionId: Int): Single<List<Point>> =
-        network.prepareRequest(pointApi.getPoints(competitionId))
-            .map { it.map { pointResponse -> pointResponse.toPoint() } }
-            .doOnSuccess(::saveAllPoints)
+            network.prepareRequest(pointApi.getPoints(competitionId))
+                    .map {
+                        it.map { pointResponse -> pointResponse.toPoint() }
+                    }
+                    .doOnSuccess(::saveAllPoints)
 
     override fun saveAllPoints(points: List<Point>) {
         sharedPreferences.commit { putString(ALL_POINTS, gson.toJson(points)) }
@@ -39,10 +40,10 @@ class PointRepository @Inject constructor(
 
     override fun saveSelectPoint(point: Point): Single<List<Point>> = Single.fromCallable {
         val points: MutableSet<Point> = getSelectPoint().toMutableSet()
-        if (points.find { it.id == point.id } == null ) {
+        if (points.find { it.id == point.id } == null) {
             points.add(point)
             sharedPreferences.commit { putString(SELECT_POINTS, gson.toJson(points)) }
-        }else{
+        } else {
             throw RuntimeException("Точка уже добавлена!") // TODO: Red_byte 2019-08-28 change custom Exception
         }
         return@fromCallable points.toList()
@@ -75,7 +76,7 @@ class PointRepository @Inject constructor(
     }
 
     companion object {
-        const val ALL_POINTS = "$APPLICATION_ID.ALL_POINTS"
-        const val SELECT_POINTS = "$APPLICATION_ID.SELECT_POINTS"
+        private const val ALL_POINTS = "$APPLICATION_ID.ALL_POINTS"
+        private const val SELECT_POINTS = "$APPLICATION_ID.SELECT_POINTS"
     }
 }

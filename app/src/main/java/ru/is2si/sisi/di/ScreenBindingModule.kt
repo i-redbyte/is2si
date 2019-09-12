@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ru.is2si.sisi.di.common.PerScreen
 import ru.is2si.sisi.presentation.auth.AuthFragment
+import ru.is2si.sisi.presentation.files.FilesFragment
 import ru.is2si.sisi.presentation.finish.FinishFragment
 import ru.is2si.sisi.presentation.main.MainFragment
 import ru.is2si.sisi.presentation.points.PointsFragment
@@ -41,4 +42,8 @@ interface ScreenBindingModule {
     @PerScreen
     @ContributesAndroidInjector(modules = [FinishModule::class])
     fun bindFinish(): FinishFragment
+
+    @PerScreen
+    @ContributesAndroidInjector(modules = [FilesModule::class])
+    fun bindFiles(): FilesFragment
 }
