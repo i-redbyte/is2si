@@ -16,12 +16,10 @@ class AuthPresenter @Inject constructor(
 ) : BasePresenter<AuthContract.View>(), AuthContract.Presenter {
 
     override fun start() {
-        view.showLoading()
         disposables += getSaveTeam.execute(None())
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({
-                    view.showMain()
                     if (it !is EmptyCompetitionResult) view.gotoTeamScreen()
                 }) { view.showError(it.message, it) }
     }
