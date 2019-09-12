@@ -45,13 +45,14 @@ class FinishFragment : ActionBarFragment<FinishContract.Presenter>(),
     override fun showFinishData(
             maxNormalTime: String,
             amountPenaltyPoints: String,
-            preliminaryPoints: String
+            preliminaryPoints: String,
+            dateTimeFinish: String
     ) {
         tvMaxTime.text = maxNormalTime
         tvAmountPenaltyPoints.text = amountPenaltyPoints
         tvPreliminaryPoints.text = preliminaryPoints
+        tvFixedTime.text = dateTimeFinish
     }
-
 
     override fun showMain() = stateSwitcher.switchToMain()
 

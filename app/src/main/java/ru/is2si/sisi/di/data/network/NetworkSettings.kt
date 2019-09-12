@@ -7,6 +7,7 @@ object NetworkSettingsFactory {
 
     fun create(): NetworkSettings = object : NetworkSettings {
         @Suppress("ConstantConditionIf")
+//        override val baseUrl: String = "http://192.168.1.1:8000/"
         override val baseUrl: String = "http://46.173.219.44:8000/"
 
         override val readTimeout: Long = 30

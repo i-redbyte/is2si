@@ -1,6 +1,5 @@
 package ru.is2si.sisi.presentation.files
 
-import android.util.Log
 import io.reactivex.Observable
 import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.base.BasePresenter
@@ -19,7 +18,6 @@ import ru.is2si.sisi.domain.result.CompetitionResult
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
-
 
 class FilesPresenter @Inject constructor(
         private val rxSchedulers: RxSchedulers,
@@ -74,7 +72,6 @@ class FilesPresenter @Inject constructor(
 
     override fun uploadTracks(filePath: String) {
         view.showLoading()
-        Log.d("_debug","filePath ===$filePath")
         disposables += uploadFile.execute(UploadFile.Params(filePath, pin, teamName, TYPE_TRACK))
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)

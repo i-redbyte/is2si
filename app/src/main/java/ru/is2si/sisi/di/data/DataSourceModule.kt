@@ -71,10 +71,12 @@ class DataSourceModule {
     @Singleton
     fun provideFinishDataSource(
             finishApi: FinishApi,
-            network: Network
+            network: Network,
+            sharedPreferences: SharedPreferences
     ): FinishDataSource = FinishRepository(
             finishApi = finishApi,
-            network = network
+            network = network,
+            sharedPreferences = sharedPreferences
     )
 
     @Provides

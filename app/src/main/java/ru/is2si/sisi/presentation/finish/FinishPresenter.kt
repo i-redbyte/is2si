@@ -8,6 +8,7 @@ import ru.is2si.sisi.domain.auth.GetSaveTeam
 import ru.is2si.sisi.domain.auth.GetTeamPin
 import ru.is2si.sisi.domain.finish.Finish
 import ru.is2si.sisi.domain.finish.FinishTeam
+import ru.is2si.sisi.domain.finish.GetDateTimeFinish
 import ru.is2si.sisi.domain.points.GetSelectPoints
 import ru.is2si.sisi.domain.result.CompetitionResult
 import ru.is2si.sisi.presentation.model.asView
@@ -18,7 +19,8 @@ class FinishPresenter @Inject constructor(
         private val getSaveTeam: GetSaveTeam,
         private val finishTeam: FinishTeam,
         private val getSelectPoints: GetSelectPoints,
-        private val rxSchedulers: RxSchedulers
+        private val rxSchedulers: RxSchedulers,
+        private val getDateTimeFinish: GetDateTimeFinish
 ) : BasePresenter<FinishContract.View>(), FinishContract.Presenter {
 
     override fun start() {
@@ -36,18 +38,30 @@ class FinishPresenter @Inject constructor(
                                 preliminaryPoints to competition.asView()
                             }
                 }
+                .flatMap { data ->
+                    getDateTimeFinish.execute(None())
+                            .map { dateTimeFinish ->
+                                data to dateTimeFinish
+                            }
+                }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({
                     view.showMain()
-                    val (preliminaryPoints, competition) = it
+                    val (preliminaryPoints, competition) = it.first
+                    val dateTimeFinish = it.second
                     val maxNormalTime = competition
                             .competition
                             ?.dataEndNorm
                             ?.getDateTimeOfPattern()
                             ?: ""
                     val amountPenaltyPoints = competition.penaltyBally
-                    view.showFinishData(maxNormalTime, amountPenaltyPoints, preliminaryPoints.toString())
+                    view.showFinishData(
+                            maxNormalTime,
+                            amountPenaltyPoints,
+                            preliminaryPoints.toString(),
+                            dateTimeFinish
+                    )
                 }) { view.showError(it.message, it) }
 
     }
@@ -69,10 +83,11 @@ class FinishPresenter @Inject constructor(
                 .map(Finish::asView)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .doOnSuccess { getFinishData() }
+                //.doAfterSuccess { getFinishData() }
                 .subscribe({
                     view.showMain()
                     view.showFixFinishTime(it.dataTimeFinish.getDateTimeOfPattern())
+                    getFinishData()
                 }) { view.showError(it.message, it) }
     }
 
