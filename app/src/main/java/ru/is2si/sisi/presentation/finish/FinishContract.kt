@@ -11,7 +11,8 @@ interface FinishContract {
         fun showFinishData(
                 maxNormalTime: String,
                 amountPenaltyPoints: String,
-                preliminaryPoints: String
+                preliminaryPoints: String,
+                dateTimeFinish:String
         )
     }
 
