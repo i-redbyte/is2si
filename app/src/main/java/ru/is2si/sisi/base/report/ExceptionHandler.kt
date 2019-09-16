@@ -55,8 +55,8 @@ internal class ExceptionHandler private constructor(
                             fileFormatter.format(dumpDate)
                     )
             )
-            val dumpdir = stacktraceFile.parentFile
-            val dirReady = dumpdir.isDirectory || dumpdir.mkdirs()
+            val dumpDir = stacktraceFile.parentFile
+            val dirReady = dumpDir.isDirectory || dumpDir.mkdirs()
             if (dirReady) {
                 var writer: FileWriter? = null
                 try {
