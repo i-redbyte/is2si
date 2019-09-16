@@ -23,6 +23,9 @@
     <string name="auth.pin_code">Введите пин-код</string>
     <string name="auth.come_in">Войти</string>
 
+    <string name="logout.title">Выход</string>
+    <string name="logout.text">Вы действительно хотети выйти из аккаунта?</string>
+
     <string name="team.title">Команда</string>
     <string name="team.start_name">Название старта:</string>
     <string name="team.extremal_phone">Телефон для связи в экстренном случае:</string>

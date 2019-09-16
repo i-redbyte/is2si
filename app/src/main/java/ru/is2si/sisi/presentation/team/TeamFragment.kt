@@ -26,6 +26,7 @@ import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Compani
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withMessage
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withOkText
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTitle
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.ControlResult.OK
 import ru.is2si.sisi.presentation.main.NavigationActivity
 import ru.is2si.sisi.presentation.model.CompetitionResultView
@@ -64,6 +65,20 @@ class TeamFragment :
             if (AlertBottomSheetFragment.getResult(data) == OK)
                 startActivity(requireContext().appSettingsIntent())
         }
+        if (resultCode != Activity.RESULT_OK) return
+        when (requestCode) {
+            REQUEST_LOGOUT -> {
+                if (AlertBottomSheetFragment.getResult(data) == OK)
+                    presenter.logout()
+            }
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (savedInstanceState == null) return
+        requireFragmentManager().dismissDialogByTag(TAG_LOGOUT)
+        requireFragmentManager().dismissDialogByTag(TAG_PHONE_PERMISSION)
     }
 
     private fun setupViews() {
@@ -115,7 +130,6 @@ class TeamFragment :
                         .withMessage(getString(R.string.team_phone_requested))
                         .withOkText(getString(R.string.dialog_settings))
                         .withCancelText(getString(R.string.dialog_cancel))
-                        .withCancelable(false)
                         .withTarget(this, REQUEST_PHONE_PERMISSION)
                         .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
             }
@@ -136,7 +150,13 @@ class TeamFragment :
 
     override fun onMenuSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_logout -> {
-            presenter.logout()
+            AlertBottomSheetFragment()
+                    .withTitle(getString(R.string.logout_title))
+                    .withMessage(getString(R.string.logout_text))
+                    .withOkText(getString(R.string.dialog_yes))
+                    .withCancelText(getString(R.string.dialog_no))
+                    .withTarget(this, REQUEST_LOGOUT)
+                    .show(requireFragmentManager(), TAG_LOGOUT)
             true
         }
         else -> false
@@ -148,7 +168,8 @@ class TeamFragment :
         stateSwitcher.switchToMain()
     }
 
-    override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
+    override fun getNavigator(): Navigator =
+            (requireActivity() as NavigationActivity).getMainNavigator()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
@@ -160,8 +181,9 @@ class TeamFragment :
     companion object {
         private const val REQUEST_PHONE = 501
         private const val REQUEST_PHONE_PERMISSION = 3000
+        private const val REQUEST_LOGOUT = 2000
         private const val TAG_PHONE_PERMISSION = "phone_permission"
-
+        private const val TAG_LOGOUT = "logout"
         fun newInstance(): TeamFragment = TeamFragment()
     }
 }

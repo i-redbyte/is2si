@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package ru.is2si.sisi.base.extension
 
 import android.app.Activity
@@ -8,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -46,4 +49,8 @@ inline fun <T : Fragment> T.withArguments(crossinline block: Bundle.() -> Unit):
     block.invoke(bundle)
     arguments = bundle
     return this
+}
+
+inline fun FragmentManager.dismissDialogByTag(tag: String) {
+    (findFragmentByTag(tag) as? DialogFragment)?.dismiss()
 }
