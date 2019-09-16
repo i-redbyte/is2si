@@ -55,7 +55,7 @@ class FilesPresenter @Inject constructor(
         disposables += getFileQueue.execute(None())
                 .flatMapCompletable {
                     val files = it
-                    if (files.isEmpty()) throw RuntimeException("Нет файлов для отправки на сервер")
+                    if (files.isEmpty()) throw RuntimeException("Нет файлов для отправки на сервер") // TODO: Red_byte 2019-09-17 вынести в кастомынйе эксепшен
                     Observable.fromIterable(files)
                             .flatMapCompletable { filePath ->
                                 uploadFile.execute(UploadFile.Params(filePath, pin, teamName, TYPE_PHOTOS))

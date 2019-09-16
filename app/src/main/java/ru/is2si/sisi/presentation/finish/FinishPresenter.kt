@@ -83,7 +83,6 @@ class FinishPresenter @Inject constructor(
                 .map(Finish::asView)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                //.doAfterSuccess { getFinishData() }
                 .subscribe({
                     view.showMain()
                     view.showFixFinishTime(it.dataTimeFinish.getDateTimeOfPattern())
