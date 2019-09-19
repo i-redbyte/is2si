@@ -1,8 +1,11 @@
 package ru.is2si.sisi.presentation.files
 
+import android.os.SystemClock
+import android.util.Log
 import io.reactivex.Observable
 import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.base.BasePresenter
+import ru.is2si.sisi.base.device.location.Location
 import ru.is2si.sisi.base.extension.getDateTimeOfPattern
 import ru.is2si.sisi.base.rx.RxSchedulers
 import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_PHOTOS
@@ -10,11 +13,14 @@ import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_TRACK
 import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.auth.GetSaveTeam
 import ru.is2si.sisi.domain.auth.GetTeamPin
+import ru.is2si.sisi.domain.files.GetCurrentLocation
 import ru.is2si.sisi.domain.files.GetFileQueue
 import ru.is2si.sisi.domain.files.SaveFilePathToQueue
 import ru.is2si.sisi.domain.files.SaveFilePathToQueue.Params
 import ru.is2si.sisi.domain.files.UploadFile
 import ru.is2si.sisi.domain.result.CompetitionResult
+import ru.is2si.sisi.presentation.model.LocationView
+import ru.is2si.sisi.presentation.model.asView
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -25,11 +31,17 @@ class FilesPresenter @Inject constructor(
         private val getFileQueue: GetFileQueue,
         private val getTeamPin: GetTeamPin,
         private val getSaveTeam: GetSaveTeam,
-        private val uploadFile: UploadFile
+        private val uploadFile: UploadFile,
+        private val getCurrentLocation: GetCurrentLocation
 ) : BasePresenter<FilesContract.View>(), FilesContract.Presenter {
 
     private var pin = ""
     private var teamName = ""
+    @Volatile
+    private var isGetLocationInProgress = false
+    @Volatile
+    private var lastLocationUpdate: Long = SystemClock.elapsedRealtime()
+    override var location: LocationView? = null
 
     override fun start() {
         // TODO: Red_byte 2019-09-11 refactoring this - fast decision
@@ -82,7 +94,27 @@ class FilesPresenter @Inject constructor(
 
     }
 
+    private fun getLocation() {
+        if (isGetLocationInProgress)
+            return
+        isGetLocationInProgress = true
+        disposables += getCurrentLocation.execute(None())
+                .map(Location::asView)
+                .doOnSuccess { location = it }
+                .doOnSuccess { lastLocationUpdate = SystemClock.elapsedRealtime() }
+                .doAfterTerminate { isGetLocationInProgress = false }
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .subscribe({
+                    // TODO: Red_byte 2019-09-19 test show data
+                    Log.d("_debug", "lat: ${it.latitude}")
+                    Log.d("_debug", "lon: ${it.longitude}")
+                }) { /* no-op */ }
+    }
+
+
     override fun onCameraClick() {
+        getLocation()
         view.openCamera()
     }
 
