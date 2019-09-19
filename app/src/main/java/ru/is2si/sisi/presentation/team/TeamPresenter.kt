@@ -17,7 +17,7 @@ class TeamPresenter @Inject constructor(
 
     override fun start() {
         disposables +=
-                getSaveTeam.execute(None())
+                getSaveTeam.execute(None)
                         .map{it as CompetitionResult}
                         .map(CompetitionResult::asView)
                         .subscribeOn(rxSchedulers.io)
@@ -28,7 +28,7 @@ class TeamPresenter @Inject constructor(
     override fun onPhoneClick() = view.phoneCall()
 
     override fun logout() {
-        disposables += logout.execute(None())
+        disposables += logout.execute(None)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe({ view.goToMain() }) { view.showError(it.message) }

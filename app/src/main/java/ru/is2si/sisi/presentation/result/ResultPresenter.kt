@@ -24,7 +24,7 @@ class ResultPresenter @Inject constructor(
 
     override fun getTeamData() {
         view.showLoading()
-        disposables += getSaveTeam.execute(None())
+        disposables += getSaveTeam.execute(None)
                 .map { if (it is CompetitionResult) it else throw RuntimeException("Ошибка! Неудается получить текущее соревнование.") } // TODO: Red_byte 2019-08-31 Вынести в кастомную ошибку
                 .map(CompetitionResult::asView)
                 .subscribeOn(rxSchedulers.io)
@@ -53,7 +53,7 @@ class ResultPresenter @Inject constructor(
     }
 
     override fun getResult() {
-        disposables += getResult.execute(None())
+        disposables += getResult.execute(None)
                 .map { it.map { result -> result.asView() } }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)

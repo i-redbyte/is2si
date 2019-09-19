@@ -45,9 +45,9 @@ class FilesPresenter @Inject constructor(
 
     override fun start() {
         // TODO: Red_byte 2019-09-11 refactoring this - fast decision
-        disposables += getTeamPin.execute(None())
+        disposables += getTeamPin.execute(None)
                 .flatMap { pin ->
-                    getSaveTeam.execute(None())
+                    getSaveTeam.execute(None)
                             .map { competition ->
                                 competition as CompetitionResult
                                 pin to competition
@@ -64,7 +64,7 @@ class FilesPresenter @Inject constructor(
 
     override fun uploadFiles() {
         view.showLoading()
-        disposables += getFileQueue.execute(None())
+        disposables += getFileQueue.execute(None)
                 .flatMapCompletable {
                     val files = it
                     if (files.isEmpty()) throw RuntimeException("Нет файлов для отправки на сервер") // TODO: Red_byte 2019-09-17 вынести в кастомынйе эксепшен
@@ -98,7 +98,7 @@ class FilesPresenter @Inject constructor(
         if (isGetLocationInProgress)
             return
         isGetLocationInProgress = true
-        disposables += getCurrentLocation.execute(None())
+        disposables += getCurrentLocation.execute(None)
                 .map(Location::asView)
                 .doOnSuccess { location = it }
                 .doOnSuccess { lastLocationUpdate = SystemClock.elapsedRealtime() }

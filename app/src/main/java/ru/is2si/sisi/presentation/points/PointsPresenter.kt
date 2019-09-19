@@ -24,7 +24,7 @@ class PointsPresenter @Inject constructor(
 
     override fun getPoints() {
         view.showLoading()
-        disposables += getSelectPoints.execute(None())
+        disposables += getSelectPoints.execute(None)
                 .map { it.map { selectPoint -> selectPoint.asView() } }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)

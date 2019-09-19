@@ -7,7 +7,7 @@ import io.reactivex.Single
 interface UseCase<out OutputT, in InputT> {
     fun execute(params: InputT): OutputT
 
-    class None
+    object None
 }
 
 abstract class SingleUseCase<T, in InputT> : UseCase<Single<T>, InputT> {

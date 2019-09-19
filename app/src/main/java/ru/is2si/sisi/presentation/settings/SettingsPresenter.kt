@@ -17,7 +17,7 @@ class SettingsPresenter @Inject constructor(
 ) : BasePresenter<SettingsContract.View>(), SettingsContract.Presenter {
 
     override fun start() {
-        disposables += getServerUrl.execute(None())
+        disposables += getServerUrl.execute(None)
             .subscribeOn(rxSchedulers.io)
             .observeOn(rxSchedulers.ui)
             .subscribe(view::showCurrentUrl)

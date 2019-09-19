@@ -29,17 +29,17 @@ class FinishPresenter @Inject constructor(
     }
 
     private fun getFinishData() {
-        disposables += getSelectPoints.execute(None())
+        disposables += getSelectPoints.execute(None)
                 .map { it.sumBy { point -> point.pointBall } }
                 .flatMap { preliminaryPoints ->
-                    getSaveTeam.execute(None())
+                    getSaveTeam.execute(None)
                             .map { competition ->
                                 competition as CompetitionResult
                                 preliminaryPoints to competition.asView()
                             }
                 }
                 .flatMap { data ->
-                    getDateTimeFinish.execute(None())
+                    getDateTimeFinish.execute(None)
                             .map { dateTimeFinish ->
                                 data to dateTimeFinish
                             }
@@ -68,9 +68,9 @@ class FinishPresenter @Inject constructor(
 
     override fun finishTeam() {
         view.showLoading()
-        disposables += getTeamPin.execute(None())
+        disposables += getTeamPin.execute(None)
                 .flatMap { pin ->
-                    getSaveTeam.execute(None())
+                    getSaveTeam.execute(None)
                             .map { competition ->
                                 competition as CompetitionResult
                                 pin to competition.id
