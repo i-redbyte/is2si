@@ -4,6 +4,7 @@
     <string name="bad_request_error">При загрузке данных произошла ошибка. Проверьте введенные вами данные</string>
     <string name="state.unknown_error">Неизвестная ошибка</string>
     <string name="state.error_button">Повторить</string>
+    <string name="device.detect_location_timeout">Не удалось определить местоположение. Пожалуйста, повторите попытку.</string>
 
     <string name="dialog.settings">Настройки</string>
     <string name="dialog.cancel">Отмена</string>

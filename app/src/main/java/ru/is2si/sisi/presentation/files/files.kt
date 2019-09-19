@@ -70,7 +70,7 @@ fun getDataColumn(
 
         }
     } catch (err: Exception) {
-       if (BuildConfig.DEBUG) Log.e("_debug", "err", err)
+        if (BuildConfig.DEBUG) Log.e("_debug", "err", err)
     }
     return filePath
 }

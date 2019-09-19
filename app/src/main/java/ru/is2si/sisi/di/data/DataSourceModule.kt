@@ -1,12 +1,16 @@
 package ru.is2si.sisi.di.data
 
+import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import ru.is2si.sisi.base.device.location.LocationDataSource
+import ru.is2si.sisi.base.network.NetworkSettings
 import ru.is2si.sisi.data.auth.AuthApi
 import ru.is2si.sisi.data.auth.AuthRepository
 import ru.is2si.sisi.data.auth.ServerUrlHolder
+import ru.is2si.sisi.data.device.location.LocationRepository
 import ru.is2si.sisi.data.files.FilesApi
 import ru.is2si.sisi.data.files.FilesRepository
 import ru.is2si.sisi.data.finish.FinishApi
@@ -91,6 +95,16 @@ class DataSourceModule {
             network = network,
             sharedPreferences = sharedPreferences,
             gson = gson
+    )
+
+    @Provides
+    @Singleton
+    fun provideLocationDataSource(
+            context: Context,
+            networkSettings: NetworkSettings
+    ): LocationDataSource = LocationRepository(
+            context = context,
+            networkSettings = networkSettings
     )
 
 }

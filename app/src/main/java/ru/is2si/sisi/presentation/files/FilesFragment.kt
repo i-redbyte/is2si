@@ -1,7 +1,6 @@
 package ru.is2si.sisi.presentation.files
 
-import android.Manifest.permission.CAMERA
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.Manifest.permission.*
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
@@ -99,7 +98,12 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     }
 
     private fun checkPhotoPermission() {
-        when (beforeRequestPermissions(REQUEST_CAMERA, CAMERA, WRITE_EXTERNAL_STORAGE)) {
+        when (beforeRequestPermissions(
+                REQUEST_CAMERA,
+                CAMERA,
+                WRITE_EXTERNAL_STORAGE,
+                ACCESS_COARSE_LOCATION
+        )) {
             BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick()
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
@@ -114,7 +118,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     private fun checkStoragePermission() {
         when (beforeRequestPermissions(REQUEST_STORAGE_PERMISSION, WRITE_EXTERNAL_STORAGE)) {
-            BeforeRequestPermissionResult.AlreadyGranted ->  selectTrack()
+            BeforeRequestPermissionResult.AlreadyGranted -> selectTrack()
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
                         REQUEST_STORAGE_PERMISSION,
@@ -161,7 +165,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             REQUEST_STORAGE_PERMISSION -> {
                 selectTrack()
             }
-            REQUEST_TRACK->{
+            REQUEST_TRACK -> {
                 val uri = data?.data as Uri
                 presenter.uploadTracks(getPath(requireContext(), uri) ?: "")
             }
