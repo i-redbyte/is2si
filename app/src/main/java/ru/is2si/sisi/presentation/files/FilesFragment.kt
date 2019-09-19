@@ -1,7 +1,6 @@
 package ru.is2si.sisi.presentation.files
 
-import android.Manifest.permission.CAMERA
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.Manifest.permission.*
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
@@ -34,16 +33,16 @@ import java.io.IOException
 import javax.inject.Inject
 
 class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
-        NavigatorProvider, FilesContract.View {
+    NavigatorProvider, FilesContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
     private var photoPath = ""
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_files, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,8 +65,8 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             pictureIntent.resolveActivity(ctx.packageManager)?.also {
                 val photoFile = try {
                     presenter.createPhoto(
-                            ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                                    ?: throw IOException()
+                        ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                            ?: throw IOException()
                     )
                 } catch (err: IOException) {
                     showError(err.message, err)
@@ -76,9 +75,9 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
-                            ctx,
-                            "${BuildConfig.APPLICATION_ID}.fileprovider",
-                            it
+                        ctx,
+                        "${BuildConfig.APPLICATION_ID}.fileprovider",
+                        it
                     )
                     photoPath = photoFile.absolutePath
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -92,20 +91,25 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         val mimeTypes =
-                arrayOf("text/plain", "image/*", "application/pdf", "application/doc", "text/html")
+            arrayOf("text/plain", "image/*", "application/pdf", "application/doc", "text/html")
         intent.type = "*/*"
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         startActivityForResult(intent, REQUEST_TRACK)
     }
 
     private fun checkPhotoPermission() {
-        when (beforeRequestPermissions(REQUEST_CAMERA, CAMERA, WRITE_EXTERNAL_STORAGE)) {
+        when (beforeRequestPermissions(
+            REQUEST_CAMERA,
+            CAMERA,
+            WRITE_EXTERNAL_STORAGE,
+            ACCESS_COARSE_LOCATION
+        )) {
             BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick()
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
-                        REQUEST_CAMERA,
-                        true,
-                        CAMERA, WRITE_EXTERNAL_STORAGE
+                    REQUEST_CAMERA,
+                    true,
+                    CAMERA, WRITE_EXTERNAL_STORAGE
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -114,12 +118,12 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     private fun checkStoragePermission() {
         when (beforeRequestPermissions(REQUEST_STORAGE_PERMISSION, WRITE_EXTERNAL_STORAGE)) {
-            BeforeRequestPermissionResult.AlreadyGranted ->  selectTrack()
+            BeforeRequestPermissionResult.AlreadyGranted -> selectTrack()
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
-                        REQUEST_STORAGE_PERMISSION,
-                        true,
-                        WRITE_EXTERNAL_STORAGE
+                    REQUEST_STORAGE_PERMISSION,
+                    true,
+                    WRITE_EXTERNAL_STORAGE
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -127,9 +131,9 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         when (afterRequestPermissions(permissions, grantResults)) {
             AfterRequestPermissionsResult.Granted -> {
@@ -137,12 +141,12 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             }
             AfterRequestPermissionsResult.NeverAskAgain -> {
                 AlertBottomSheetFragment()
-                        .withMessage(getString(R.string.files_camera_requested))
-                        .withOkText(getString(R.string.dialog_settings))
-                        .withCancelText(getString(R.string.dialog_cancel))
-                        .withCancelable(false)
-                        .withTarget(this, REQUEST_CAMERA_PERMISSION)
-                        .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
+                    .withMessage(getString(R.string.files_camera_requested))
+                    .withOkText(getString(R.string.dialog_settings))
+                    .withCancelText(getString(R.string.dialog_cancel))
+                    .withCancelable(false)
+                    .withTarget(this, REQUEST_CAMERA_PERMISSION)
+                    .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
             }
         }
     }
@@ -161,7 +165,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             REQUEST_STORAGE_PERMISSION -> {
                 selectTrack()
             }
-            REQUEST_TRACK->{
+            REQUEST_TRACK -> {
                 val uri = data?.data as Uri
                 presenter.uploadTracks(getPath(requireContext(), uri) ?: "")
             }
@@ -171,7 +175,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     override fun showSuccessUpload() {
         Snackbar.make(fabPhoto, getString(R.string.files_success_upload), Snackbar.LENGTH_LONG)
-                .show()
+            .show()
     }
 
     override fun showMain() = stateSwitcher.switchToMain()
@@ -179,10 +183,10 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     override fun showLoading() = stateSwitcher.switchToLoading()
 
     override fun showError(message: String?, throwable: Throwable) =
-            stateSwitcher.switchToError(message, throwable) { stateSwitcher.switchToMain() }
+        stateSwitcher.switchToError(message, throwable) { stateSwitcher.switchToMain() }
 
     override fun showError(message: String) =
-            stateSwitcher.switchToError(message) { stateSwitcher.switchToMain() }
+        stateSwitcher.switchToError(message) { stateSwitcher.switchToMain() }
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
@@ -192,7 +196,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     }
 
     override fun getNavigator(): Navigator =
-            (requireActivity() as NavigationActivity).getMainNavigator()
+        (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
         private const val REQUEST_CAMERA = 517
