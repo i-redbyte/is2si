@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +30,8 @@ import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Compani
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.ControlResult.OK
 import ru.is2si.sisi.presentation.main.NavigationActivity
+import java.io.BufferedOutputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
@@ -90,8 +93,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     private fun selectTrack() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        val mimeTypes =
-                arrayOf("text/plain", "image/*", "application/pdf", "application/doc", "text/html")
+        val mimeTypes = arrayOf("text/*", "image/*", "application/*")
         intent.type = "*/*"
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         startActivityForResult(intent, REQUEST_TRACK)
@@ -109,7 +111,7 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
                 beforeRequestPermissions(
                         REQUEST_CAMERA,
                         true,
-                        CAMERA, WRITE_EXTERNAL_STORAGE
+                        CAMERA, WRITE_EXTERNAL_STORAGE, ACCESS_COARSE_LOCATION
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -117,13 +119,18 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     }
 
     private fun checkStoragePermission() {
-        when (beforeRequestPermissions(REQUEST_STORAGE_PERMISSION, WRITE_EXTERNAL_STORAGE)) {
+        when (beforeRequestPermissions(
+                REQUEST_STORAGE_PERMISSION,
+                WRITE_EXTERNAL_STORAGE,
+                ACCESS_COARSE_LOCATION,
+                CAMERA
+        )) {
             BeforeRequestPermissionResult.AlreadyGranted -> selectTrack()
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
                         REQUEST_STORAGE_PERMISSION,
                         true,
-                        WRITE_EXTERNAL_STORAGE
+                        CAMERA, WRITE_EXTERNAL_STORAGE, ACCESS_COARSE_LOCATION
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -137,7 +144,10 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
     ) {
         when (afterRequestPermissions(permissions, grantResults)) {
             AfterRequestPermissionsResult.Granted -> {
-                presenter.onCameraClick()
+                when (requestCode) {
+                    REQUEST_STORAGE_PERMISSION -> selectTrack()
+                    REQUEST_CAMERA -> presenter.onCameraClick()
+                }
             }
             AfterRequestPermissionsResult.NeverAskAgain -> {
                 AlertBottomSheetFragment()
@@ -167,10 +177,44 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             }
             REQUEST_TRACK -> {
                 val uri = data?.data as Uri
-                presenter.uploadTracks(getPath(requireContext(), uri) ?: "")
+                saveTmpFileTrackAndUpload(uri)
             }
         }
 
+    }
+
+    // TODO: Red_byte 2019-09-19 remove to presenter
+    private fun saveTmpFileTrackAndUpload(uri: Uri) {
+        val fileName = uri.path?.split("/".toRegex())?.last() ?: ""
+        val mime = MimeTypeMap.getSingleton()
+        val extension = mime.getExtensionFromMimeType(requireContext().contentResolver.getType(uri))
+        val findDot = fileName.indexOf(".")
+        val destinationFilename = if (extension.isNullOrEmpty() || findDot > -1)
+            Environment.getExternalStorageDirectory().path +
+                    "/Android/data/${BuildConfig.APPLICATION_ID}/files/$fileName"
+        else
+            Environment.getExternalStorageDirectory().path +
+                    "/Android/data/${BuildConfig.APPLICATION_ID}/files/$fileName.$extension"
+        val bis = requireContext().contentResolver.openInputStream(uri)
+        var bos: BufferedOutputStream? = null
+        try {
+            bos = BufferedOutputStream(FileOutputStream(destinationFilename, false))
+            val buf = ByteArray(1024)
+            bis?.read(buf)
+            do {
+                bos.write(buf)
+            } while (bis?.read(buf) != -1)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                bis?.close()
+                bos?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        presenter.uploadTracks(destinationFilename)
     }
 
     override fun showSuccessUpload() {
