@@ -16,7 +16,7 @@ class AlertBottomSheetBehaviour<T : View> : BottomSheetBehavior<T> {
     constructor() : super()
 
     @Suppress("unused")
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun onStartNestedScroll(
             coordinatorLayout: CoordinatorLayout,
