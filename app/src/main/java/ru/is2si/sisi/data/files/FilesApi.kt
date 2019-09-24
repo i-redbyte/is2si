@@ -18,4 +18,16 @@ interface FilesApi {
             teamName: String,
             @Part file: MultipartBody.Part
     ): Completable
+
+    @Multipart
+    @POST("Api/upload/")
+    fun uploadFiles(
+            @Part("filesDescript")
+            type: String,
+            @Part("pinkod")
+            pin: String,
+            @Part("NameCommand")
+            teamName: String,
+            @Part files: List<MultipartBody.Part>
+    ): Completable
 }

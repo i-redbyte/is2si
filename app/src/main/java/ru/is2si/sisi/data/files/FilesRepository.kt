@@ -39,6 +39,21 @@ class FilesRepository @Inject constructor(
         )).doOnComplete { removeFilePath(file) }
     }
 
+    override fun uploadFiles(
+            file: List<String>,
+            pin: String,
+            teamName: String,
+            type: String
+    ): Completable {
+
+        return network.prepareRequest(filesApi.uploadFiles(
+                type,
+                pin,
+                teamName,
+                getMultiparts(file)
+        ))
+    }
+
     private fun getMultipart(filePath: String, type: String): MultipartBody.Part {
         val file = File(filePath)
         val fileReqBody =
@@ -48,6 +63,10 @@ class FilesRepository @Inject constructor(
                     RequestBody.create(MediaType.parse("file/*"), file)
                 }
         return MultipartBody.Part.createFormData("document", file.name, fileReqBody)
+    }
+
+    private fun getMultiparts(files: List<String>): List<MultipartBody.Part> {
+        return files.map { getMultipart(it, TYPE_PHOTOS) }
     }
 
     override fun addFilePath(path: String): Completable = Completable.fromAction {

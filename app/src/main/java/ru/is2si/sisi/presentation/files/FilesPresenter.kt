@@ -11,11 +11,8 @@ import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_TRACK
 import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.auth.GetSaveTeam
 import ru.is2si.sisi.domain.auth.GetTeamPin
-import ru.is2si.sisi.domain.files.GetCurrentLocation
-import ru.is2si.sisi.domain.files.GetFileQueue
-import ru.is2si.sisi.domain.files.SaveFilePathToQueue
+import ru.is2si.sisi.domain.files.*
 import ru.is2si.sisi.domain.files.SaveFilePathToQueue.Params
-import ru.is2si.sisi.domain.files.UploadFile
 import ru.is2si.sisi.domain.result.CompetitionResult
 import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.asView
@@ -28,6 +25,7 @@ class FilesPresenter @Inject constructor(
         private val getTeamPin: GetTeamPin,
         private val getSaveTeam: GetSaveTeam,
         private val uploadFile: UploadFile,
+        private val uploadFiles: UploadFiles,
         private val getCurrentLocation: GetCurrentLocation
 ) : BasePresenter<FilesContract.View>(), FilesContract.Presenter {
 
@@ -75,6 +73,20 @@ class FilesPresenter @Inject constructor(
                     view.showSuccessUpload()
                 }) { view.showError(it.message, it) }
     }
+// TODO: Red_byte 2019-09-24 uncoment and change or remove
+//    override fun uploadFiles() {
+//        view.showLoading()
+//        disposables += getFileQueue.execute(None)
+//                .flatMapCompletable {
+//                    uploadFiles.execute(UploadFiles.Params(it, pin, teamName, TYPE_PHOTOS))
+//                }
+//                .subscribeOn(rxSchedulers.io)
+//                .observeOn(rxSchedulers.ui)
+//                .subscribe({
+//                    view.showMain()
+//                    view.showSuccessUpload()
+//                }) { view.showError(it.message, it) }
+//    }
 
     override fun uploadTracks(filePath: String) {
         view.showLoading()

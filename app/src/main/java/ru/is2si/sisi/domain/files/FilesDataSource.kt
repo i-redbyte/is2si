@@ -10,8 +10,15 @@ interface FilesDataSource {
 
     fun uploadFile(
             file: String,
-            pin:String,
-            teamName:String,
-            type:String
+            pin: String,
+            teamName: String,
+            type: String
+    ): Completable
+
+    fun uploadFiles(
+            file: List<String>,
+            pin: String,
+            teamName: String,
+            type: String
     ): Completable
 }
