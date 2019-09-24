@@ -10,7 +10,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
@@ -30,8 +29,6 @@ import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Compani
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.ControlResult.OK
 import ru.is2si.sisi.presentation.main.NavigationActivity
-import java.io.BufferedOutputStream
-import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
@@ -40,6 +37,10 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
+
+    @Inject
+    lateinit var filesHandler: FilesHandler
+
     private var photoPath = ""
 
     override fun onCreateView(
@@ -177,44 +178,12 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
             }
             REQUEST_TRACK -> {
                 val uri = data?.data as Uri
-                saveTmpFileTrackAndUpload(uri)
+                filesHandler.saveTrackFileToTmpDirectory(uri) {
+                    presenter.uploadTracks(it)
+                }
             }
         }
 
-    }
-
-    // TODO: Red_byte 2019-09-19 remove to presenter
-    private fun saveTmpFileTrackAndUpload(uri: Uri) {
-        val fileName = uri.path?.split("/".toRegex())?.last() ?: ""
-        val mime = MimeTypeMap.getSingleton()
-        val extension = mime.getExtensionFromMimeType(requireContext().contentResolver.getType(uri))
-        val findDot = fileName.indexOf(".")
-        val destinationFilename = if (extension.isNullOrEmpty() || findDot > -1)
-            Environment.getExternalStorageDirectory().path +
-                    "/Android/data/${BuildConfig.APPLICATION_ID}/files/$fileName"
-        else
-            Environment.getExternalStorageDirectory().path +
-                    "/Android/data/${BuildConfig.APPLICATION_ID}/files/$fileName.$extension"
-        val bis = requireContext().contentResolver.openInputStream(uri)
-        var bos: BufferedOutputStream? = null
-        try {
-            bos = BufferedOutputStream(FileOutputStream(destinationFilename, false))
-            val buf = ByteArray(1024)
-            bis?.read(buf)
-            do {
-                bos.write(buf)
-            } while (bis?.read(buf) != -1)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                bis?.close()
-                bos?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        presenter.uploadTracks(destinationFilename)
     }
 
     override fun showSuccessUpload() {

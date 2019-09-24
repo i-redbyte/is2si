@@ -8,6 +8,7 @@ import ru.is2si.sisi.base.switcher.ViewStateSwitcher
 import ru.is2si.sisi.di.common.PerScreen
 import ru.is2si.sisi.presentation.files.FilesContract
 import ru.is2si.sisi.presentation.files.FilesFragment
+import ru.is2si.sisi.presentation.files.FilesHandler
 import ru.is2si.sisi.presentation.files.FilesPresenter
 
 @Module
@@ -28,5 +29,11 @@ abstract class FilesModule {
         @PerScreen
         fun stateSwitcher(view: FilesFragment) =
                 ViewStateSwitcher(view.requireActivity(), R.id.vgContainer)
+
+        @JvmStatic
+        @Provides
+        @PerScreen
+        fun filesHandler(view: FilesFragment) =
+                FilesHandler(view.requireContext().contentResolver)
     }
 }
