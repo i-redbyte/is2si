@@ -70,7 +70,15 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVer"
     implementation "com.squareup.okhttp3:logging-interceptor:3.14.2"
 
+    // Tests
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    def mockkVer = "1.9.3"
+    api "io.mockk:mockk:$mockkVer"
+    androidTestImplementation "io.mockk:mockk-android:$mockkVer"
+    api ("org.powermock:powermock-module-junit4:2.0.0"){
+        transitive = true
+    }
 }

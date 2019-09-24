@@ -5,6 +5,7 @@ import ru.is2si.sisi.base.rx.RxSchedulers
 import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.auth.AuthTeam
 import ru.is2si.sisi.domain.auth.AuthTeam.Param
+import ru.is2si.sisi.domain.auth.GetPointsNullException
 import ru.is2si.sisi.domain.auth.GetSaveTeam
 import ru.is2si.sisi.domain.result.EmptyCompetitionResult
 import javax.inject.Inject
@@ -33,7 +34,12 @@ class AuthPresenter @Inject constructor(
                     view.showMain()
                     view.gotoTeamScreen()
                 }) {
-                    view.showError(it.message, it)
+                    if (it is GetPointsNullException) {
+                        view.showEmptyPointsToast(it.message)
+                        view.showMain()
+                        view.gotoTeamScreen()
+                    } else
+                        view.showError(it.message, it)
                 }
     }
 }

@@ -2,6 +2,7 @@ package ru.is2si.sisi.presentation.auth
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.fragment_auth.*
 import ru.is2si.sisi.R
@@ -75,13 +76,16 @@ class AuthFragment :
 
     override fun showLoading() = stateSwitcher.switchToLoading()
 
+    override fun showEmptyPointsToast(message: String?) =
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+
     override fun showError(message: String?, throwable: Throwable) =
             stateSwitcher.switchToError(message, throwable) {
                 stateSwitcher.switchToMain()
             }
 
     override fun showMain() =
-        stateSwitcher.switchToMain()
+            stateSwitcher.switchToMain()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Туси...</string>
+    <string name="app_name">Туси…</string>
     <string name="network_request_error">При загрузке данных произошла ошибка. Проверьте Ваше подключение к сети.</string>
     <string name="bad_request_error">При загрузке данных произошла ошибка. Проверьте введенные вами данные</string>
     <string name="state.unknown_error">Неизвестная ошибка</string>
@@ -30,7 +30,7 @@
     <string name="team.title">Команда</string>
     <string name="team.start_name">Название старта:</string>
     <string name="team.extremal_phone">Телефон для связи в экстренном случае:</string>
-    <string name="team.phone_number">8-800-888-88-88</string>
+    <string name="team.phone_number_fake">8–800–888–88–88</string>
     <string name="team.team_name">Название команды:</string>
     <string name="team.max_normal_finish_time">Максимально нормальное время финиша:</string>
     <string name="team.finish_time_limit">Предельное время финиша:</string>

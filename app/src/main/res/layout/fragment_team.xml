@@ -89,7 +89,7 @@
                 android:drawablePadding="8dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="start"
-                tools:text="@string/team.phone_number"
+                tools:text="@string/team.phone_number_fake"
                 android:textColor="@color/red"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"

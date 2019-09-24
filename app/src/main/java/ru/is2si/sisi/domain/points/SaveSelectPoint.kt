@@ -5,16 +5,17 @@ import ru.is2si.sisi.domain.SingleUseCase
 import javax.inject.Inject
 
 class SaveSelectPoint @Inject constructor(
-    private val pointDataSource: PointDataSource
+        private val pointDataSource: PointDataSource
 ) : SingleUseCase<List<Point>, SaveSelectPoint.Params>() {
 
     override fun execute(params: Params): Single<List<Point>> =
-        pointDataSource.getAllSavePoints()
-            .flatMap {
-                val p = it.firstOrNull { point -> point.pointNameStr == params.pointName }
-                pointDataSource.saveSelectPoint(p ?: throw RuntimeException("Точка не найдена!")) // TODO: Red_byte 2019-08-28 change custom Exception
-                    .flatMap { points -> Single.just(points) }
-            }
+            pointDataSource.getAllSavePoints()
+                    .flatMap {
+                        val p = it.firstOrNull { point -> point.pointNameStr == params.pointName }
+                        pointDataSource.saveSelectPoint(p
+                                ?: throw PointNotFoundException("Точка не найдена!"))
+                                .flatMap { points -> Single.just(points) }
+                    }
 
     class Params(val pointName: String)
 }

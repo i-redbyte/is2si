@@ -57,7 +57,9 @@ class FilesRepository @Inject constructor(
 
     override fun getFilesPath(): Single<List<String>> = Single.fromCallable {
         val paths = sharedPreferences.getString(ALL_FILES_PATH, "")
-        return@fromCallable gson.fromJson(paths, filesTypeToken) ?: listOf<String>()
+        val result = gson.fromJson(paths, filesTypeToken) ?: listOf<String>()
+        if (result.isEmpty()) throw QueueFilesIsEmptyException("Нет файлов для отправки на сервер.")
+        return@fromCallable result
     }
 
     private fun getPaths(): List<String> {

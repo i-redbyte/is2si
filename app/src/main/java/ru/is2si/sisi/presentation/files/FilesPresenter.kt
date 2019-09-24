@@ -63,12 +63,10 @@ class FilesPresenter @Inject constructor(
         disposables += getFileQueue.execute(None)
                 .flatMapCompletable {
                     val files = it
-                    if (files.isEmpty()) throw RuntimeException("Нет файлов для отправки на сервер") // TODO: Red_byte 2019-09-17 вынести в кастомынйе эксепшен
                     Observable.fromIterable(files)
                             .flatMapCompletable { filePath ->
                                 uploadFile.execute(UploadFile.Params(filePath, pin, teamName, TYPE_PHOTOS))
                             }
-
                 }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
@@ -87,7 +85,6 @@ class FilesPresenter @Inject constructor(
                     view.showMain()
                     view.showSuccessUpload()
                 }) { view.showError(it.message, it) }
-
     }
 
     private fun getLocation() {
@@ -107,7 +104,6 @@ class FilesPresenter @Inject constructor(
                     Log.d("_debug", "lon: ${it.longitude}")
                 }) { /* no-op */ }
     }
-
 
     override fun onCameraClick() {
         getLocation()

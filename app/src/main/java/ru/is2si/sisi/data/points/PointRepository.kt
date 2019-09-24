@@ -44,11 +44,10 @@ class PointRepository @Inject constructor(
             points.add(point)
             sharedPreferences.commit { putString(SELECT_POINTS, gson.toJson(points)) }
         } else {
-            throw RuntimeException("Точка уже добавлена!") // TODO: Red_byte 2019-08-28 change custom Exception
+            throw PointAlreadyExistsException("Точка уже добавлена!")
         }
         return@fromCallable points.toList()
     }
-
 
     override fun getSelectPoints(): Single<List<Point>> = Single.fromCallable {
         val points = sharedPreferences.getString(SELECT_POINTS, "")

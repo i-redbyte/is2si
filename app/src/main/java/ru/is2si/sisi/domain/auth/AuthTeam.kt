@@ -15,10 +15,9 @@ class AuthTeam @Inject constructor(
                     .flatMap {
                         val result = it
                         pointDataSource.getPoints(result.competition?.id
-                                ?: throw RuntimeException("Ошибка при получении точек")) // TODO: Red_byte 2019-09-10 вынести в кастомную ошибку
+                                ?: throw GetPointsNullException("Не удалось получить точки! ID соревнования null"))
                                 .flatMap { Single.just(result) }
                     }
 
     class Param(val pin: String)
-
 }

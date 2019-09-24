@@ -8,6 +8,7 @@ interface AuthContract {
         fun showLoading()
         fun showMain()
         fun showError(message: String?, throwable: Throwable)
+        fun showEmptyPointsToast(message: String?)
     }
 
     interface Presenter : BaseContract.Presenter {
