@@ -20,6 +20,5 @@ interface FilesContract {
         fun onCameraClick()
         fun addToPhotosQueue(photoPath: String)
         fun uploadTracks(filePath: String)
-        fun createPhoto(filesDir: File): File
     }
 }

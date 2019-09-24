@@ -3,10 +3,8 @@ package ru.is2si.sisi.presentation.files
 import android.os.SystemClock
 import android.util.Log
 import io.reactivex.Observable
-import org.threeten.bp.LocalDateTime
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.device.location.Location
-import ru.is2si.sisi.base.extension.getDateTimeOfPattern
 import ru.is2si.sisi.base.rx.RxSchedulers
 import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_PHOTOS
 import ru.is2si.sisi.data.files.FilesRepository.Companion.TYPE_TRACK
@@ -21,8 +19,6 @@ import ru.is2si.sisi.domain.files.UploadFile
 import ru.is2si.sisi.domain.result.CompetitionResult
 import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.asView
-import java.io.File
-import java.io.IOException
 import javax.inject.Inject
 
 class FilesPresenter @Inject constructor(
@@ -117,13 +113,6 @@ class FilesPresenter @Inject constructor(
         getLocation()
         view.openCamera()
     }
-
-    @Throws(IOException::class)
-    override fun createPhoto(filesDir: File): File = File.createTempFile(
-            LocalDateTime.now().getDateTimeOfPattern("dd_LL_YYYY_HH_mm_ss"),
-            ".jpg",
-            filesDir
-    )
 
     override fun addToPhotosQueue(photoPath: String) {
         disposables += saveFilePathToQueue.execute(Params(photoPath))

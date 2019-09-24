@@ -5,16 +5,13 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.FileProvider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_files.*
-import ru.is2si.sisi.BuildConfig
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.extension.*
@@ -67,25 +64,14 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
         val ctx = requireContext()
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent ->
             pictureIntent.resolveActivity(ctx.packageManager)?.also {
-                val photoFile = try {
-                    presenter.createPhoto(
-                            ctx.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                                    ?: throw IOException()
-                    )
+                try {
+                    filesHandler.saveImage(requireContext()) { path, photoUri ->
+                        photoPath = path
+                        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                        startActivityForResult(pictureIntent, REQUEST_CAMERA)
+                    }
                 } catch (err: IOException) {
                     showError(err.message, err)
-                    null
-                }
-
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                            ctx,
-                            "${BuildConfig.APPLICATION_ID}.fileprovider",
-                            it
-                    )
-                    photoPath = photoFile.absolutePath
-                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(pictureIntent, REQUEST_CAMERA)
                 }
             }
         }
