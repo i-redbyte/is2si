@@ -19,7 +19,6 @@ import ru.is2si.sisi.domain.files.UploadFile
 import ru.is2si.sisi.domain.result.CompetitionResult
 import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.asView
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class FilesPresenter @Inject constructor(
@@ -67,7 +66,7 @@ class FilesPresenter @Inject constructor(
                     Observable.fromIterable(files)
                             .flatMapCompletable { filePath ->
                                 uploadFile.execute(UploadFile.Params(filePath, pin, teamName, TYPE_PHOTOS))
-                            }.delay(250, TimeUnit.MILLISECONDS)
+                            }
                 }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
