@@ -30,12 +30,13 @@ class FilesRepository @Inject constructor(
             teamName: String,
             type: String
     ): Completable {
+
         return network.prepareRequest(filesApi.uploadFile(
                 type,
                 pin,
                 teamName,
                 getMultipart(file, type)
-        ))
+        )).doOnComplete { removeFilePath(file) }
     }
 
     private fun getMultipart(filePath: String, type: String): MultipartBody.Part {
@@ -60,6 +61,12 @@ class FilesRepository @Inject constructor(
         val result = gson.fromJson(paths, filesTypeToken) ?: listOf<String>()
         if (result.isEmpty()) throw QueueFilesIsEmptyException("Нет файлов для отправки на сервер.")
         return@fromCallable result
+    }
+
+    private fun removeFilePath(path: String) {
+        val paths: MutableSet<String> = getPaths().toMutableSet()
+        paths.remove(path)
+        sharedPreferences.commit { putString(ALL_FILES_PATH, gson.toJson(paths)) }
     }
 
     private fun getPaths(): List<String> {
