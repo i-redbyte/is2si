@@ -56,6 +56,7 @@ class SettingsFragment : ActionBarFragment<SettingsContract.Presenter>(),
     override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
+        @JvmStatic
         fun newInstance(): SettingsFragment = SettingsFragment()
     }
 }

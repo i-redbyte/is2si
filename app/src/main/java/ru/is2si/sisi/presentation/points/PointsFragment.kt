@@ -107,12 +107,13 @@ class PointsFragment :
     override fun getNavigator(): Navigator =
             (requireActivity() as NavigationActivity).getMainNavigator()
 
-    companion object {
-        fun newInstance(): PointsFragment = PointsFragment()
-    }
-
     override fun showSnack(message: String?) {
         Snackbar.make(requireView(), message as CharSequence, Snackbar.LENGTH_LONG).show()
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): PointsFragment = PointsFragment()
     }
 
 }

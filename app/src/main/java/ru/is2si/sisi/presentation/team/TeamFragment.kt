@@ -184,6 +184,8 @@ class TeamFragment :
         private const val REQUEST_LOGOUT = 2000
         private const val TAG_PHONE_PERMISSION = "phone_permission"
         private const val TAG_LOGOUT = "logout"
+
+        @JvmStatic
         fun newInstance(): TeamFragment = TeamFragment()
     }
 }

@@ -97,6 +97,7 @@ class AuthFragment :
     override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
+        @JvmStatic
         fun newInstance(): AuthFragment = AuthFragment()
     }
 }

@@ -107,6 +107,7 @@ class ResultFragment :
     override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
+        @JvmStatic
         fun newInstance(): ResultFragment = ResultFragment()
     }
 }
