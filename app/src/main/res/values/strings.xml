@@ -48,6 +48,8 @@
     <string name="points.point_number">Баллы:</string>
     <string name="points.point_name">Имя точки:</string>
 
+    <string name="point.title">Точка %1$s</string>
+
     <string name="settings.title">Настройки</string>
     <string name="settings.change_url">Изменить URL сервера</string>
     <string name="settings.save">Сохранить</string>

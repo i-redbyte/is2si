@@ -22,7 +22,6 @@ import ru.is2si.sisi.base.switcher.ViewStateSwitcher
 import ru.is2si.sisi.presentation.auth.AuthFragment
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelText
-import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelable
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withMessage
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withOkText
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
@@ -33,10 +32,10 @@ import ru.is2si.sisi.presentation.model.CompetitionResultView
 import javax.inject.Inject
 
 class TeamFragment :
-        ActionBarFragment<TeamContract.Presenter>(),
-        NavigatorProvider,
-        MenuSelectCallback,
-        TeamContract.View {
+    ActionBarFragment<TeamContract.Presenter>(),
+    NavigatorProvider,
+    MenuSelectCallback,
+    TeamContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
@@ -48,9 +47,9 @@ class TeamFragment :
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_team, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,9 +106,9 @@ class TeamFragment :
             AlreadyGranted -> presenter.onPhoneClick()
             ShowRationale -> {
                 beforeRequestPermissions(
-                        REQUEST_PHONE,
-                        true,
-                        CALL_PHONE
+                    REQUEST_PHONE,
+                    true,
+                    CALL_PHONE
                 )
             }
             Requested -> Unit
@@ -117,9 +116,9 @@ class TeamFragment :
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         when (afterRequestPermissions(permissions, grantResults)) {
             Granted -> {
@@ -127,11 +126,11 @@ class TeamFragment :
             }
             NeverAskAgain -> {
                 AlertBottomSheetFragment()
-                        .withMessage(getString(R.string.team_phone_requested))
-                        .withOkText(getString(R.string.dialog_settings))
-                        .withCancelText(getString(R.string.dialog_cancel))
-                        .withTarget(this, REQUEST_PHONE_PERMISSION)
-                        .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
+                    .withMessage(getString(R.string.team_phone_requested))
+                    .withOkText(getString(R.string.dialog_settings))
+                    .withCancelText(getString(R.string.dialog_cancel))
+                    .withTarget(this, REQUEST_PHONE_PERMISSION)
+                    .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
             }
         }
     }
@@ -146,17 +145,17 @@ class TeamFragment :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-            menuSelectListener.onSelected(item) or super.onOptionsItemSelected(item)
+        menuSelectListener.onSelected(item) or super.onOptionsItemSelected(item)
 
     override fun onMenuSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_logout -> {
             AlertBottomSheetFragment()
-                    .withTitle(getString(R.string.logout_title))
-                    .withMessage(getString(R.string.logout_text))
-                    .withOkText(getString(R.string.dialog_yes))
-                    .withCancelText(getString(R.string.dialog_no))
-                    .withTarget(this, REQUEST_LOGOUT)
-                    .show(requireFragmentManager(), TAG_LOGOUT)
+                .withTitle(getString(R.string.logout_title))
+                .withMessage(getString(R.string.logout_text))
+                .withOkText(getString(R.string.dialog_yes))
+                .withCancelText(getString(R.string.dialog_no))
+                .withTarget(this, REQUEST_LOGOUT)
+                .show(requireFragmentManager(), TAG_LOGOUT)
             true
         }
         else -> false
@@ -169,7 +168,7 @@ class TeamFragment :
     }
 
     override fun getNavigator(): Navigator =
-            (requireActivity() as NavigationActivity).getMainNavigator()
+        (requireActivity() as NavigationActivity).getMainNavigator()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 

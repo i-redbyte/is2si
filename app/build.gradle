@@ -76,9 +76,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     def mockkVer = "1.9.3"
-    api "io.mockk:mockk:$mockkVer"
-    androidTestImplementation "io.mockk:mockk-android:$mockkVer"
-    api ("org.powermock:powermock-module-junit4:2.0.0"){
-        transitive = true
-    }
+    testImplementation "io.mockk:mockk:$mockkVer"
+    androidTestImplementation("io.mockk:mockk-android:$mockkVer") { exclude module: 'objenesis' }
+    androidTestImplementation 'org.objenesis:objenesis:3.0.1'
 }

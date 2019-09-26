@@ -20,6 +20,7 @@ import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
 import ru.is2si.sisi.presentation.main.NavigationActivity
 import ru.is2si.sisi.presentation.model.PointView
+import ru.is2si.sisi.presentation.points.point.PointFragment
 import javax.inject.Inject
 
 class PointsFragment :
@@ -58,10 +59,20 @@ class PointsFragment :
     private fun setupRecyclerView() {
         adapter = DelegationAdapter()
         rvPoints.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        val policyDelegate = PointDelegate(requireContext()) {
-            val point = adapter.items[it] as PointView
-            presenter.removePoint(point, it)
+
+        val pointClickListener = object : PointClickListener {
+            override fun onRemoveClick(position: Int) {
+                val point = adapter.items[position] as PointView
+                presenter.removePoint(point, position)
+            }
+
+            override fun onPointClick(position: Int) {
+                val point = adapter.items[position] as PointView
+                getNavigator().fragmentAdd(PointFragment.forPoint(point))
+            }
         }
+
+        val policyDelegate = PointsDelegate(requireContext(), pointClickListener)
         adapter.delegatesManager
                 .addDelegate(policyDelegate)
         rvPoints.adapter = adapter
