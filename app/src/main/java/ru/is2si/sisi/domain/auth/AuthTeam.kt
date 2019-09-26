@@ -13,8 +13,7 @@ class AuthTeam @Inject constructor(
 
     override fun execute(params: Param): Single<CompetitionResult> =
             authDataSource.authTeam(params.pin)
-                    .flatMap {
-                        val result = it
+                    .flatMap { result ->
                         pointDataSource.getPoints(result.competition?.id
                                 ?: throw GetPointsNullException("Не удалось получить точки! ID соревнования null"))
                                 .flatMap { Single.just(result) }
