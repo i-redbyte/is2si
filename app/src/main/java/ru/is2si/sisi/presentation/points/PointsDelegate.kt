@@ -11,14 +11,13 @@ import androidx.core.view.ViewCompat.requireViewById
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate
 import ru.is2si.sisi.R
-import ru.is2si.sisi.base.ItemClickListener
 import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.presentation.model.PointView
 
-class PointDelegate(
+class PointsDelegate(
         context: Context,
-        private val itemClick: ItemClickListener
-) : AbsListItemAdapterDelegate<PointView, Any, PointDelegate.Holder>() {
+        private val pointClick: PointClickListener
+) : AbsListItemAdapterDelegate<PointView, Any, PointsDelegate.Holder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -30,7 +29,8 @@ class PointDelegate(
         val view = inflater.inflate(R.layout.item_point, parent, false)
 
         return Holder(view).apply {
-            ivClose.onClick { itemClick.invoke(adapterPosition) }
+            ivClose.onClick { pointClick.onRemoveClick(adapterPosition) }
+            itemView.onClick { pointClick.onPointClick(adapterPosition) }
         }
     }
 
@@ -49,4 +49,9 @@ class PointDelegate(
         }
     }
 
+}
+
+interface PointClickListener {
+    fun onRemoveClick(position: Int)
+    fun onPointClick(position: Int)
 }

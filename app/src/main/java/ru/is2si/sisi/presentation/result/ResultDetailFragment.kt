@@ -15,7 +15,7 @@ class ResultDetailFragment : AlertBottomSheetFragment() {
 
     private val result: CompetitionResultView
         get() = arguments?.getParcelable(ARG_TEAM)
-                ?: throw RuntimeException("Нет информации о команде") // TODO: Red_byte 2019-08-31 вынести в кастомный Exception
+            ?: throw RuntimeException("Нет информации о команде") // TODO: Red_byte 2019-08-31 вынести в кастомный Exception
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,8 +30,9 @@ class ResultDetailFragment : AlertBottomSheetFragment() {
         tvPoints.text = "Баллы: ${result.bally}"
         tvPenaltyPoints.text = "Штрафные баллы: ${result.penaltyBally}"
         tvFinalPoints.text = "Финальные результаты: ${result.resultBally}"
-        tvFinishTime.text = "Время финиша: ${result.dataTimeFinish?.getDateTimeOfPattern()?:"-"}"
-        tvDistanceTime.text = "Время на дистанции: ${result.dataTimeFinish?.getDateTimeOfPattern() ?: "-"}"
+        tvFinishTime.text = "Время финиша: ${result.dataTimeFinish?.getDateTimeOfPattern() ?: "-"}"
+        tvDistanceTime.text =
+            "Время на дистанции: ${result.dataTimeFinish?.getDateTimeOfPattern() ?: "-"}"
     }
 
     companion object {
@@ -40,7 +41,7 @@ class ResultDetailFragment : AlertBottomSheetFragment() {
         @JvmStatic
         fun forProperties(result: CompetitionResultView): ResultDetailFragment {
             return ResultDetailFragment()
-                    .withArguments { putParcelable(ARG_TEAM, result) }
+                .withArguments { putParcelable(ARG_TEAM, result) }
         }
     }
 
