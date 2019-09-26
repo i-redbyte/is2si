@@ -1,5 +1,8 @@
 package ru.is2si.sisi.base
 
+import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -25,9 +28,25 @@ abstract class BaseFragment<P : BaseContract.Presenter> : DaggerFragment() {
     fun executeResultAction(action: Runnable) =
             if (isHidden.not()) action.run() else resultAction = action
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setSoftInputMode()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.stop()
+    }
+
+    private fun setSoftInputMode() {
+        val metrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
+        val density = metrics.densityDpi
+        if (density <= DisplayMetrics.DENSITY_HIGH) {
+            requireActivity()
+                    .window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+            requireActivity().window.attributes.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+        }
     }
 
 }
