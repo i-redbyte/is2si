@@ -10,6 +10,7 @@ class AuthTeam @Inject constructor(
         private val authDataSource: AuthDataSource,
         private val pointDataSource: PointDataSource
 ) : SingleUseCase<CompetitionResult, AuthTeam.Param>() {
+
     override fun execute(params: Param): Single<CompetitionResult> =
             authDataSource.authTeam(params.pin)
                     .flatMap {
