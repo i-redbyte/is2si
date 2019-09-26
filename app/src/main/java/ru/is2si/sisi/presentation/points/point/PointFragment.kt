@@ -78,6 +78,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
 
     companion object {
         const val ARG_POINT = "arg_point"
+
+        @JvmStatic
         fun forPoint(point: PointView) = PointFragment().withArguments {
             putParcelable(ARG_POINT, point)
         }
