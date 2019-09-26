@@ -2,6 +2,7 @@ package ru.is2si.sisi.presentation.points.point
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
@@ -55,6 +56,14 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         setDisplayHomeAsUpEnabled(true)
         setHomeButtonEnabled(true)
         setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            requireActivity().onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun getNavigator(): Navigator =
