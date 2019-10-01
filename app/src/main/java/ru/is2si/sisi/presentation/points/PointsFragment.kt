@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_points.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.DelegationAdapter
+import ru.is2si.sisi.base.extension.getScreenWidth
 import ru.is2si.sisi.base.extension.hideKeyboard
 import ru.is2si.sisi.base.extension.onClick
 import ru.is2si.sisi.base.extension.setActionBar
@@ -58,7 +58,7 @@ class PointsFragment :
 
     private fun setupRecyclerView() {
         adapter = DelegationAdapter()
-        rvPoints.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        rvPoints.layoutManager = GridLayoutManager(requireContext(), getPointColumnCount())
 
         val pointClickListener = object : PointClickListener {
             override fun onRemoveClick(position: Int) {
@@ -76,6 +76,16 @@ class PointsFragment :
         adapter.delegatesManager
                 .addDelegate(policyDelegate)
         rvPoints.adapter = adapter
+    }
+
+    private fun getPointColumnCount(): Int {
+        val width = requireContext().getScreenWidth()
+        val pointSize = requireContext().resources.getDimension(R.dimen.point_circle_size)
+        var numberOfColumns = (width / pointSize).toInt()
+        val remaining = width - (numberOfColumns * width)
+        if (remaining / (2 * numberOfColumns) < 15)
+            numberOfColumns--
+        return numberOfColumns
     }
 
     override fun showPoints(points: List<PointView>) {
