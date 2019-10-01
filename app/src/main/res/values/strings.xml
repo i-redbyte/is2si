@@ -47,6 +47,7 @@
     <string name="points.balls">Баллы:</string>
     <string name="points.point_number">Баллы:</string>
     <string name="points.point_name">Имя точки:</string>
+    <string name="points.remove_point">Удалить</string>
 
     <string name="point.title">Точка %1$s</string>
 
@@ -74,4 +75,5 @@
     <string name="files.upload_track">Выбрать и загрузить трэк</string>
     <string name="files.success_upload">Успех! Загрузка файлов завершена</string>
     <string name="files.camera_requested">Для создания фотографии необходимо предоставить доступ к камере устройства и на запись файлов</string>
+
 </resources>

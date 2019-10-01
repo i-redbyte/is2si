@@ -28,7 +28,7 @@ class PointsDelegate(
         val view = inflater.inflate(R.layout.item_circle_point, parent, false)
 
         return Holder(view).apply {
-            //ivClose.onClick { pointClick.onRemoveClick(adapterPosition) }
+            tvRemove.onClick { pointClick.onRemoveClick(adapterPosition) }
             itemView.onClick { pointClick.onPointClick(adapterPosition) }
         }
     }
@@ -39,7 +39,7 @@ class PointsDelegate(
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val tvPoint: TextView = requireViewById(itemView, R.id.tvPoint)
-        //val ivClose: ImageView = requireViewById(itemView, R.id.ivClose)
+        val tvRemove: TextView = requireViewById(itemView, R.id.tvRemove)
 
         fun bind(item: PointView) {
             tvPoint.text = item.pointNameStr
