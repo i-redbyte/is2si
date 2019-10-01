@@ -23,7 +23,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         >
-        <activity android:name=".presentation.main.NavigationActivity">
+        <activity
+            android:name=".presentation.main.NavigationActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

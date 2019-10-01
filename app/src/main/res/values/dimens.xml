@@ -5,4 +5,5 @@
     <dimen name="progress_bar_size">90dp</dimen>
     <dimen name="height_item_policy">180dp</dimen>
     <dimen name="min_height_item_profile">48dp</dimen>
+    <dimen name="point_circle_size">75dp</dimen>
 </resources>
