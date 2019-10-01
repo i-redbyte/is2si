@@ -1,5 +1,7 @@
 package ru.is2si.sisi.presentation.points
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,24 +20,32 @@ import ru.is2si.sisi.base.extension.setActionBar
 import ru.is2si.sisi.base.navigation.Navigator
 import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelText
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withData
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withMessage
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withOkText
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTitle
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.ControlResult
 import ru.is2si.sisi.presentation.main.NavigationActivity
 import ru.is2si.sisi.presentation.model.PointView
 import ru.is2si.sisi.presentation.points.point.PointFragment
 import javax.inject.Inject
 
 class PointsFragment :
-        ActionBarFragment<PointsContract.Presenter>(),
-        NavigatorProvider,
-        PointsContract.View {
+    ActionBarFragment<PointsContract.Presenter>(),
+    NavigatorProvider,
+    PointsContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
     private lateinit var adapter: DelegationAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_points, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +73,7 @@ class PointsFragment :
         val pointClickListener = object : PointClickListener {
             override fun onRemoveClick(position: Int) {
                 val point = adapter.items[position] as PointView
-                presenter.removePoint(point, position)
+                showRemovePointDialog(point, position)
             }
 
             override fun onPointClick(position: Int) {
@@ -74,7 +84,7 @@ class PointsFragment :
 
         val policyDelegate = PointsDelegate(requireContext(), pointClickListener)
         adapter.delegatesManager
-                .addDelegate(policyDelegate)
+            .addDelegate(policyDelegate)
         rvPoints.adapter = adapter
     }
 
@@ -86,6 +96,39 @@ class PointsFragment :
         if (remaining / (2 * numberOfColumns) < 15)
             numberOfColumns--
         return numberOfColumns
+    }
+
+    private fun showRemovePointDialog(point: PointView, position: Int) {
+        AlertBottomSheetFragment()
+            .withTitle(getString(R.string.points_remove_point))
+            .withMessage(getString(R.string.points_remove_point_message))
+            .withOkText(getString(R.string.dialog_yes))
+            .withCancelText(getString(R.string.dialog_no))
+            .withTarget(this, REQUEST_REMOVE_POINT)
+            .withData {
+                putParcelable(ARG_POINT, point)
+                putInt(ARG_POINT_POSITION, position)
+            }
+            .show(requireFragmentManager(), TAG_REMOVE_POINT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK) return
+        when (requestCode) {
+            REQUEST_REMOVE_POINT -> {
+                when (AlertBottomSheetFragment.getResult(data)) {
+                    ControlResult.OK -> {
+                        val point: PointView = data?.getParcelableExtra(ARG_POINT)
+                            ?: return
+                        val position: Int = data.getIntExtra(ARG_POINT_POSITION, -1)
+                        if (position == -1) return
+                        presenter.removePoint(point, position)
+                    }
+                    ControlResult.CANCEL -> Unit
+                }
+            }
+        }
     }
 
     override fun showPoints(points: List<PointView>) {
@@ -110,7 +153,7 @@ class PointsFragment :
     }
 
     override fun showMain() =
-            stateSwitcher.switchToMain()
+        stateSwitcher.switchToMain()
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
 
@@ -126,14 +169,20 @@ class PointsFragment :
     }
 
     override fun getNavigator(): Navigator =
-            (requireActivity() as NavigationActivity).getMainNavigator()
-
-    companion object {
-        fun newInstance(): PointsFragment = PointsFragment()
-    }
+        (requireActivity() as NavigationActivity).getMainNavigator()
 
     override fun showSnack(message: String?) {
         Snackbar.make(requireView(), message as CharSequence, Snackbar.LENGTH_LONG).show()
     }
+
+    companion object {
+        private const val REQUEST_REMOVE_POINT = 2100
+        private const val TAG_REMOVE_POINT = "remove_point"
+        private const val ARG_POINT = "point"
+        private const val ARG_POINT_POSITION = "point_position"
+        @JvmStatic
+        fun newInstance(): PointsFragment = PointsFragment()
+    }
+
 
 }

@@ -48,6 +48,7 @@
     <string name="points.point_number">Баллы:</string>
     <string name="points.point_name">Имя точки:</string>
     <string name="points.remove_point">Удалить</string>
+    <string name="points.remove_point_message">Вы действительно хотите удалить точку?</string>
 
     <string name="point.title">Точка %1$s</string>
 
