@@ -3,6 +3,8 @@ package ru.is2si.sisi.presentation.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import ru.is2si.sisi.R
@@ -17,6 +19,7 @@ class NavigationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSoftInputMode()
         frameLayout = FrameLayout(this)
         frameLayout.id = R.id.vgContainer
         setContentView(frameLayout)
@@ -32,14 +35,27 @@ class NavigationActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val current = supportFragmentManager.fragments
-            .lastOrNull { it.isVisible }
+                .lastOrNull { it.isVisible }
                 as? BackButtonListener
         if (current?.onBackPressed() == true)
             return
         super.onBackPressed()
     }
 
+    private fun setSoftInputMode() {
+        val metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
+        val density = metrics.densityDpi
+        if (density <= DisplayMetrics.DENSITY_HIGH) {
+            with(window) {
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+                attributes.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+            }
+        }
+    }
+
     companion object {
+        @JvmStatic
         fun newIntent(context: Context): Intent = Intent(context, NavigationActivity::class.java)
     }
 
