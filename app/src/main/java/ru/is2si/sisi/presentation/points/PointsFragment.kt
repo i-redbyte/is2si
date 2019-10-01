@@ -174,7 +174,7 @@ class PointsFragment :
     override fun showSnack(message: String?) {
         Snackbar.make(requireView(), message as CharSequence, Snackbar.LENGTH_LONG).show()
     }
-
+      
     companion object {
         private const val REQUEST_REMOVE_POINT = 2100
         private const val TAG_REMOVE_POINT = "remove_point"
@@ -183,6 +183,4 @@ class PointsFragment :
         @JvmStatic
         fun newInstance(): PointsFragment = PointsFragment()
     }
-
-
 }

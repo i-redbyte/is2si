@@ -71,6 +71,8 @@ class FinishFragment : ActionBarFragment<FinishContract.Presenter>(),
     override fun getNavigator(): Navigator = (requireActivity() as NavigationActivity).getMainNavigator()
 
     companion object {
+
+        @JvmStatic
         fun newInstance(): FinishFragment = FinishFragment()
     }
 }

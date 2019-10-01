@@ -203,6 +203,8 @@ class FilesFragment : ActionBarFragment<FilesContract.Presenter>(),
         private const val REQUEST_TRACK = 571
         private const val REQUEST_CAMERA_PERMISSION = 1917
         private const val TAG_CAMERA_PERMISSION = "phone_permission"
+
+        @JvmStatic
         fun newInstance(): FilesFragment = FilesFragment()
     }
 }
