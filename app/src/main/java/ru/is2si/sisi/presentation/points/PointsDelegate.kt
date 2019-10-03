@@ -25,7 +25,7 @@ class PointsDelegate(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup): Holder {
-        val view = inflater.inflate(R.layout.item_circle_point, parent, false)
+        val view = inflater.inflate(R.layout.item_point, parent, false)
 
         return Holder(view).apply {
             tvRemove.onClick { pointClick.onRemoveClick(adapterPosition) }

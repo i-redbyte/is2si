@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO: Remove this layout-->
-<androidx.constraintlayout.widget.ConstraintLayout
+<ru.rambler.libs.swipe_layout.SwipeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/point_circle_size"
     android:layout_height="wrap_content"
+    app:left_swipe_enabled="false"
+    app:right_swipe_enabled="true"
     >
 
-    <TextView
-        android:id="@+id/tvPointName"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/table_item"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvPointValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="100009"
-        />
-
-    <TextView
-        android:id="@+id/tvPointValue"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/table_item"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvPointName"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="10"
-        />
-
-    <ImageView
-        android:id="@+id/ivClose"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_remove"
-        android:background="?selectableItemBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@drawable/bg_point"
+        >
+
+        <TextView
+            android:id="@+id/tvPoint"
+            android:layout_width="@dimen/point_circle_size"
+            android:layout_height="@dimen/point_circle_size"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:text="100009"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="@dimen/point_circle_size"
+        android:layout_height="@dimen/point_circle_size"
+        android:layout_marginTop="4dp"
+        android:background="@color/red"
+        app:bring_to_clamp="150dp"
+        app:clamp="self"
+        app:gravity="right"
+        app:sticky="@dimen/point_circle_size"
+        tools:ignore="MissingPrefix"
+        >
+
+        <TextView
+            android:id="@+id/tvRemove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/points.remove_point"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:drawableTopCompat="@drawable/ic_remove"
+            />
+    </FrameLayout>
+
+</ru.rambler.libs.swipe_layout.SwipeLayout>
