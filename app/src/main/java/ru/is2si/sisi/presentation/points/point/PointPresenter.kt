@@ -52,7 +52,6 @@ class PointPresenter @Inject constructor(
                 .map(Location::asView)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .doOnSuccess { Log.d("_debug","${it.latitude}; ${it.longitude}") }
                 .subscribe(view::showPhotoData) { /* no-op */ }
     }
 
@@ -67,6 +66,6 @@ class PointPresenter @Inject constructor(
                 .doAfterTerminate { isGetLocationInProgress = false }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe(view::showTestCoordinates) { Log.e("_debug","Penis",it)/* no-op */ }
+                .subscribe(view::showTestCoordinates) { /* no-op */ }
     }
 }
