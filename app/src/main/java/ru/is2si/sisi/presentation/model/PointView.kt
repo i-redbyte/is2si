@@ -8,8 +8,7 @@ import ru.is2si.sisi.domain.points.Point
 @Parcelize
 class PointView(
         val id: Int,
-        val latitude: Double,
-        val longitude: Double,
+        var location: LocationView,
         val colorMax: String,
         val color1: String?,
         val color2: String?,
@@ -36,8 +35,7 @@ class PointView(
 
 fun Point.asView() = PointView(
         id = id,
-        latitude = latitude,
-        longitude = longitude,
+        location = location,
         colorMax = colorMax,
         colorMin = colorMin,
         maxRadius = maxRadius,
@@ -64,8 +62,7 @@ fun Point.asView() = PointView(
 
 fun PointView.asDomain() = Point(
         id = id,
-        latitude = latitude,
-        longitude = longitude,
+        location = location,
         colorMax = colorMax,
         colorMin = colorMin,
         maxRadius = maxRadius,

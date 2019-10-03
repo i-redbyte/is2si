@@ -1,9 +1,10 @@
 package ru.is2si.sisi.domain.points
 
+import ru.is2si.sisi.presentation.model.LocationView
+
 class Point(
         val id: Int,
-        val latitude: Double,
-        val longitude: Double,
+        val location: LocationView,
         val colorMax: String,
         val color1: String?,
         val color2: String?,
