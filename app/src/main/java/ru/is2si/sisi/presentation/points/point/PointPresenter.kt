@@ -13,9 +13,9 @@ import ru.is2si.sisi.presentation.model.asView
 import javax.inject.Inject
 
 class PointPresenter @Inject constructor(
-    private val rxSchedulers: RxSchedulers,
-    private val saveFilePathToQueue: SaveFilePathToQueue,
-    private val getCurrentLocation: GetCurrentLocation
+        private val rxSchedulers: RxSchedulers,
+        private val saveFilePathToQueue: SaveFilePathToQueue,
+        private val getCurrentLocation: GetCurrentLocation
 
 ) : BasePresenter<PointContract.View>(), PointContract.Presenter {
 
@@ -26,21 +26,35 @@ class PointPresenter @Inject constructor(
     override var location: LocationView? = null
 
     override fun start() {
-
+        view.checkPermission()
     }
 
-    override fun onCameraClick() {
+    override fun onCameraClick(isTest: Boolean) {
+        if (isTest)
+            photoData()
+        else
+            view.openCamera()
+    }
+
+    override fun permissionOk() {
         getLocation()
-        view.openCamera()
     }
 
     override fun addToPhotosQueue(photoPath: String) {
         disposables += saveFilePathToQueue.execute(SaveFilePathToQueue.Params(photoPath))
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe({ /* no-op */ }) { view.showError(it.message, it) }
+                .subscribe(::photoData) { view.showError(it.message, it) }
     }
 
+    private fun photoData() {
+        disposables += getCurrentLocation.execute(UseCase.None)
+                .map(Location::asView)
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .doOnSuccess { Log.d("_debug","${it.latitude}; ${it.longitude}") }
+                .subscribe(view::showPhotoData) { /* no-op */ }
+    }
 
     private fun getLocation() {
         if (isGetLocationInProgress)
@@ -53,10 +67,6 @@ class PointPresenter @Inject constructor(
                 .doAfterTerminate { isGetLocationInProgress = false }
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe({
-                    // TODO: Red_byte 2019-09-19 test show data
-                    Log.d("_debug", "lat: ${it.latitude}")
-                    Log.d("_debug", "lon: ${it.longitude}")
-                }) { /* no-op */ }
+                .subscribe(view::showTestCoordinates) { Log.e("_debug","Penis",it)/* no-op */ }
     }
 }

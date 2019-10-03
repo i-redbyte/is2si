@@ -7,6 +7,9 @@ interface PointContract {
 
     interface View : BaseContract.View {
         fun openCamera()
+        fun checkPermission()
+        fun showTestCoordinates(location: LocationView)
+        fun showPhotoData(location: LocationView)
 
         fun showError(message: String?, throwable: Throwable)
         fun showLoading()
@@ -15,7 +18,8 @@ interface PointContract {
 
     interface Presenter : BaseContract.Presenter {
         var location: LocationView?
-        fun onCameraClick()
+        fun onCameraClick(isTest: Boolean)
         fun addToPhotosQueue(photoPath: String)
+        fun permissionOk() // TODO: Red_byte 2019-10-04 rename method
     }
 }

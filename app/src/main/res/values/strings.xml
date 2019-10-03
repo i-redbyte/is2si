@@ -51,6 +51,13 @@
     <string name="points.remove_point_message">Вы действительно хотите удалить точку?</string>
 
     <string name="point.title">Точка %1$s</string>
+    <string name="point.coordinates">Текущие координаты:</string>
+    <string name="point.latitude_value">Широта %1$s</string>
+    <string name="point.longitude_value">Долгота %1$s</string>
+    <string name="point.distance_to_center_value">Расстояние до центра %1$s м.</string>
+    <string name="point.latitude">Широта</string>
+    <string name="point.longitude">Долгота</string>
+    <string name="point.distance_to_center">Расстояние до центра</string>
 
     <string name="settings.title">Настройки</string>
     <string name="settings.change_url">Изменить URL сервера</string>

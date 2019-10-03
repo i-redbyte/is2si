@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.fragment_point.*
+import kotlinx.android.synthetic.main.layout_test_point.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
 import ru.is2si.sisi.base.extension.*
@@ -25,6 +26,7 @@ import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Compani
 import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
 import ru.is2si.sisi.presentation.files.FilesHandler
 import ru.is2si.sisi.presentation.main.NavigationActivity
+import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.PointView
 import java.io.IOException
 import javax.inject.Inject
@@ -62,7 +64,31 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     private fun setupViews() {
+        if (point.pointNameStr == TEST_POINT) {
+            testContainer.show()
+        }
         fabPhoto.onClick { checkPhotoPermission() }
+    }
+
+    override fun showTestCoordinates(location: LocationView) {
+        if (point.pointNameStr == TEST_POINT) point.location = location
+        with(location) {
+            etTestLatitude.setText(latitude.toString())
+            etTestLongitude.setText(longitude.toString())
+        }
+    }
+
+    override fun showPhotoData(location: LocationView) {
+        with(location) {
+            tvLatitude.text = getString(R.string.point_latitude_value, latitude)
+            tvLongitude.text = getString(R.string.point_longitude_value, longitude)
+        }
+        if (point.pointNameStr == TEST_POINT) {
+            point.location.longitude = etTestLongitude.text.toString().toDouble()
+            point.location.latitude = etTestLatitude.text.toString().toDouble()
+        }
+        val meters = point.location.metersDistanceTo(location)
+        tvDistanceToCenter.text = getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
     }
 
     private fun checkPhotoPermission() {
@@ -72,10 +98,31 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         )) {
-            BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick()
+            BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick(point.pointNameStr == TEST_POINT)
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
                         REQUEST_CAMERA,
+                        true,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            }
+            BeforeRequestPermissionResult.Requested -> Unit
+        }
+    }
+
+    override fun checkPermission() {
+        when (beforeRequestPermissions(
+                REQUEST_POINT_PERMISSION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        )) {
+            BeforeRequestPermissionResult.AlreadyGranted -> presenter.permissionOk()
+            BeforeRequestPermissionResult.ShowRationale -> {
+                beforeRequestPermissions(
+                        REQUEST_POINT_PERMISSION,
                         true,
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -111,7 +158,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         when (afterRequestPermissions(permissions, grantResults)) {
             AfterRequestPermissionsResult.Granted -> {
                 when (requestCode) {
-                    REQUEST_CAMERA -> presenter.onCameraClick()
+                    REQUEST_CAMERA -> presenter.onCameraClick(point.pointNameStr == TEST_POINT)
+                    REQUEST_POINT_PERMISSION -> presenter.permissionOk()
                 }
             }
             AfterRequestPermissionsResult.NeverAskAgain -> {
@@ -171,7 +219,9 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         private const val ARG_POINT = "arg_point"
         private const val REQUEST_CAMERA = 517
         private const val REQUEST_CAMERA_PERMISSION = 1917
+        private const val REQUEST_POINT_PERMISSION = 1918
         private const val TAG_CAMERA_PERMISSION = "phone_permission"
+        private const val TEST_POINT = "0/0"
 
         @JvmStatic
         fun forPoint(point: PointView) = PointFragment().withArguments {

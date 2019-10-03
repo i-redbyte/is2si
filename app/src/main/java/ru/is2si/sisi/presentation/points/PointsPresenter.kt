@@ -6,6 +6,7 @@ import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.points.GetSelectPoints
 import ru.is2si.sisi.domain.points.RemoveSelectPoint
 import ru.is2si.sisi.domain.points.SaveSelectPoint
+import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.PointView
 import ru.is2si.sisi.presentation.model.asDomain
 import ru.is2si.sisi.presentation.model.asView
@@ -67,8 +68,7 @@ class PointsPresenter @Inject constructor(
 
     private fun getTestPoint(latitude: Double, longitude: Double): PointView = PointView(
             id = 0,
-            latitude = latitude,
-            longitude = longitude,
+            location = LocationView(latitude,longitude),
             colorMax = "",
             color1 = "",
             color2 = "",
