@@ -10,15 +10,11 @@ interface FilesContract {
         fun showError(message: String)
         fun showLoading()
         fun showMain()
-        fun openCamera()
         fun showSuccessUpload()
     }
 
     interface Presenter : BaseContract.Presenter {
-        var location: LocationView?
         fun uploadFiles()
-        fun onCameraClick()
-        fun addToPhotosQueue(photoPath: String)
         fun uploadTracks(filePath: String)
     }
 }
