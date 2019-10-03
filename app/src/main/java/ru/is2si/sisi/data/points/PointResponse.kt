@@ -2,6 +2,7 @@ package ru.is2si.sisi.data.points
 
 import com.google.gson.annotations.SerializedName
 import ru.is2si.sisi.domain.points.Point
+import ru.is2si.sisi.presentation.model.LocationView
 
 /**
  * r0 - максимальный радиус от точки,
@@ -62,8 +63,7 @@ class PointResponse(
 
 fun PointResponse.toPoint() = Point(
         id = id,
-        latitude = latitude,
-        longitude = longitude,
+        location = LocationView(latitude, longitude),
         colorMax = colorMax,
         colorMin = colorMin,
         maxRadius = maxRadius,

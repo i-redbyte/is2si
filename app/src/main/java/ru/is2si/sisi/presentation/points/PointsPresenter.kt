@@ -6,6 +6,7 @@ import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.points.GetSelectPoints
 import ru.is2si.sisi.domain.points.RemoveSelectPoint
 import ru.is2si.sisi.domain.points.SaveSelectPoint
+import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.PointView
 import ru.is2si.sisi.presentation.model.asDomain
 import ru.is2si.sisi.presentation.model.asView
@@ -35,6 +36,10 @@ class PointsPresenter @Inject constructor(
     }
 
     override fun addPoint(pointName: String) {
+        if (pointName == TEST_POINT) {
+            view.showPoints(listOf(getTestPoint(45.06306306306306, 39.0039001853325)))
+            return
+        }
         view.showLoading()
         disposables += saveSelectPoint.execute(SaveSelectPoint.Params(pointName))
                 .map { it.map { point -> point.asView() } }
@@ -61,4 +66,34 @@ class PointsPresenter @Inject constructor(
                 }) { view.showError(it.message) }
     }
 
+    private fun getTestPoint(latitude: Double, longitude: Double): PointView = PointView(
+            id = 0,
+            location = LocationView(latitude,longitude),
+            colorMax = "",
+            color1 = "",
+            color2 = "",
+            color3 = "",
+            color4 = "",
+            colorMin = "",
+            colorNo0 = "",
+            competition = 0,
+            pointBall = 0,
+            pointBall1 = "",
+            pointBall2 = "",
+            pointBall3 = "",
+            pointBall4 = "",
+            pointBall5 = "",
+            pointName = 0,
+            pointNameStr = "0/0",
+            maxRadius = 50.0,
+            r1 = "",
+            r2 = "",
+            r3 = "",
+            r4 = "",
+            minRadius = ""
+    )
+
+    companion object {
+        private const val TEST_POINT = "0/0"
+    }
 }

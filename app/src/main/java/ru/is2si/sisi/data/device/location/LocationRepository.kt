@@ -60,7 +60,7 @@ class LocationRepository @Inject constructor(
                 resultLock.countDown()
             }
             val requestLocation = {
-                val locationCallback = object : LocationCallback() {
+                val locationCallback = WeakLocationCallback(object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult) {
                         timeoutHandler.removeCallbacksAndMessages(null)
                         val location = locationResult.lastLocation
@@ -69,7 +69,7 @@ class LocationRepository @Inject constructor(
                         if (BuildConfig.DEBUG)
                             Log.d("_debug", "Location: ${location.latitude}, ${location.longitude}")
                     }
-                }
+                })
 
                 timeoutHandler.postDelayed(
                     {

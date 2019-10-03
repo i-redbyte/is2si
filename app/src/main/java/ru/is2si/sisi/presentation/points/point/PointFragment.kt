@@ -1,20 +1,34 @@
 package ru.is2si.sisi.presentation.points.point
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import kotlinx.android.synthetic.main.fragment_point.*
+import kotlinx.android.synthetic.main.layout_test_point.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
-import ru.is2si.sisi.base.extension.setActionBar
-import ru.is2si.sisi.base.extension.withArguments
+import ru.is2si.sisi.base.extension.*
 import ru.is2si.sisi.base.navigation.Navigator
 import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelText
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withCancelable
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withMessage
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withOkText
+import ru.is2si.sisi.presentation.design.dialog.AlertBottomSheetFragment.Companion.withTarget
+import ru.is2si.sisi.presentation.files.FilesHandler
 import ru.is2si.sisi.presentation.main.NavigationActivity
+import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.PointView
+import java.io.IOException
 import javax.inject.Inject
 
 class PointFragment : ActionBarFragment<PointContract.Presenter>(),
@@ -23,6 +37,10 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
+    @Inject
+    lateinit var filesHandler: FilesHandler
+
+    private var photoPath = ""
 
     private val point: PointView
         get() = arguments?.getParcelable(ARG_POINT)
@@ -46,7 +64,128 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     private fun setupViews() {
+        if (point.pointNameStr == TEST_POINT) {
+            testContainer.show()
+        }
+        fabPhoto.onClick { checkPhotoPermission() }
+    }
 
+    override fun showTestCoordinates(location: LocationView) {
+        if (point.pointNameStr == TEST_POINT) point.location = location
+        with(location) {
+            etTestLatitude.setText(latitude.toString())
+            etTestLongitude.setText(longitude.toString())
+        }
+    }
+
+    override fun showPhotoData(location: LocationView) {
+        with(location) {
+            tvLatitude.text = getString(R.string.point_latitude_value, latitude)
+            tvLongitude.text = getString(R.string.point_longitude_value, longitude)
+        }
+        if (point.pointNameStr == TEST_POINT) {
+            point.location.longitude = etTestLongitude.text.toString().toDouble()
+            point.location.latitude = etTestLatitude.text.toString().toDouble()
+        }
+        val meters = point.location.metersDistanceTo(location)
+        tvDistanceToCenter.text = getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
+    }
+
+    private fun checkPhotoPermission() {
+        when (beforeRequestPermissions(
+                REQUEST_CAMERA,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        )) {
+            BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick(point.pointNameStr == TEST_POINT)
+            BeforeRequestPermissionResult.ShowRationale -> {
+                beforeRequestPermissions(
+                        REQUEST_CAMERA,
+                        true,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            }
+            BeforeRequestPermissionResult.Requested -> Unit
+        }
+    }
+
+    override fun checkPermission() {
+        when (beforeRequestPermissions(
+                REQUEST_POINT_PERMISSION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        )) {
+            BeforeRequestPermissionResult.AlreadyGranted -> presenter.permissionOk()
+            BeforeRequestPermissionResult.ShowRationale -> {
+                beforeRequestPermissions(
+                        REQUEST_POINT_PERMISSION,
+                        true,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            }
+            BeforeRequestPermissionResult.Requested -> Unit
+        }
+    }
+
+    override fun openCamera() {
+        val ctx = requireContext()
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent ->
+            pictureIntent.resolveActivity(ctx.packageManager)?.also {
+                try {
+                    filesHandler.saveImage(requireContext()) { path, photoUri ->
+                        photoPath = path
+                        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                        startActivityForResult(pictureIntent, REQUEST_CAMERA)
+                    }
+                } catch (err: IOException) {
+                    showError(err.message, err)
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
+    ) {
+        when (afterRequestPermissions(permissions, grantResults)) {
+            AfterRequestPermissionsResult.Granted -> {
+                when (requestCode) {
+                    REQUEST_CAMERA -> presenter.onCameraClick(point.pointNameStr == TEST_POINT)
+                    REQUEST_POINT_PERMISSION -> presenter.permissionOk()
+                }
+            }
+            AfterRequestPermissionsResult.NeverAskAgain -> {
+                AlertBottomSheetFragment()
+                        .withMessage(getString(R.string.files_camera_requested))
+                        .withOkText(getString(R.string.dialog_settings))
+                        .withCancelText(getString(R.string.dialog_cancel))
+                        .withCancelable(false)
+                        .withTarget(this, REQUEST_CAMERA_PERMISSION)
+                        .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && (requestCode == REQUEST_CAMERA_PERMISSION)) {
+            if (AlertBottomSheetFragment.getResult(data) == AlertBottomSheetFragment.ControlResult.OK)
+                startActivity(requireContext().appSettingsIntent())
+        }
+        if (resultCode != Activity.RESULT_OK) return
+        when (requestCode) {
+            REQUEST_CAMERA -> {
+                presenter.addToPhotosQueue(photoPath)
+            }
+        }
     }
 
     override fun findToolbar(): Toolbar? = view?.findViewById(R.id.tActionBar)
@@ -77,7 +216,12 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             stateSwitcher.switchToError(message, throwable) { stateSwitcher.switchToMain() }
 
     companion object {
-        const val ARG_POINT = "arg_point"
+        private const val ARG_POINT = "arg_point"
+        private const val REQUEST_CAMERA = 517
+        private const val REQUEST_CAMERA_PERMISSION = 1917
+        private const val REQUEST_POINT_PERMISSION = 1918
+        private const val TAG_CAMERA_PERMISSION = "phone_permission"
+        private const val TEST_POINT = "0/0"
 
         @JvmStatic
         fun forPoint(point: PointView) = PointFragment().withArguments {

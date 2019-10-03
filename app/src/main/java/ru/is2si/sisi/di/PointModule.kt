@@ -6,6 +6,7 @@ import dagger.Provides
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.switcher.ViewStateSwitcher
 import ru.is2si.sisi.di.common.PerScreen
+import ru.is2si.sisi.presentation.files.FilesHandler
 import ru.is2si.sisi.presentation.points.point.PointContract
 import ru.is2si.sisi.presentation.points.point.PointFragment
 import ru.is2si.sisi.presentation.points.point.PointPresenter
@@ -23,10 +24,17 @@ abstract class PointModule {
 
     @Module
     companion object {
+
         @JvmStatic
         @Provides
         @PerScreen
         fun stateSwitcher(view: PointFragment) =
                 ViewStateSwitcher(view.requireActivity(), R.id.vgContainer)
+
+        @JvmStatic
+        @Provides
+        @PerScreen
+        fun filesHandler(view: PointFragment) =
+                FilesHandler(view.requireContext().contentResolver)
     }
 }
