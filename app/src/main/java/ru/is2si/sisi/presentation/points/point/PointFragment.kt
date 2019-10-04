@@ -88,7 +88,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             point.location.latitude = etTestLatitude.text.toString().toDouble()
         }
         val meters = point.location.metersDistanceTo(location)
-        tvDistanceToCenter.text = getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
+        tvDistanceToCenter.text =
+                getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
     }
 
     private fun checkPhotoPermission() {
@@ -96,7 +97,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
                 REQUEST_CAMERA,
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         )) {
             BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick(point.pointNameStr == TEST_POINT)
             BeforeRequestPermissionResult.ShowRationale -> {
@@ -105,7 +107,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
                         true,
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -117,7 +120,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
                 REQUEST_POINT_PERMISSION,
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         )) {
             BeforeRequestPermissionResult.AlreadyGranted -> presenter.permissionOk()
             BeforeRequestPermissionResult.ShowRationale -> {
@@ -126,7 +130,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
                         true,
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit

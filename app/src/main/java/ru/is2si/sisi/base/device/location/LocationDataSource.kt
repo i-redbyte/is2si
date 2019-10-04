@@ -1,5 +1,6 @@
 package ru.is2si.sisi.base.device.location
 
+import io.reactivex.Observable
 import io.reactivex.Single
 import ru.is2si.sisi.domain.ThrowExceptions
 
@@ -10,5 +11,7 @@ interface LocationDataSource {
             TimeoutDetectLocationException::class
     )
     fun getLocation(): Single<Location>
+
+    fun subscribeUpdateLocation(): Observable<Location>
 }
 

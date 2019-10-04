@@ -1,13 +1,13 @@
 package ru.is2si.sisi.presentation.points.point
 
 import android.os.SystemClock
-import android.util.Log
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.device.location.Location
 import ru.is2si.sisi.base.rx.RxSchedulers
-import ru.is2si.sisi.domain.UseCase
+import ru.is2si.sisi.domain.UseCase.None
 import ru.is2si.sisi.domain.files.GetCurrentLocation
 import ru.is2si.sisi.domain.files.SaveFilePathToQueue
+import ru.is2si.sisi.domain.files.SubscribeUpdateLocation
 import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.asView
 import javax.inject.Inject
@@ -15,8 +15,8 @@ import javax.inject.Inject
 class PointPresenter @Inject constructor(
         private val rxSchedulers: RxSchedulers,
         private val saveFilePathToQueue: SaveFilePathToQueue,
-        private val getCurrentLocation: GetCurrentLocation
-
+        private val getCurrentLocation: GetCurrentLocation,
+        private val subscribeUpdateLocation: SubscribeUpdateLocation
 ) : BasePresenter<PointContract.View>(), PointContract.Presenter {
 
     @Volatile
@@ -48,18 +48,18 @@ class PointPresenter @Inject constructor(
     }
 
     private fun photoData() {
-        disposables += getCurrentLocation.execute(UseCase.None)
+        disposables += getCurrentLocation.execute(None)
                 .map(Location::asView)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe(view::showPhotoData) { /* no-op */ }
+                .subscribe(view::showPhotoData) { view.showError(it.message, it) }
     }
 
     private fun getLocation() {
         if (isGetLocationInProgress)
             return
         isGetLocationInProgress = true
-        disposables += getCurrentLocation.execute(UseCase.None)
+        disposables += getCurrentLocation.execute(None)
                 .map(Location::asView)
                 .doOnSuccess { location = it }
                 .doOnSuccess { lastLocationUpdate = SystemClock.elapsedRealtime() }

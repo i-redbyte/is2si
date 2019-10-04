@@ -37,7 +37,7 @@ class PointsPresenter @Inject constructor(
 
     override fun addPoint(pointName: String) {
         if (pointName == TEST_POINT) {
-            view.showPoints(listOf(getTestPoint(45.06306306306306, 39.0039001853325)))
+            view.showPoints(listOf(getTestPoint()))
             return
         }
         view.showLoading()
@@ -66,9 +66,9 @@ class PointsPresenter @Inject constructor(
                 }) { view.showError(it.message) }
     }
 
-    private fun getTestPoint(latitude: Double, longitude: Double): PointView = PointView(
+    private fun getTestPoint(): PointView = PointView(
             id = 0,
-            location = LocationView(latitude,longitude),
+            location = LocationView(0.0, 0.0),
             colorMax = "",
             color1 = "",
             color2 = "",
