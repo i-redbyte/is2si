@@ -58,7 +58,7 @@ class PointResponse(
         @SerializedName("r4")
         val r4: String,
         @SerializedName("r5")
-        val minRadius: String
+        val minRadius: Double
 )
 
 fun PointResponse.toPoint() = Point(

@@ -13,13 +13,12 @@
     tools:visibility="visible"
     >
 
-
     <EditText
         android:id="@+id/etTestLongitude"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="0.0"
+        android:hint="@string/point.longitude"
         android:inputType="number"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,12 +31,39 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:hint="0.0"
+        android:hint="@string/point.latitude"
         android:inputType="number"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/etTestLongitude"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/etTestRadius"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/point.radius"
+        android:inputType="number"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/tvMeters"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTestLatitude"
+        app:layout_constraintWidth_percent="0.5"
+        />
+
+    <TextView
+        android:id="@+id/tvMeters"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/point.meters"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/etTestRadius"
+        app:layout_constraintStart_toEndOf="@+id/etTestRadius"
+        app:layout_constraintTop_toTopOf="@+id/etTestRadius"
         />
 
     <Button
@@ -47,9 +73,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/point.fix_center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTestLatitude"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTestRadius"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

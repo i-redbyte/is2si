@@ -65,6 +65,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
 
     private fun setupViews() {
         if (point.pointNameStr == TEST_POINT) {
+            etTestLatitude.setText("0.0")
+            etTestLongitude.setText("0.0")
             testContainer.show()
         }
         fabPhoto.onClick { checkPhotoPermission() }
@@ -76,6 +78,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         with(location) {
             etTestLatitude.setText(latitude.toString())
             etTestLongitude.setText(longitude.toString())
+            etTestRadius.setText(point.minRadius.toString())
         }
     }
 
@@ -87,6 +90,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         if (point.pointNameStr == TEST_POINT) {
             point.location.longitude = etTestLongitude.text.toString().toDouble()
             point.location.latitude = etTestLatitude.text.toString().toDouble()
+            point.minRadius = etTestRadius.text.toString().toDouble()
         }
         val meters = point.location.metersDistanceTo(location)
         tvDistanceToCenter.text =
@@ -227,7 +231,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         private const val REQUEST_CAMERA_PERMISSION = 1917
         private const val REQUEST_POINT_PERMISSION = 1918
         private const val TAG_CAMERA_PERMISSION = "phone_permission"
-        private const val TEST_POINT = "0/0"
+        const val TEST_POINT = "0/0"
 
         @JvmStatic
         fun forPoint(point: PointView) = PointFragment().withArguments {

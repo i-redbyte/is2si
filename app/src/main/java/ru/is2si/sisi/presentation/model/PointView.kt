@@ -30,7 +30,7 @@ class PointView(
         val r2: String,
         val r3: String,
         val r4: String,
-        val minRadius: String
+        var minRadius: Double
 ) : Parcelable
 
 fun Point.asView() = PointView(

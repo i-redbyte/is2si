@@ -26,5 +26,5 @@ class Point(
         val r2: String,
         val r3: String,
         val r4: String,
-        val minRadius: String
+        val minRadius: Double
 )

@@ -10,6 +10,7 @@ import ru.is2si.sisi.presentation.model.LocationView
 import ru.is2si.sisi.presentation.model.PointView
 import ru.is2si.sisi.presentation.model.asDomain
 import ru.is2si.sisi.presentation.model.asView
+import ru.is2si.sisi.presentation.points.point.PointFragment.Companion.TEST_POINT
 import javax.inject.Inject
 
 class PointsPresenter @Inject constructor(
@@ -85,15 +86,12 @@ class PointsPresenter @Inject constructor(
             pointBall5 = "",
             pointName = 0,
             pointNameStr = "0/0",
-            maxRadius = 50.0,
+            maxRadius = 25.0,
             r1 = "",
             r2 = "",
             r3 = "",
             r4 = "",
-            minRadius = ""
+            minRadius = 25.0
     )
 
-    companion object {
-        private const val TEST_POINT = "0/0"
-    }
 }
