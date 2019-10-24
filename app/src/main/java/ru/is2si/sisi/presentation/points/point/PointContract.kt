@@ -19,6 +19,7 @@ interface PointContract {
     interface Presenter : BaseContract.Presenter {
         var location: LocationView?
         fun onCameraClick(isTest: Boolean)
+        fun getLocation()
         fun addToPhotosQueue(photoPath: String)
         fun permissionOk() // TODO: Red_byte 2019-10-04 rename method
     }

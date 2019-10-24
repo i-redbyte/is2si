@@ -31,7 +31,7 @@ class PointPresenter @Inject constructor(
 
     override fun onCameraClick(isTest: Boolean) {
         if (isTest)
-            photoData()
+            locationData()
         else
             view.openCamera()
     }
@@ -44,10 +44,10 @@ class PointPresenter @Inject constructor(
         disposables += saveFilePathToQueue.execute(SaveFilePathToQueue.Params(photoPath))
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .subscribe(::photoData) { view.showError(it.message, it) }
+                .subscribe(::locationData) { view.showError(it.message, it) }
     }
 
-    private fun photoData() {
+    private fun locationData() {
         disposables += getCurrentLocation.execute(None)
                 .map(Location::asView)
                 .subscribeOn(rxSchedulers.io)
@@ -55,7 +55,7 @@ class PointPresenter @Inject constructor(
                 .subscribe(view::showPhotoData) { view.showError(it.message, it) }
     }
 
-    private fun getLocation() {
+    override fun getLocation() {
         if (isGetLocationInProgress)
             return
         isGetLocationInProgress = true

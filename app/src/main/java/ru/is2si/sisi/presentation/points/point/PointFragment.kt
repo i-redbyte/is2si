@@ -68,6 +68,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             testContainer.show()
         }
         fabPhoto.onClick { checkPhotoPermission() }
+        btnFixCenter.onClick { presenter.getLocation() }
     }
 
     override fun showTestCoordinates(location: LocationView) {
