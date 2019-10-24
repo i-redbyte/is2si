@@ -61,6 +61,8 @@
     <string name="point.longitude">Долгота</string>
     <string name="point.distance_to_center">Расстояние до центра</string>
     <string name="point.fix_center">Зафиксировать центр</string>
+    <string name="point.hit">Попал</string>
+    <string name="point.not_hit">Не попал</string>
 
     <string name="settings.title">Настройки</string>
     <string name="settings.change_url">Изменить URL сервера</string>

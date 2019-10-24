@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -68,6 +69,22 @@
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLatitude"
+            />
+
+        <TextView
+            android:id="@+id/tvHit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toEndOf="@+id/tvDistanceToCenter"
+            app:layout_constraintTop_toBottomOf="@+id/tvLatitude"
+            tools:text="@string/point.hit"
             />
 
         <androidx.constraintlayout.widget.Group

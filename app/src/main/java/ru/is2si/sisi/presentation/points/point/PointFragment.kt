@@ -93,6 +93,10 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             point.minRadius = etTestRadius.text.toString().toDouble()
         }
         val meters = point.location.metersDistanceTo(location)
+        tvHit.text = if (meters <= point.minRadius)
+            getString(R.string.point_hit)
+        else
+            getString(R.string.point_not_hit)
         tvDistanceToCenter.text =
                 getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
     }
