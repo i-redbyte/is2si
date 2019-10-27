@@ -63,6 +63,7 @@
     <string name="point.fix_center">Зафиксировать центр</string>
     <string name="point.hit">Попал</string>
     <string name="point.not_hit">Не попал</string>
+    <string name="point.accuracy">Точность</string>
 
     <string name="settings.title">Настройки</string>
     <string name="settings.change_url">Изменить URL сервера</string>
