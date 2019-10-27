@@ -71,6 +71,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         }
         fabPhoto.onClick { checkPhotoPermission() }
         btnFixCenter.onClick { presenter.getLocation() }
+        cbAccuracy.setOnCheckedChangeListener { _, b -> presenter.isAccuracy = b }
     }
 
     override fun showTestCoordinates(location: LocationView) {
@@ -82,7 +83,26 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         }
     }
 
+    private fun getHitTextAndMeters(location: LocationView): Pair<String, Float> {
+        val meters = point.location.metersDistanceTo(location)
+        return if (meters <= point.minRadius)
+            getString(R.string.point_hit) to meters
+        else
+            getString(R.string.point_not_hit) to meters
+    }
+
+    override fun showTestAccuracyCoordinates(location: LocationView, counter: Int) {
+        val latitude = location.latitude
+        val longitude = location.longitude
+        val textHit = getHitTextAndMeters(location).first
+        val meters = getHitTextAndMeters(location).second
+        val text = tvAccuracy.text.toString()
+        val finishText ="$text$counter) Широта: $latitude Долгота: $longitude $textHit ${String.format("%.2f", meters)} м.\n"
+        tvAccuracy.text = finishText
+    }
+
     override fun showPhotoData(location: LocationView) {
+        showMain()
         with(location) {
             tvLatitude.text = getString(R.string.point_latitude_value, latitude)
             tvLongitude.text = getString(R.string.point_longitude_value, longitude)
@@ -92,11 +112,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             point.location.latitude = etTestLatitude.text.toString().toDouble()
             point.minRadius = etTestRadius.text.toString().toDouble()
         }
-        val meters = point.location.metersDistanceTo(location)
-        tvHit.text = if (meters <= point.minRadius)
-            getString(R.string.point_hit)
-        else
-            getString(R.string.point_not_hit)
+        val meters = getHitTextAndMeters(location).second
+        tvHit.text = getHitTextAndMeters(location).first
         tvDistanceToCenter.text =
                 getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
     }

@@ -14,10 +14,12 @@ interface PointContract {
         fun showError(message: String?, throwable: Throwable)
         fun showLoading()
         fun showMain()
+        fun showTestAccuracyCoordinates(location: LocationView,counter:Int)
     }
 
     interface Presenter : BaseContract.Presenter {
         var location: LocationView?
+        var isAccuracy: Boolean
         fun onCameraClick(isTest: Boolean)
         fun getLocation()
         fun addToPhotosQueue(photoPath: String)

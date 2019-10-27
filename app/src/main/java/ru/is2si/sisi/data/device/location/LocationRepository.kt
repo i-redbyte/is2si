@@ -68,8 +68,13 @@ class LocationRepository @Inject constructor(
                         val location = locationResult.lastLocation
                         result = Either.right(Location(location.latitude, location.longitude))
                         resultLock.countDown()
+                        // TODO: Red_byte 2019-10-27 think about it
+                        result?.result?.also { 
+                            if (emitter.isDisposed.not())
+                                emitter.onNext(it)
+                        }
                         if (BuildConfig.DEBUG)
-                            Log.d("_debug", "Location: ${location.latitude}, ${location.longitude}")
+                            Log.d("_debug", "LocationRepository: ${location.latitude}, ${location.longitude}")
                     }
                 })
 
@@ -104,10 +109,10 @@ class LocationRepository @Inject constructor(
                 if (emitter.isDisposed.not())
                     emitter.tryOnError(it)
             }
-            result?.result?.also {
-                if (emitter.isDisposed.not())
-                    emitter.onNext(it)
-            }
+//            result?.result?.also {
+//                if (emitter.isDisposed.not())
+//                    emitter.onNext(it)
+//            }
         }
     }
 

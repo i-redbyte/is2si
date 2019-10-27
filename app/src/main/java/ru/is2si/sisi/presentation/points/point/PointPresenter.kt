@@ -1,6 +1,7 @@
 package ru.is2si.sisi.presentation.points.point
 
 import android.os.SystemClock
+import android.util.Log
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.device.location.Location
 import ru.is2si.sisi.base.rx.RxSchedulers
@@ -23,7 +24,11 @@ class PointPresenter @Inject constructor(
     private var isGetLocationInProgress = false
     @Volatile
     private var lastLocationUpdate: Long = SystemClock.elapsedRealtime()
+    private var locations = mutableListOf<LocationView>()
+
     override var location: LocationView? = null
+    override var isAccuracy: Boolean = false
+
 
     override fun start() {
         view.checkPermission()
@@ -48,6 +53,27 @@ class PointPresenter @Inject constructor(
     }
 
     private fun locationData() {
+        if (isAccuracy) accuracy()
+        else notAccuracy()
+    }
+
+    private fun accuracy() {
+        var counter = 0
+        disposables += subscribeUpdateLocation.execute(None)
+                .subscribeOn(rxSchedulers.io)
+                .observeOn(rxSchedulers.ui)
+                .take(ACCURACY_COUNT)
+                .doOnNext {
+                    counter++
+                    val location = it.asView()
+                    Log.d("_debug", "counter == $counter")
+                    view.showTestAccuracyCoordinates(location, counter)
+                }
+                .subscribe({ }) { view.showError(it.message, it) }
+    }
+
+    private fun notAccuracy() {
+        view.showLoading()
         disposables += getCurrentLocation.execute(None)
                 .map(Location::asView)
                 .subscribeOn(rxSchedulers.io)
@@ -67,5 +93,9 @@ class PointPresenter @Inject constructor(
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe(view::showTestCoordinates) { /* no-op */ }
+    }
+
+    companion object {
+        private const val ACCURACY_COUNT = 12L
     }
 }

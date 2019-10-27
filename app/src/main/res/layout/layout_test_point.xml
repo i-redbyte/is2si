@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/testContainer"
@@ -9,7 +10,8 @@
     android:layout_marginEnd="8dp"
     android:orientation="vertical"
     android:visibility="gone"
-    tools:visibility="visible">
+    tools:visibility="visible"
+    >
 
     <EditText
         android:id="@+id/etTestLongitude"
@@ -21,7 +23,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etTestLatitude"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/etTestLatitude"
@@ -33,7 +36,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/etTestLongitude"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/etTestRadius"
@@ -46,7 +50,8 @@
         app:layout_constraintEnd_toStartOf="@+id/tvMeters"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etTestLatitude"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintWidth_percent="0.5"
+        />
 
     <TextView
         android:id="@+id/tvMeters"
@@ -58,7 +63,8 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/etTestRadius"
         app:layout_constraintStart_toEndOf="@+id/etTestRadius"
-        app:layout_constraintTop_toTopOf="@+id/etTestRadius" />
+        app:layout_constraintTop_toTopOf="@+id/etTestRadius"
+        />
 
     <Button
         android:id="@+id/btnFixCenter"
@@ -67,19 +73,32 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/point.fix_center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cbAcuracy"
+        app:layout_constraintEnd_toStartOf="@+id/cbAccuracy"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTestRadius" />
+        app:layout_constraintTop_toBottomOf="@+id/etTestRadius"
+        />
 
     <CheckBox
-        android:id="@+id/cbAcuracy"
+        android:id="@+id/cbAccuracy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/checkbox"
         android:text="@string/point.accuracy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnFixCenter"
-        app:layout_constraintTop_toTopOf="@+id/btnFixCenter" />
+        app:layout_constraintTop_toTopOf="@+id/btnFixCenter"
+        />
 
+    <TextView
+        android:id="@+id/tvAccuracy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        tools:text="@string/point.latitude"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnFixCenter"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
