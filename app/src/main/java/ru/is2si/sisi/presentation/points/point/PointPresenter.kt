@@ -84,15 +84,16 @@ class PointPresenter @Inject constructor(
     }
 
     private fun getAccurancyLocation(): LocationView {
-        val sortedList = locations.sortedWith(compareBy({ it.latitude }, { it.longitude }))
-        var latitude = 0.0
-        var longitude = 0.0
-        for (i in 2..ACCURACY_COUNT - 3) {
-            latitude += sortedList[i].latitude
-            longitude += sortedList[i].longitude
-        }
-        latitude /= ACCURACY_COUNT - 4
-        longitude /= ACCURACY_COUNT - 4
+        val latitudeList = locations
+                .map { it.latitude }
+                .sorted()
+                .subList(2, ACCURACY_COUNT-2)
+        val longitudeList = locations
+                .map { it.longitude }
+                .sorted()
+                .subList(2, ACCURACY_COUNT-2)
+        val latitude = latitudeList.sum() / latitudeList.size
+        val longitude = longitudeList.sum() / longitudeList.size
         return LocationView(latitude, longitude)
     }
 
