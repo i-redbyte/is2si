@@ -62,10 +62,12 @@ class PointPresenter @Inject constructor(
         disposables += subscribeUpdateLocation.execute(None)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
-                .take(ACCURACY_COUNT)
+                .take(ACCURACY_COUNT.toLong())
+                .doOnComplete { view.showTestCoordinates(getAccurancyLocation()) }
                 .doOnNext {
                     counter++
                     val location = it.asView()
+                    locations.add(location)
                     Log.d("_debug", "counter == $counter")
                     view.showTestAccuracyCoordinates(location, counter)
                 }
@@ -79,6 +81,19 @@ class PointPresenter @Inject constructor(
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .subscribe(view::showPhotoData) { view.showError(it.message, it) }
+    }
+
+    private fun getAccurancyLocation(): LocationView {
+        val sortedList = locations.sortedWith(compareBy({ it.latitude }, { it.longitude }))
+        var latitude = 0.0
+        var longitude = 0.0
+        for (i in 2..ACCURACY_COUNT - 3) {
+            latitude += sortedList[i].latitude
+            longitude += sortedList[i].longitude
+        }
+        latitude /= ACCURACY_COUNT - 4
+        longitude /= ACCURACY_COUNT - 4
+        return LocationView(latitude, longitude)
     }
 
     override fun getLocation() {
@@ -96,6 +111,6 @@ class PointPresenter @Inject constructor(
     }
 
     companion object {
-        private const val ACCURACY_COUNT = 12L
+        private const val ACCURACY_COUNT = 12
     }
 }
