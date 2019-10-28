@@ -14,7 +14,7 @@ interface PointContract {
         fun showError(message: String?, throwable: Throwable)
         fun showLoading()
         fun showMain()
-        fun showTestAccuracyCoordinates(location: LocationView, counter: Int)
+        fun showTestAccuracyCoordinates(location: LocationView, counter: Int, isCenter:Boolean)
         fun showPhotoTestAccuracyCoordinates(locationAccuracy: LocationView, firstLocation: LocationView)
     }
 

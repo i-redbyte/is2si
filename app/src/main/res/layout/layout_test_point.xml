@@ -90,15 +90,27 @@
         />
 
     <TextView
-        android:id="@+id/tvAccuracy"
+        android:id="@+id/tvAccuracyCenter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        tools:text="@string/point.latitude"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFixCenter"
+        tools:text="@string/point.latitude"
+        />
+
+    <TextView
+        android:id="@+id/tvAccuracyPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/green"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAccuracyCenter"
+        tools:text="@string/point.latitude"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

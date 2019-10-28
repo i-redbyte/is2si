@@ -60,7 +60,7 @@ class PointPresenter @Inject constructor(
     override fun getAccuracyLocation(isCenter: Boolean) {
         var counter = 0
         val locations = mutableListOf<LocationView>()
-        if (isCenter.not()) view.showLoading()
+        //if (isCenter.not()) view.showLoading()
         disposables += subscribeUpdateLocation.execute(None)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
@@ -69,7 +69,7 @@ class PointPresenter @Inject constructor(
                     if (isCenter) {
                         view.showTestCoordinates(accuracy(locations))
                     } else {
-                        view.showMain()
+                        //view.showMain()
                         view.showPhotoTestAccuracyCoordinates(accuracy(locations), locations.first())
                     }
                 }
@@ -77,11 +77,12 @@ class PointPresenter @Inject constructor(
                     counter++
                     val location = it.asView()
                     locations.add(location)
-                    if (isCenter)
-                        view.showTestAccuracyCoordinates(location, counter)
+                    // if (isCenter)
+                    view.showTestAccuracyCoordinates(location, counter, isCenter)
                 }
                 .subscribe({ }) { view.showError(it.message, it) }
     }
+
     // TODO: Red_byte 2019-10-29 remove if not use
     private fun notAccuracy() {
         view.showLoading()

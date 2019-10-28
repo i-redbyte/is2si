@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
             android:id="@+id/tvCoordinates"
@@ -23,8 +20,7 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/testContainer"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/testContainer" />
 
         <TextView
             android:id="@+id/tvLatitude"
@@ -38,8 +34,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/tvLongitude"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCoordinates"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvCoordinates" />
 
         <TextView
             android:id="@+id/tvLongitude"
@@ -53,8 +48,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvLatitude"
-            app:layout_constraintTop_toBottomOf="@+id/tvCoordinates"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvCoordinates" />
 
         <TextView
             android:id="@+id/tvDistanceToCenter"
@@ -68,8 +62,7 @@
             android:textColor="@color/sapphire"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLatitude"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvLatitude" />
 
         <TextView
             android:id="@+id/tvHit"
@@ -84,15 +77,13 @@
             android:textStyle="bold|italic"
             app:layout_constraintStart_toEndOf="@+id/tvDistanceToCenter"
             app:layout_constraintTop_toBottomOf="@+id/tvLatitude"
-            tools:text="@string/point.hit"
-            />
+            tools:text="@string/point.hit" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/gPoint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tvLatitude,tvLatitude,tvDistanceToCenter"
-            />
+            app:constraint_referenced_ids="tvLatitude,tvLatitude,tvDistanceToCenter,tvAccuracyPhoto,tvAccuracyCenter" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabPhoto"
@@ -102,15 +93,15 @@
             android:layout_marginBottom="16dp"
             android:src="@drawable/ic_add_photo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <include layout="@layout/layout_test_accurancy_point"
+        <include
+            layout="@layout/layout_test_accurancy_point"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvDistanceToCenter"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvDistanceToCenter" />
+
         <include layout="@layout/layout_test_point" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
