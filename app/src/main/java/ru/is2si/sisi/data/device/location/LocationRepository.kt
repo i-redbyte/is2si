@@ -109,10 +109,10 @@ class LocationRepository @Inject constructor(
                 if (emitter.isDisposed.not())
                     emitter.tryOnError(it)
             }
-            result?.result?.also {
-                if (emitter.isDisposed.not())
-                    emitter.onNext(it)
-            }
+//            result?.result?.also {
+//                if (emitter.isDisposed.not())
+//                    emitter.onNext(it)
+//            }
         }
     }
 
