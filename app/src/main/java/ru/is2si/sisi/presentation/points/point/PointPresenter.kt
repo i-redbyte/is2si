@@ -82,7 +82,7 @@ class PointPresenter @Inject constructor(
                 }
                 .subscribe({ }) { view.showError(it.message, it) }
     }
-
+    // TODO: Red_byte 2019-10-29 remove if not use
     private fun notAccuracy() {
         view.showLoading()
         disposables += getCurrentLocation.execute(None)
@@ -96,11 +96,11 @@ class PointPresenter @Inject constructor(
         val latitudeList = locations
                 .map { it.latitude }
                 .sorted()
-                .subList(2, ACCURACY_COUNT - 2)
+                .subList(1, ACCURACY_COUNT - 1)
         val longitudeList = locations
                 .map { it.longitude }
                 .sorted()
-                .subList(2, ACCURACY_COUNT - 2)
+                .subList(1, ACCURACY_COUNT - 1)
         val latitude = latitudeList.sum() / latitudeList.size
         val longitude = longitudeList.sum() / longitudeList.size
         return LocationView(latitude, longitude)
@@ -121,6 +121,6 @@ class PointPresenter @Inject constructor(
     }
 
     companion object {
-        private const val ACCURACY_COUNT = 12
+        private const val ACCURACY_COUNT = 4
     }
 }
