@@ -33,8 +33,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 class PointFragment : ActionBarFragment<PointContract.Presenter>(),
-    NavigatorProvider,
-    PointContract.View {
+        NavigatorProvider,
+        PointContract.View {
 
     @Inject
     lateinit var stateSwitcher: ViewStateSwitcher
@@ -45,7 +45,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
 
     private val point: PointView
         get() = arguments?.getParcelable(ARG_POINT)
-            ?: throw RuntimeException("Нет информации о точке") // TODO: Red_byte 2019-09-26 вынести в кастомный Exception
+                ?: throw RuntimeException("Нет информации о точке") // TODO: Red_byte 2019-09-26 вынести в кастомный Exception
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +53,9 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_point, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,8 +70,12 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             etTestLongitude.setText("0.0")
             testContainer.show()
         }
-        fabPhoto.onClick { checkPhotoPermission() }
+        fabPhoto.onClick {
+            tvAccuracyPhoto.text = ""
+            checkPhotoPermission()
+        }
         btnFixCenter.onClick {
+            tvAccuracyCenter.text = ""
             if (cbAccuracy.isChecked)
                 presenter.getAccuracyLocation(true)
             else
@@ -98,9 +102,9 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     override fun showTestAccuracyCoordinates(
-        location: LocationView,
-        counter: Int,
-        isCenter: Boolean
+            location: LocationView,
+            counter: Int,
+            isCenter: Boolean
     ) {
         val latitude = location.latitude
         val longitude = location.longitude
@@ -108,10 +112,10 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         val meters = getHitTextAndMeters(location).second
         val text = if (isCenter) tvAccuracyCenter.text.toString() else tvAccuracyPhoto.text
         val finishText =
-            "$text$counter) Широта: $latitude Долгота: $longitude $textHit ${String.format(
-                "%.2f",
-                meters
-            )} м.\n"
+                "$text$counter) Широта: $latitude Долгота: $longitude $textHit ${String.format(
+                        "%.2f",
+                        meters
+                )} м.\n"
         if (isCenter)
             tvAccuracyCenter.text = finishText
         else
@@ -132,12 +136,12 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         val meters = getHitTextAndMeters(location).second
         tvHit.text = getHitTextAndMeters(location).first
         tvDistanceToCenter.text =
-            getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
+                getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
     }
 
     override fun showPhotoTestAccuracyCoordinates(
-        locationAccuracy: LocationView,
-        firstLocation: LocationView
+            locationAccuracy: LocationView,
+            firstLocation: LocationView
     ) {
         showPhotoData(firstLocation)
         with(locationAccuracy) {
@@ -146,27 +150,27 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             val meters = getHitTextAndMeters(this).second
             tvAccuracyHit.text = getHitTextAndMeters(this).first
             tvAccuracyDistanceToCenter.text =
-                getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
+                    getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
         }
     }
 
     private fun checkPhotoPermission() {
         when (beforeRequestPermissions(
-            REQUEST_CAMERA,
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
+                REQUEST_CAMERA,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         )) {
             BeforeRequestPermissionResult.AlreadyGranted -> presenter.onCameraClick(point.pointNameStr == TEST_POINT)
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
-                    REQUEST_CAMERA,
-                    true,
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                        REQUEST_CAMERA,
+                        true,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -175,21 +179,21 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
 
     override fun checkPermission() {
         when (beforeRequestPermissions(
-            REQUEST_POINT_PERMISSION,
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
+                REQUEST_POINT_PERMISSION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         )) {
             BeforeRequestPermissionResult.AlreadyGranted -> presenter.permissionOk()
             BeforeRequestPermissionResult.ShowRationale -> {
                 beforeRequestPermissions(
-                    REQUEST_POINT_PERMISSION,
-                    true,
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                        REQUEST_POINT_PERMISSION,
+                        true,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
                 )
             }
             BeforeRequestPermissionResult.Requested -> Unit
@@ -214,9 +218,9 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
     ) {
         when (afterRequestPermissions(permissions, grantResults)) {
             AfterRequestPermissionsResult.Granted -> {
@@ -227,12 +231,12 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             }
             AfterRequestPermissionsResult.NeverAskAgain -> {
                 AlertBottomSheetFragment()
-                    .withMessage(getString(R.string.files_camera_requested))
-                    .withOkText(getString(R.string.dialog_settings))
-                    .withCancelText(getString(R.string.dialog_cancel))
-                    .withCancelable(false)
-                    .withTarget(this, REQUEST_CAMERA_PERMISSION)
-                    .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
+                        .withMessage(getString(R.string.files_camera_requested))
+                        .withOkText(getString(R.string.dialog_settings))
+                        .withCancelText(getString(R.string.dialog_cancel))
+                        .withCancelable(false)
+                        .withTarget(this, REQUEST_CAMERA_PERMISSION)
+                        .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
             }
         }
     }
@@ -269,14 +273,14 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     override fun getNavigator(): Navigator =
-        (requireActivity() as NavigationActivity).getMainNavigator()
+            (requireActivity() as NavigationActivity).getMainNavigator()
 
     override fun showMain() = stateSwitcher.switchToMain()
 
     override fun showLoading() = stateSwitcher.switchToLoading()
 
     override fun showError(message: String?, throwable: Throwable) =
-        stateSwitcher.switchToError(message, throwable) { stateSwitcher.switchToMain() }
+            stateSwitcher.switchToError(message, throwable) { stateSwitcher.switchToMain() }
 
     companion object {
         private const val ARG_POINT = "arg_point"
