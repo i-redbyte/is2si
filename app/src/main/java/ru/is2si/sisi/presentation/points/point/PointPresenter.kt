@@ -51,8 +51,10 @@ class PointPresenter @Inject constructor(
     }
 
     private fun locationData() {
-        if (isAccuracy) getAccuracyLocation(false)
-        else notAccuracy()
+        getAccuracyLocation(false)
+        // TODO: Red_byte 2019-10-28 remove if not use
+//        if (isAccuracy) getAccuracyLocation(false)
+//        else notAccuracy()
     }
 
     override fun getAccuracyLocation(isCenter: Boolean) {
