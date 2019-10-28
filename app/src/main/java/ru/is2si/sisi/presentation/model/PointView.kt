@@ -4,7 +4,6 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import ru.is2si.sisi.domain.points.Point
 
-
 @Parcelize
 class PointView(
         val id: Int,

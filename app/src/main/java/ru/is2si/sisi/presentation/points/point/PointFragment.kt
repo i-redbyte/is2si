@@ -94,7 +94,17 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     }
 
     private fun getHitTextAndMeters(location: LocationView): Pair<String, Float> {
-        val meters = point.location.metersDistanceTo(location)
+        val testLocate = LocationView(0.0,0.0)
+        val lat = etTestLatitude.text.toString()
+        val lon = etTestLongitude.text.toString()
+        if (etTestLatitude.text.isNotEmpty() && etTestLongitude.text.isNotEmpty()){
+            testLocate.latitude = lat.toDouble()
+            testLocate.longitude = lon.toDouble()
+        }else{
+            testLocate.latitude = point.location.latitude
+            testLocate.longitude = point.location.longitude
+        }
+        val meters = testLocate.metersDistanceTo(location)
         return if (meters <= point.minRadius)
             getString(R.string.point_hit) to meters
         else
