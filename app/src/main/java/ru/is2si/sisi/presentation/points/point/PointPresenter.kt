@@ -60,24 +60,20 @@ class PointPresenter @Inject constructor(
     override fun getAccuracyLocation(isCenter: Boolean) {
         var counter = 0
         val locations = mutableListOf<LocationView>()
-        //if (isCenter.not()) view.showLoading()
         disposables += subscribeUpdateLocation.execute(None)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .take(ACCURACY_COUNT.toLong())
                 .doOnComplete {
-                    if (isCenter) {
+                    if (isCenter)
                         view.showTestCoordinates(accuracy(locations))
-                    } else {
-                        //view.showMain()
+                    else
                         view.showPhotoTestAccuracyCoordinates(accuracy(locations), locations.first())
-                    }
                 }
                 .doOnNext {
                     counter++
                     val location = it.asView()
                     locations.add(location)
-                    // if (isCenter)
                     view.showTestAccuracyCoordinates(location, counter, isCenter)
                 }
                 .subscribe({ }) { view.showError(it.message, it) }
