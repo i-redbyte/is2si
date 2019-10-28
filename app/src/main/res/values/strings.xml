@@ -51,6 +51,7 @@
     <string name="points.remove_point_message">Вы действительно хотите удалить точку?</string>
 
     <string name="point.title">Точка %1$s</string>
+    <string name="point.accuracy.coordinates">Текущие координаты с точностью:</string>
     <string name="point.coordinates">Текущие координаты:</string>
     <string name="point.latitude_value">Широта %1$s</string>
     <string name="point.longitude_value">Долгота %1$s</string>

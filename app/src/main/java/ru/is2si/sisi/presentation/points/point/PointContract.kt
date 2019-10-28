@@ -14,13 +14,15 @@ interface PointContract {
         fun showError(message: String?, throwable: Throwable)
         fun showLoading()
         fun showMain()
-        fun showTestAccuracyCoordinates(location: LocationView,counter:Int)
+        fun showTestAccuracyCoordinates(location: LocationView, counter: Int)
+        fun showPhotoTestAccuracyCoordinates(locationAccuracy: LocationView, firstLocation: LocationView)
     }
 
     interface Presenter : BaseContract.Presenter {
         var location: LocationView?
         var isAccuracy: Boolean
         fun onCameraClick(isTest: Boolean)
+        fun getAccuracyLocation(isCenter: Boolean)
         fun getLocation()
         fun addToPhotosQueue(photoPath: String)
         fun permissionOk() // TODO: Red_byte 2019-10-04 rename method

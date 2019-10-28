@@ -1,7 +1,6 @@
 package ru.is2si.sisi.presentation.points.point
 
 import android.os.SystemClock
-import android.util.Log
 import ru.is2si.sisi.base.BasePresenter
 import ru.is2si.sisi.base.device.location.Location
 import ru.is2si.sisi.base.rx.RxSchedulers
@@ -24,7 +23,6 @@ class PointPresenter @Inject constructor(
     private var isGetLocationInProgress = false
     @Volatile
     private var lastLocationUpdate: Long = SystemClock.elapsedRealtime()
-    private var locations = mutableListOf<LocationView>()
 
     override var location: LocationView? = null
     override var isAccuracy: Boolean = false
@@ -53,23 +51,32 @@ class PointPresenter @Inject constructor(
     }
 
     private fun locationData() {
-        if (isAccuracy) accuracy()
+        if (isAccuracy) getAccuracyLocation(false)
         else notAccuracy()
     }
 
-    private fun accuracy() {
+    override fun getAccuracyLocation(isCenter: Boolean) {
         var counter = 0
+        val locations = mutableListOf<LocationView>()
+        if (isCenter.not()) view.showLoading()
         disposables += subscribeUpdateLocation.execute(None)
                 .subscribeOn(rxSchedulers.io)
                 .observeOn(rxSchedulers.ui)
                 .take(ACCURACY_COUNT.toLong())
-                .doOnComplete { view.showTestCoordinates(getAccurancyLocation()) }
+                .doOnComplete {
+                    if (isCenter) {
+                        view.showTestCoordinates(accuracy(locations))
+                    } else {
+                        view.showMain()
+                        view.showPhotoTestAccuracyCoordinates(accuracy(locations), locations.first())
+                    }
+                }
                 .doOnNext {
                     counter++
                     val location = it.asView()
                     locations.add(location)
-                    Log.d("_debug", "counter == $counter")
-                    view.showTestAccuracyCoordinates(location, counter)
+                    if (isCenter)
+                        view.showTestAccuracyCoordinates(location, counter)
                 }
                 .subscribe({ }) { view.showError(it.message, it) }
     }
@@ -83,15 +90,15 @@ class PointPresenter @Inject constructor(
                 .subscribe(view::showPhotoData) { view.showError(it.message, it) }
     }
 
-    private fun getAccurancyLocation(): LocationView {
+    private fun accuracy(locations: List<LocationView>): LocationView {
         val latitudeList = locations
                 .map { it.latitude }
                 .sorted()
-                .subList(2, ACCURACY_COUNT-2)
+                .subList(2, ACCURACY_COUNT - 2)
         val longitudeList = locations
                 .map { it.longitude }
                 .sorted()
-                .subList(2, ACCURACY_COUNT-2)
+                .subList(2, ACCURACY_COUNT - 2)
         val latitude = latitudeList.sum() / latitudeList.size
         val longitude = longitudeList.sum() / longitudeList.size
         return LocationView(latitude, longitude)

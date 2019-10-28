@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.fragment_point.*
+import kotlinx.android.synthetic.main.fragment_point.tvHit
+import kotlinx.android.synthetic.main.layout_test_accurancy_point.*
 import kotlinx.android.synthetic.main.layout_test_point.*
 import ru.is2si.sisi.R
 import ru.is2si.sisi.base.ActionBarFragment
@@ -70,7 +72,12 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
             testContainer.show()
         }
         fabPhoto.onClick { checkPhotoPermission() }
-        btnFixCenter.onClick { presenter.getLocation() }
+        btnFixCenter.onClick {
+            if (cbAccuracy.isChecked)
+                presenter.getAccuracyLocation(true)
+            else
+                presenter.getLocation()
+        }
         cbAccuracy.setOnCheckedChangeListener { _, b -> presenter.isAccuracy = b }
     }
 
@@ -97,7 +104,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         val textHit = getHitTextAndMeters(location).first
         val meters = getHitTextAndMeters(location).second
         val text = tvAccuracy.text.toString()
-        val finishText ="$text$counter) Широта: $latitude Долгота: $longitude $textHit ${String.format("%.2f", meters)} м.\n"
+        val finishText = "$text$counter) Широта: $latitude Долгота: $longitude $textHit ${String.format("%.2f", meters)} м.\n"
         tvAccuracy.text = finishText
     }
 
@@ -116,6 +123,19 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         tvHit.text = getHitTextAndMeters(location).first
         tvDistanceToCenter.text =
                 getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
+    }
+
+    override fun showPhotoTestAccuracyCoordinates(locationAccuracy: LocationView, firstLocation: LocationView) {
+        showPhotoData(firstLocation)
+        with(locationAccuracy) {
+            tvAccuracyLatitude.text = getString(R.string.point_latitude_value, latitude)
+            tvAccuracyLongitude.text = getString(R.string.point_longitude_value, longitude)
+            val meters = getHitTextAndMeters(this).second
+            tvAccuracyHit.text = getHitTextAndMeters(this).first
+            tvAccuracyDistanceToCenter.text =
+                    getString(R.string.point_distance_to_center_value, String.format("%.2f", meters))
+
+        }
     }
 
     private fun checkPhotoPermission() {
