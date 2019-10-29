@@ -87,8 +87,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
     override fun showTestCoordinates(location: LocationView) {
         if (point.pointNameStr == TEST_POINT) point.location = location
         with(location) {
-            etTestLatitude.setText(latitude.format(5))
-            etTestLongitude.setText(longitude.format(5))
+            etTestLatitude.setText(latitude.format(COORDS_ROUND))
+            etTestLongitude.setText(longitude.format(COORDS_ROUND))
             etTestRadius.setText(point.minRadius.toString())
         }
     }
@@ -122,9 +122,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         val meters = getHitTextAndMeters(location).second
         val text = if (isCenter) tvAccuracyCenter.text.toString() else tvAccuracyPhoto.text
         val finishText =
-            "$text$counter) Широта: ${latitude.format(5)} Долгота: ${longitude.format(5)} $textHit ${meters.format(
-                2
-            )} м.\n"
+            "$text$counter) Широта: ${latitude.format(COORDS_ROUND)} Долгота: " +
+                    "${longitude.format(COORDS_ROUND)} $textHit ${meters.format(METERS_ROUND)} м.\n"
         if (isCenter)
             tvAccuracyCenter.text = finishText
         else
@@ -135,9 +134,9 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         showMain()
         with(location) {
             tvLatitude.text =
-                getString(R.string.point_latitude_value, latitude.format(5))
+                getString(R.string.point_latitude_value, latitude.format(COORDS_ROUND))
             tvLongitude.text =
-                getString(R.string.point_longitude_value, longitude.format(5))
+                getString(R.string.point_longitude_value, longitude.format(COORDS_ROUND))
         }
         if (point.pointNameStr == TEST_POINT) {
             point.location.longitude = etTestLongitude.text.toString().toDouble()
@@ -147,7 +146,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         val meters = getHitTextAndMeters(location).second
         tvHit.text = getHitTextAndMeters(location).first
         tvDistanceToCenter.text =
-            getString(R.string.point_distance_to_center_value, meters.format(2))
+            getString(R.string.point_distance_to_center_value, meters.format(METERS_ROUND))
     }
 
     override fun showPhotoTestAccuracyCoordinates(
@@ -157,13 +156,13 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         showPhotoData(firstLocation)
         with(locationAccuracy) {
             tvAccuracyLatitude.text =
-                getString(R.string.point_latitude_value, latitude.format(5))
+                getString(R.string.point_latitude_value, latitude.format(COORDS_ROUND))
             tvAccuracyLongitude.text =
-                getString(R.string.point_longitude_value, longitude.format(5))
+                getString(R.string.point_longitude_value, longitude.format(COORDS_ROUND))
             val meters = getHitTextAndMeters(this).second
             tvAccuracyHit.text = getHitTextAndMeters(this).first
             tvAccuracyDistanceToCenter.text =
-                getString(R.string.point_distance_to_center_value, meters.format(2))
+                getString(R.string.point_distance_to_center_value, meters.format(METERS_ROUND))
         }
     }
 
@@ -301,6 +300,8 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
         private const val REQUEST_CAMERA_PERMISSION = 1917
         private const val REQUEST_POINT_PERMISSION = 1918
         private const val TAG_CAMERA_PERMISSION = "phone_permission"
+        private const val COORDS_ROUND = 5
+        private const val METERS_ROUND = 2
         const val TEST_POINT = "0/0"
 
         @JvmStatic
