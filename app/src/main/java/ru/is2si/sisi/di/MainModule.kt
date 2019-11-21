@@ -21,12 +21,4 @@ abstract class MainModule {
     @Binds
     abstract fun presenter(presenter: MainPresenter): MainContract.Presenter
 
-    @Module
-    companion object {
-        @JvmStatic
-        @Provides
-        @PerScreen
-        fun stateSwitcher(view: MainFragment) =
-            ViewStateSwitcher(view.requireActivity(), R.id.vgContainer)
-    }
 }

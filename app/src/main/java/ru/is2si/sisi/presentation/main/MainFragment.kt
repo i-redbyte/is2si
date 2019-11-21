@@ -15,19 +15,14 @@ import ru.is2si.sisi.base.navigation.Navigator
 import ru.is2si.sisi.base.navigation.NavigatorProvider
 import ru.is2si.sisi.base.navigation.TabContainerFragment
 import ru.is2si.sisi.base.navigation.TabContainerFragment.Companion.withTab
-import ru.is2si.sisi.base.switcher.ViewStateSwitcher
 import ru.is2si.sisi.presentation.main.Tab.*
 import java.util.*
-import javax.inject.Inject
 
 class MainFragment :
         BaseFragment<MainContract.Presenter>(),
         NavigatorProvider,
         MainContract.View,
         BackButtonListener {
-
-    @Inject
-    lateinit var stateSwitcher: ViewStateSwitcher
 
     private lateinit var mainNavigationMenu: MainNavigationMenu
     private val selectedTabSequence: MutableList<Tab> = LinkedList()
@@ -85,12 +80,6 @@ class MainFragment :
                 ?: return null
         return (fragment as? NavigatorProvider)?.getNavigator()
     }
-
-    override fun showError(throwable: Throwable) = stateSwitcher.switchToError(throwable.message) {}
-
-    override fun showContent() = stateSwitcher.switchToMain()
-
-    override fun showLoading() = stateSwitcher.switchToLoading()
 
     override fun getNavigator(): Navigator = (parentFragment as NavigatorProvider).getNavigator()
 
