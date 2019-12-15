@@ -105,7 +105,7 @@ class ViewStateSwitcher(activity: Activity, @IdRes idRes: Int) {
                                 }
                             }
                     val clip = ClipData.newPlainText("Error Stack", text)
-                    clipboard?.primaryClip = clip
+                    clipboard?.setPrimaryClip(clip)
                     Toast.makeText(context, "Error info copied!", Toast.LENGTH_SHORT)
                             .show()
                 }
