@@ -76,8 +76,8 @@ class TeamFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState == null) return
-        requireFragmentManager().dismissDialogByTag(TAG_LOGOUT)
-        requireFragmentManager().dismissDialogByTag(TAG_PHONE_PERMISSION)
+        parentFragmentManager.dismissDialogByTag(TAG_LOGOUT)
+        parentFragmentManager.dismissDialogByTag(TAG_PHONE_PERMISSION)
     }
 
     private fun setupViews() {
@@ -130,7 +130,7 @@ class TeamFragment :
                     .withOkText(getString(R.string.dialog_settings))
                     .withCancelText(getString(R.string.dialog_cancel))
                     .withTarget(this, REQUEST_PHONE_PERMISSION)
-                    .show(requireFragmentManager(), TAG_PHONE_PERMISSION)
+                    .show(parentFragmentManager, TAG_PHONE_PERMISSION)
             }
         }
     }
@@ -155,7 +155,7 @@ class TeamFragment :
                 .withOkText(getString(R.string.dialog_yes))
                 .withCancelText(getString(R.string.dialog_no))
                 .withTarget(this, REQUEST_LOGOUT)
-                .show(requireFragmentManager(), TAG_LOGOUT)
+                .show(parentFragmentManager, TAG_LOGOUT)
             true
         }
         else -> false

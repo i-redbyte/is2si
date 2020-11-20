@@ -109,7 +109,7 @@ class PointsFragment :
                 putParcelable(ARG_POINT, point)
                 putInt(ARG_POINT_POSITION, position)
             }
-            .show(requireFragmentManager(), TAG_REMOVE_POINT)
+            .show(parentFragmentManager, TAG_REMOVE_POINT)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

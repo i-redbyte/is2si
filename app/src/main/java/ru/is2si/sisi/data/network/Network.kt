@@ -34,7 +34,7 @@ class Network(context: Context, private val gson: Gson) {
     private fun wrapError(throwable: Throwable): RuntimeException {
         if (throwable is HttpException) {
 
-            val reader = throwable.response().errorBody()?.charStream() ?: return unknownNetworkException
+            val reader = throwable.response()?.errorBody()?.charStream() ?: return unknownNetworkException
 
             val error = try {
                 gson.fromJson<Error>(reader, errorArrayType)

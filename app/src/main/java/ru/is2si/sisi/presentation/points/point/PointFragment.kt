@@ -248,7 +248,7 @@ class PointFragment : ActionBarFragment<PointContract.Presenter>(),
                     .withCancelText(getString(R.string.dialog_cancel))
                     .withCancelable(false)
                     .withTarget(this, REQUEST_CAMERA_PERMISSION)
-                    .show(requireFragmentManager(), TAG_CAMERA_PERMISSION)
+                    .show(parentFragmentManager, TAG_CAMERA_PERMISSION)
             }
         }
     }
